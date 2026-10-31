@@ -32,6 +32,7 @@
                         secondary: '#171717',
                         surface: '#FFFFFF',
                         border: '#E5E7EB',
+                        brandBlue: '#0000FF',
                     }
                 }
             }
@@ -44,7 +45,7 @@
         h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
     </style>
 </head>
-<body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-black selection:text-white" x-data="cartDrawerState()">
+<body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-[#0000FF] selection:text-white" x-data="cartDrawerState()">
 
     <!-- 1. Top Bar (Dominan Putih & Hitam Minimalis) -->
     <div class="border-b border-gray-200 bg-white text-gray-700 text-xs py-2.5 px-4 sm:px-8">
@@ -96,12 +97,12 @@
 
             <!-- Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
-                <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
-                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
+                <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
+                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
                 
                 @auth
                     @if(in_array(Auth::user()->customer_type, ['member', 'distributor']) || Auth::user()->role === 'admin')
-                        <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">
+                        <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">
                             <span>Pre-Order (PO)</span>
                             <span class="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Eksklusif</span>
                         </a>
@@ -112,7 +113,7 @@
                     </span>
                 @endauth
 
-                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
+                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
             </nav>
 
             <!-- Actions (Search, Cart Drawer Trigger, My Account) -->
@@ -126,9 +127,9 @@
                 </form>
 
                 <!-- Cart Button -->
-                <button @click="openDrawer()" class="relative p-2 text-gray-800 hover:text-black transition" title="Keranjang Belanja">
+                <button @click="openDrawer()" class="relative p-2 text-gray-800 hover:text-black transition cursor-pointer" title="Keranjang Belanja">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
-                    <span class="absolute top-0 right-0 bg-black text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-sm"
+                    <span class="absolute -top-1 -right-1 bg-[#0000FF] text-white text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md ring-2 ring-white"
                           x-text="cartCount">
                         {{ count(session('cart', [])) }}
                     </span>
@@ -219,7 +220,7 @@
                         <div class="pt-4 first:pt-0 flex gap-4">
                             <div class="w-20 h-24 bg-neutral-100 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
                                 <template x-if="item.image">
-                                    <img :src="item.image.startsWith('http') ? item.image : '/storage/' + item.image" :alt="item.product_name" class="w-full h-full object-cover">
+                                    <img :src="item.image.startsWith('http') ? item.image : (item.image.startsWith('images/') ? '/' + item.image : '/storage/' + item.image)" :alt="item.product_name" class="w-full h-full object-cover">
                                 </template>
                                 <template x-if="!item.image">
                                     <i class="fa-solid fa-shoe-prints text-gray-300 text-xl"></i>
@@ -261,10 +262,10 @@
                     </div>
                     <p class="text-[11px] text-gray-500">Ongkos kirim dan potongan kupon dihitung saat checkout.</p>
                     <div class="grid grid-cols-2 gap-3 pt-2">
-                        <a href="{{ route('cart.index') }}" class="text-center py-3 border-2 border-black text-xs font-bold uppercase tracking-wider text-black hover:bg-black hover:text-white transition">
+                        <a href="{{ route('cart.index') }}" class="text-center py-3 bg-white border-2 border-black rounded-lg text-xs font-black uppercase tracking-wider text-black hover:bg-black hover:text-white transition shadow-sm hover:shadow-md active:translate-y-0.5 cursor-pointer">
                             Lihat Keranjang
                         </a>
-                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-black text-white text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition shadow-md">
+                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-black border-2 border-black text-white text-xs font-black uppercase tracking-wider rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                             Checkout
                         </a>
                     </div>

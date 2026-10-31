@@ -89,11 +89,11 @@
                 </div>
 
                 <div class="pt-4 flex gap-2">
-                    <button type="submit" class="w-full bg-black text-white text-xs uppercase tracking-wider py-2.5 font-semibold hover:bg-black transition">
+                    <button type="submit" class="w-full bg-black text-white text-xs uppercase tracking-widest py-3 font-bold rounded-lg border-2 border-black hover:bg-neutral-800 hover:border-[#0000FF] shadow-sm hover:shadow-md active:translate-y-0.5 transition cursor-pointer">
                         Terapkan Filter
                     </button>
                     @if(request()->anyFilled(['q', 'brand', 'category', 'type', 'sort']))
-                        <a href="{{ route('catalog') }}" class="px-3 py-2.5 border border-gray-300 text-xs text-gray-600 hover:text-black hover:border-black transition" title="Reset">
+                        <a href="{{ route('catalog') }}" class="px-4 py-3 border-2 border-gray-300 rounded-lg text-xs font-bold uppercase tracking-wider text-gray-700 hover:text-black hover:border-black shadow-xs hover:shadow-sm active:translate-y-0.5 transition flex items-center justify-center cursor-pointer" title="Reset">
                             Reset
                         </a>
                     @endif
@@ -115,7 +115,7 @@
                     <i class="fa-solid fa-shoe-prints text-3xl text-gray-300 mb-3 block"></i>
                     <p class="text-sm font-medium text-gray-700">Tidak ada koleksi sepatu yang sesuai dengan filter.</p>
                     <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau reset filter pencarian Anda.</p>
-                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-semibold uppercase tracking-wider border-b border-black text-black">Reset Filter</a>
+                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-bold uppercase tracking-wider px-6 py-2.5 bg-black text-white rounded-lg border-2 border-black hover:bg-[#0000FF] hover:border-[#0000FF] shadow-sm hover:shadow-md transition">Reset Filter</a>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -183,7 +183,7 @@
 
                             <div class="p-5 pt-0">
                                 <a href="{{ route('product.detail', $prod->slug) }}" 
-                                   class="w-full text-center block py-2.5 border border-black text-xs uppercase tracking-wider font-semibold text-black hover:bg-black hover:text-white hover:border-black transition">
+                                   class="w-full text-center block py-3 bg-white border-2 border-black text-xs uppercase tracking-wider font-bold text-black hover:bg-black hover:text-white rounded-lg shadow-xs hover:shadow-md active:translate-y-0.5 transition cursor-pointer">
                                     Pilih Ukuran & Beli
                                 </a>
                             </div>

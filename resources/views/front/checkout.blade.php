@@ -217,7 +217,7 @@
                                 <div class="flex items-center gap-2.5 min-w-0">
                                     <div class="w-10 h-12 bg-neutral-100 border border-gray-200 shrink-0 overflow-hidden flex items-center justify-center">
                                         @if(!empty($item['image']))
-                                            <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : asset('storage/' . $item['image']) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
+                                            <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : (str_starts_with($item['image'], 'images/') ? asset($item['image']) : asset('storage/' . $item['image'])) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
                                         @else
                                             <i class="fa-solid fa-shoe-prints text-[10px] text-gray-400"></i>
                                         @endif
@@ -313,7 +313,7 @@
 
                     <!-- Submit Button -->
                     <button type="submit" 
-                            class="w-full py-4 bg-black text-white text-xs uppercase tracking-widest font-semibold hover:bg-black transition">
+                            class="w-full py-4 bg-black border-2 border-black text-white text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                         Buat Pesanan Sekarang &rarr;
                     </button>
 
@@ -425,6 +425,12 @@
             }
         }
     }
+    window.checkoutState = checkoutState;
+    document.addEventListener('alpine:init', () => {
+        if (typeof Alpine !== 'undefined' && Alpine.data) {
+            Alpine.data('checkoutState', checkoutState);
+        }
+    });
 </script>
 @endsection
 

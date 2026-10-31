@@ -1,6 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
+<script>
+    function productDetailState(config) {
+        return {
+            basePrice: config.basePrice || 0,
+            variantPrices: config.variantPrices || [],
+            ruleAdjustment: config.ruleAdjustment || 0,
+            bonusMinQty: config.bonusMinQty || 9999,
+
+            selectedModelId: (config.models && config.models.length > 0) ? config.models[0].id : null,
+            selectedModelName: (config.models && config.models.length > 0) ? config.models[0].model_name : '',
+            selectedColorId: null,
+            selectedColorName: '',
+            selectedSizeId: null,
+            selectedSizeLabel: '',
+            selectedImage: '{{ $product->primary_image_url }}',
+            quantity: 1,
+
+            currentPrice: (config.basePrice || 0) + (config.ruleAdjustment || 0),
+
+            selectModel(id, name) {
+                this.selectedModelId = id;
+                this.selectedModelName = name;
+                this.recalculatePrice();
+            },
+            selectColor(id, name) {
+                this.selectedColorId = id;
+                this.selectedColorName = name;
+            },
+            selectSize(id, label) {
+                this.selectedSizeId = id;
+                this.selectedSizeLabel = label;
+                this.recalculatePrice();
+            },
+            recalculatePrice() {
+                if (this.selectedModelId && this.selectedSizeId) {
+                    const match = this.variantPrices.find(vp => 
+                        vp.product_model_id === this.selectedModelId && 
+                        vp.product_size_id === this.selectedSizeId
+                    );
+                    if (match) {
+                        const rawPrice = match.price_umum || match.price_member || match.price_distributor || match.price || this.basePrice;
+                        this.currentPrice = parseFloat(rawPrice) + this.ruleAdjustment;
+                        return;
+                    }
+                }
+                this.currentPrice = this.basePrice + this.ruleAdjustment;
+            },
+            get isReadyToBuy() {
+                return this.selectedModelId && this.selectedColorId && this.selectedSizeId && this.quantity > 0;
+            },
+            formatRupiah(num) {
+                return 'Rp ' + new Intl.NumberFormat('id-ID').format(num);
+            },
+            addToCart() {
+                if (!this.isReadyToBuy) return;
+
+                fetch('{{ route("cart.add") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        product_id: {{ $product->id }},
+                        model_id: this.selectedModelId,
+                        color_id: this.selectedColorId,
+                        size_id: this.selectedSizeId,
+                        quantity: this.quantity
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const drawer = Alpine.$data(document.querySelector('body'));
+                        drawer.items = data.cart_items;
+                        drawer.cartCount = data.cart_count;
+                        drawer.subtotal = data.subtotal;
+                        drawer.openDrawer();
+                    }
+                });
+            }
+        };
+    }
+    window.productDetailState = productDetailState;
+    document.addEventListener('alpine:init', () => {
+        if (typeof Alpine !== 'undefined' && Alpine.data) {
+            Alpine.data('productDetailState', productDetailState);
+        }
+    });
+</script>
+
 <div class="border-b border-gray-100 bg-gray-50 py-4 text-xs text-gray-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center gap-2">
         <a href="{{ route('home') }}" class="hover:text-black">Beranda</a>
@@ -116,11 +208,11 @@
                         @foreach($product->models as $m)
                             <button type="button" 
                                     @click="selectModel({{ $m->id }}, '{{ $m->model_name }}')"
-                                    :class="selectedModelId === {{ $m->id }} ? 'border-black bg-black text-white font-semibold' : 'border-gray-200 bg-white text-gray-800 hover:border-gray-400'"
-                                    class="p-3 text-left border text-xs transition duration-150">
-                                <p class="font-medium text-xs">{{ $m->model_name }}</p>
+                                    :class="selectedModelId === {{ $m->id }} ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-md' : 'border-gray-300 bg-white text-gray-900 hover:border-black font-medium shadow-xs hover:shadow-sm'"
+                                    class="p-3 text-left border-2 rounded-lg text-xs transition duration-150 cursor-pointer active:translate-y-0.5">
+                                <p class="font-bold text-xs">{{ $m->model_name }}</p>
                                 @if($m->description)
-                                    <p class="text-[10px] text-gray-400 mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-gray-300' : 'text-gray-500'">{{ $m->description }}</p>
+                                    <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-gray-300' : 'text-gray-500'">{{ $m->description }}</p>
                                 @endif
                             </button>
                         @endforeach
@@ -137,9 +229,9 @@
                         @foreach($product->colors as $c)
                             <button type="button" 
                                     @click="selectColor({{ $c->id }}, '{{ $c->color_name }}')"
-                                    :class="selectedColorId === {{ $c->id }} ? 'border-black ring-2 ring-black' : 'border-gray-200 hover:border-gray-400'"
-                                    class="flex items-center gap-2 px-3.5 py-2 border bg-white text-xs transition duration-150">
-                                <span class="w-3.5 h-3.5 rounded-full border border-gray-300 shrink-0" style="background-color: {{ $c->hex_code }}"></span>
+                                    :class="selectedColorId === {{ $c->id }} ? 'border-black ring-2 ring-black bg-black text-white font-bold shadow-md' : 'border-gray-300 bg-white text-gray-900 hover:border-black font-medium shadow-xs hover:shadow-sm'"
+                                    class="flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg text-xs transition duration-150 cursor-pointer active:translate-y-0.5">
+                                <span class="w-3.5 h-3.5 rounded-full border border-gray-400 shrink-0" style="background-color: {{ $c->hex_code }}"></span>
                                 <span>{{ $c->color_name }}</span>
                             </button>
                         @endforeach
@@ -156,8 +248,8 @@
                         @foreach($product->sizes as $s)
                             <button type="button" 
                                     @click="selectSize({{ $s->id }}, '{{ $s->size_label }}')"
-                                    :class="selectedSizeId === {{ $s->id }} ? 'border-black bg-black text-white font-semibold' : 'border-gray-200 bg-white text-gray-800 hover:border-gray-400'"
-                                    class="min-w-16 px-4 py-2.5 text-center border text-xs uppercase font-medium transition duration-150">
+                                    :class="selectedSizeId === {{ $s->id }} ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-md' : 'border-gray-300 bg-white text-gray-900 hover:border-black font-semibold shadow-xs hover:shadow-sm'"
+                                    class="min-w-16 px-4 py-2.5 text-center border-2 rounded-lg text-xs uppercase transition duration-150 cursor-pointer active:translate-y-0.5">
                                 {{ $s->size_label }}
                             </button>
                         @endforeach
@@ -193,8 +285,8 @@
                 <div class="pt-2 flex flex-col sm:flex-row gap-3">
                     <button type="submit" 
                             :disabled="!isReadyToBuy"
-                            :class="isReadyToBuy ? 'bg-black text-white hover:bg-black cursor-pointer' : 'bg-gray-200 text-gray-400 cursor-not-allowed'"
-                            class="flex-1 py-4 text-xs uppercase tracking-widest font-semibold transition text-center flex items-center justify-center gap-2">
+                            :class="isReadyToBuy ? 'bg-black text-white hover:bg-neutral-800 hover:border-[#0000FF] cursor-pointer shadow-md hover:shadow-lg active:translate-y-0.5' : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed shadow-none'"
+                            class="flex-1 py-4 text-xs uppercase tracking-widest font-black rounded-lg border-2 border-black transition text-center flex items-center justify-center gap-2">
                         <i class="fa-solid fa-bag-shopping"></i>
                         <span>Tambah ke Keranjang</span>
                     </button>
@@ -203,8 +295,8 @@
                     @if(isset($floatingWa) && $floatingWa)
                         <a :href="'https://wa.me/{{ $floatingWa->phone }}?text=Halo%20Admin,%20saya%20tertarik%20dengan%20sepatu%20' + encodeURIComponent('{{ $product->name }}') + '%20(SKU:%20{{ $product->sku }})'"
                            target="_blank"
-                           class="border-2 border-black text-black hover:bg-black hover:text-white px-6 py-4 text-xs uppercase tracking-widest font-semibold transition flex items-center justify-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-base"></i>
+                           class="border-2 border-black bg-white text-black hover:bg-black hover:text-white px-6 py-4 text-xs uppercase tracking-widest font-black rounded-lg shadow-sm hover:shadow-md active:translate-y-0.5 transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
                             <span class="hidden sm:inline">Pesan WA</span>
                         </a>
                     @endif
@@ -227,89 +319,4 @@
 
     </div>
 </div>
-
-<script>
-    function productDetailState(config) {
-        return {
-            basePrice: config.basePrice,
-            variantPrices: config.variantPrices,
-            ruleAdjustment: config.ruleAdjustment,
-            bonusMinQty: config.bonusMinQty,
-
-            selectedModelId: null,
-            selectedModelName: '',
-            selectedColorId: null,
-            selectedColorName: '',
-            selectedSizeId: null,
-            selectedSizeLabel: '',
-            selectedImage: '{{ $product->primary_image_url }}',
-            quantity: 1,
-
-            currentPrice: config.basePrice + config.ruleAdjustment,
-
-            selectModel(id, name) {
-                this.selectedModelId = id;
-                this.selectedModelName = name;
-                this.recalculatePrice();
-            },
-            selectColor(id, name) {
-                this.selectedColorId = id;
-                this.selectedColorName = name;
-            },
-            selectSize(id, label) {
-                this.selectedSizeId = id;
-                this.selectedSizeLabel = label;
-                this.recalculatePrice();
-            },
-            recalculatePrice() {
-                if (this.selectedModelId && this.selectedSizeId) {
-                    const match = this.variantPrices.find(vp => 
-                        vp.product_model_id === this.selectedModelId && 
-                        vp.product_size_id === this.selectedSizeId
-                    );
-                    if (match) {
-                        this.currentPrice = parseFloat(match.price) + this.ruleAdjustment;
-                        return;
-                    }
-                }
-                this.currentPrice = this.basePrice + this.ruleAdjustment;
-            },
-            get isReadyToBuy() {
-                return this.selectedModelId && this.selectedColorId && this.selectedSizeId && this.quantity > 0;
-            },
-            formatRupiah(num) {
-                return 'Rp ' + new Intl.NumberFormat('id-ID').format(num);
-            },
-            addToCart() {
-                if (!this.isReadyToBuy) return;
-
-                fetch('{{ route("cart.add") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify({
-                        product_id: {{ $product->id }},
-                        model_id: this.selectedModelId,
-                        color_id: this.selectedColorId,
-                        size_id: this.selectedSizeId,
-                        quantity: this.quantity
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        const drawer = Alpine.$data(document.querySelector('body'));
-                        drawer.items = data.cart_items;
-                        drawer.cartCount = data.cart_count;
-                        drawer.subtotal = data.subtotal;
-                        drawer.openDrawer();
-                    }
-                });
-            }
-        }
-    }
-</script>
 @endsection

@@ -14,8 +14,8 @@
             <i class="fa-solid fa-bag-shopping text-4xl text-gray-300 mb-4 block"></i>
             <h3 class="text-lg font-serif font-bold text-gray-900">Keranjang Anda masih kosong</h3>
             <p class="text-xs text-gray-500 mt-1">Silakan pilih sepatu branded favorit Anda di katalog PasarKita.</p>
-            <a href="{{ route('catalog') }}" class="inline-block mt-6 bg-black text-white px-8 py-3.5 text-xs uppercase tracking-widest font-semibold hover:bg-black transition">
-                Mulai Berbelanja
+            <a href="{{ route('catalog') }}" class="inline-block mt-6 bg-black border-2 border-black text-white px-8 py-3.5 text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] shadow-md hover:shadow-lg active:translate-y-0.5 transition cursor-pointer">
+                Mulai Berbelanja &rarr;
             </a>
         </div>
     @else
@@ -37,7 +37,7 @@
                             <div class="col-span-6 flex gap-4">
                                 <div class="w-16 h-20 bg-neutral-100 border border-gray-200 flex items-center justify-center shrink-0 overflow-hidden">
                                     @if(!empty($item['image']))
-                                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : asset('storage/' . $item['image']) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
+                                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : (str_starts_with($item['image'], 'images/') ? asset($item['image']) : asset('storage/' . $item['image'])) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
                                     @else
                                         <i class="fa-solid fa-shoe-prints text-gray-300"></i>
                                     @endif
@@ -115,7 +115,7 @@
                     </p>
 
                     <a href="{{ route('checkout.index') }}" 
-                       class="w-full block text-center py-4 bg-black text-white text-xs uppercase tracking-widest font-semibold hover:bg-black transition">
+                       class="w-full block text-center py-4 bg-black border-2 border-black text-white text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                         Lanjut ke Checkout &rarr;
                     </a>
                 </div>

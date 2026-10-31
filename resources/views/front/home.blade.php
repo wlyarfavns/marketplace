@@ -14,11 +14,11 @@
             </p>
             <div class="flex flex-wrap items-center gap-4 pt-4">
                 <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" 
-                   class="bg-black text-white text-xs uppercase tracking-widest font-bold px-8 py-4 hover:bg-gray-800 transition shadow-sm">
+                   class="bg-black text-white text-xs uppercase tracking-widest font-black px-8 py-4 border-2 border-black rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                     Jelajahi Ready Stock
                 </a>
                 <a href="{{ route('catalog') }}" 
-                   class="border-2 border-black text-black text-xs uppercase tracking-widest font-bold px-8 py-4 hover:bg-black hover:text-white transition">
+                   class="border-2 border-black bg-white text-black text-xs uppercase tracking-widest font-black px-8 py-4 rounded-lg hover:bg-black hover:text-white transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                     Semua Koleksi
                 </a>
             </div>
@@ -39,7 +39,7 @@
                     <h3 class="text-xl sm:text-2xl font-serif font-black text-gray-950">Nike Dunk Low Retro "Panda"</h3>
                     <p class="text-xs text-gray-500 leading-relaxed font-light">Siluet street-classic paling versatile dengan perpaduan warna kontras hitam dan putih ikonik.</p>
                     <div class="pt-3">
-                        <a href="{{ route('product.detail', 'nike-dunk-low-retro-panda') }}" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-black text-white text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-800 transition shadow-xs hover:shadow-md cursor-pointer">
+                        <a href="{{ route('product.detail', 'nike-dunk-low-retro-panda') }}" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 bg-black text-white text-xs uppercase tracking-widest font-black rounded-lg border-2 border-black hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                             <span>Lihat Detail Sepatu</span>
                             <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
@@ -110,7 +110,7 @@
                     </p>
                     @if($banner->url)
                         <div class="pt-1">
-                            <a href="{{ $banner->url }}" class="inline-block bg-black text-white text-xs uppercase tracking-widest font-bold px-7 py-3.5 hover:bg-neutral-800 transition shadow-xs">
+                            <a href="{{ $banner->url }}" class="inline-block bg-black text-white text-xs uppercase tracking-widest font-black px-7 py-3.5 rounded-lg border-2 border-black hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
                                 Klaim Penawaran &rarr;
                             </a>
                         </div>
@@ -211,7 +211,7 @@
                     <!-- CTA Detail -->
                     <div class="p-5 pt-0">
                         <a href="{{ route('product.detail', $prod->slug) }}" 
-                           class="w-full text-center block py-2.5 border-2 border-black text-xs uppercase tracking-wider font-bold text-black hover:bg-black hover:text-white transition">
+                           class="w-full text-center block py-3 bg-white border-2 border-black text-xs uppercase tracking-wider font-bold text-black hover:bg-black hover:text-white rounded-lg shadow-xs hover:shadow-md active:translate-y-0.5 transition cursor-pointer">
                             Pilih Ukuran & Beli
                         </a>
                     </div>
@@ -220,8 +220,8 @@
         </div>
 
         <div class="text-center mt-12">
-            <a href="{{ route('catalog') }}" class="inline-block border-2 border-black text-black px-10 py-4 text-xs uppercase tracking-widest font-black hover:bg-black hover:text-white transition">
-                Buka Seluruh Katalog Sepatu
+            <a href="{{ route('catalog') }}" class="inline-block bg-white border-2 border-black text-black px-10 py-4 text-xs uppercase tracking-widest font-black rounded-lg hover:bg-black hover:text-white shadow-md hover:shadow-lg active:translate-y-0.5 transition cursor-pointer">
+                Buka Seluruh Katalog Sepatu &rarr;
             </a>
         </div>
     </div>
