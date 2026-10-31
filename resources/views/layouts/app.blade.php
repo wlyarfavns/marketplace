@@ -266,10 +266,10 @@
                     </div>
                     <p class="text-[11px] text-gray-500">Ongkos kirim dan potongan kupon dihitung saat checkout.</p>
                     <div class="grid grid-cols-2 gap-3 pt-2">
-                        <a href="{{ route('cart.index') }}" class="text-center py-3 bg-white border-2 border-black rounded-lg text-xs font-black uppercase tracking-wider text-black hover:bg-black hover:text-white transition shadow-sm hover:shadow-md active:translate-y-0.5 cursor-pointer">
+                        <a href="{{ route('cart.index') }}" class="text-center py-3 bg-white border border-neutral-300 rounded-xl text-xs font-semibold uppercase tracking-wider text-neutral-800 hover:border-neutral-950 transition shadow-2xs active:scale-[0.98] cursor-pointer">
                             Lihat Keranjang
                         </a>
-                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-black border-2 border-black text-white text-xs font-black uppercase tracking-wider rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
+                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-[#0000FF] hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
                             Checkout
                         </a>
                     </div>
@@ -279,13 +279,13 @@
         </div>
     </div>
 
-    <!-- 6. Floating WhatsApp Button (Hitam & Putih) -->
+    <!-- 6. Floating WhatsApp Button -->
     @if(isset($floatingWa) && $floatingWa)
         <a href="https://wa.me/{{ $floatingWa->phone }}?text=Halo%20Admin%20PasarKita,%20saya%20ingin%20bertanya%20mengenai%20koleksi%20sepatu%20branded..." 
            target="_blank" 
-           class="fixed bottom-6 right-6 z-40 bg-black hover:bg-gray-800 text-white border-2 border-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 transition duration-200"
+           class="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white w-13 h-13 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition duration-200"
            title="Chat WhatsApp CS {{ $floatingWa->name }}">
-            <i class="fa-brands fa-whatsapp text-3xl"></i>
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
         </a>
     @endif
 

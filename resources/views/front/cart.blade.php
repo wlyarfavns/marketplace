@@ -14,7 +14,7 @@
             <i class="fa-solid fa-bag-shopping text-4xl text-neutral-300 mb-4 block"></i>
             <h3 class="text-lg font-bold text-neutral-900 tracking-tight">Keranjang Anda masih kosong</h3>
             <p class="text-xs text-neutral-500 mt-1">Silakan pilih sepatu branded favorit Anda di katalog PasarKita.</p>
-            <a href="{{ route('catalog') }}" class="inline-block mt-6 bg-neutral-950 text-white px-8 py-3.5 text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-[#0000FF] shadow-md hover:shadow-lg active:scale-[0.98] transition cursor-pointer">
+            <a href="{{ route('catalog') }}" class="inline-block mt-6 bg-[#0000FF] hover:bg-blue-700 text-white px-8 py-3.5 text-xs uppercase tracking-wider font-semibold rounded-xl shadow-xs hover:shadow-sm active:scale-[0.98] transition cursor-pointer">
                 Mulai Berbelanja &rarr;
             </a>
         </div>
@@ -115,7 +115,7 @@
                     </p>
 
                     <a href="{{ route('checkout.index') }}" 
-                       class="w-full block text-center py-3.5 bg-neutral-950 text-white text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-[#0000FF] transition-all shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer">
+                       class="w-full block text-center py-3.5 bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-wider font-bold rounded-xl transition-all shadow-xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
                         Lanjut ke Checkout &rarr;
                     </a>
                 </div>

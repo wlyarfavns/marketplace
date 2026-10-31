@@ -36,7 +36,7 @@
                 </label>
             </div>
 
-            <button type="submit" class="w-full py-3.5 bg-neutral-950 text-white text-xs uppercase tracking-widest font-bold rounded-xl hover:bg-[#0000FF] active:scale-[0.98] transition shadow-xs hover:shadow-md cursor-pointer">
+            <button type="submit" class="w-full py-3.5 bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-widest font-bold rounded-xl active:scale-[0.98] transition shadow-xs hover:shadow-md cursor-pointer">
                 Masuk ke Akun
             </button>
         </form>

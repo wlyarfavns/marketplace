@@ -29,19 +29,19 @@
                     <label class="text-xs uppercase font-bold text-neutral-900 tracking-wider">Tipe Produk</label>
                     <div class="space-y-2 text-xs">
                         <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="type" value="" {{ !request('type') ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-950 focus:ring-0">
+                            <input type="radio" name="type" value="" {{ !request('type') ? 'checked' : '' }} onchange="this.form.submit()" class="text-[#0000FF] focus:ring-0">
                             <span class="text-neutral-700">Semua Sepatu</span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="type" value="ready_stock" {{ request('type') === 'ready_stock' ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-950 focus:ring-0">
+                            <input type="radio" name="type" value="ready_stock" {{ request('type') === 'ready_stock' ? 'checked' : '' }} onchange="this.form.submit()" class="text-[#0000FF] focus:ring-0">
                             <span class="text-neutral-700">Ready Stock</span>
                         </label>
 
                         @if($userType !== 'umum')
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="type" value="po" {{ request('type') === 'po' ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-950 focus:ring-0">
+                                <input type="radio" name="type" value="po" {{ request('type') === 'po' ? 'checked' : '' }} onchange="this.form.submit()" class="text-[#0000FF] focus:ring-0">
                                 <span class="font-semibold text-neutral-900">Pre-Order (PO)</span>
-                                <span class="bg-neutral-950 text-[9px] font-bold px-1.5 py-0.2 rounded text-white">MEMBER</span>
+                                <span class="bg-blue-50 text-[#0000FF] border border-blue-200 text-[9px] font-bold px-1.5 py-0.2 rounded">MEMBER</span>
                             </label>
                         @else
                             <div class="pt-1 text-[11px] text-neutral-400 flex items-center gap-1.5">
@@ -89,11 +89,11 @@
                 </div>
 
                 <div class="pt-4 flex gap-2">
-                    <button type="submit" class="w-full bg-neutral-950 text-white text-xs uppercase tracking-widest py-3 font-bold rounded-xl hover:bg-[#0000FF] active:scale-[0.98] transition-all shadow-xs hover:shadow-md cursor-pointer">
+                    <button type="submit" class="w-full bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-widest py-3 font-semibold rounded-xl active:scale-[0.98] transition-all shadow-xs hover:shadow-sm cursor-pointer">
                         Terapkan Filter
                     </button>
                     @if(request()->anyFilled(['q', 'brand', 'category', 'type', 'sort']))
-                        <a href="{{ route('catalog') }}" class="px-4 py-3 border border-neutral-300 rounded-xl text-xs font-bold uppercase tracking-wider text-neutral-700 hover:text-black hover:border-black active:scale-[0.98] transition flex items-center justify-center cursor-pointer" title="Reset">
+                        <a href="{{ route('catalog') }}" class="px-4 py-3 border border-neutral-300 rounded-xl text-xs font-semibold uppercase tracking-wider text-neutral-700 hover:text-black hover:border-black active:scale-[0.98] transition flex items-center justify-center cursor-pointer" title="Reset">
                             Reset
                         </a>
                     @endif
@@ -115,12 +115,12 @@
                     <i class="fa-solid fa-shoe-prints text-3xl text-neutral-300 mb-3 block"></i>
                     <p class="text-sm font-semibold text-neutral-700">Tidak ada koleksi sepatu yang sesuai dengan filter.</p>
                     <p class="text-xs text-neutral-400 mt-1">Coba gunakan kata kunci lain atau reset filter pencarian Anda.</p>
-                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-bold uppercase tracking-wider px-6 py-2.5 bg-neutral-950 text-white rounded-xl hover:bg-[#0000FF] transition shadow-xs">Reset Filter</a>
+                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-semibold uppercase tracking-wider px-6 py-2.5 bg-neutral-50 hover:bg-[#0000FF] text-neutral-800 hover:text-white border border-neutral-300 rounded-xl transition shadow-2xs">Reset Filter</a>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
                     @foreach($products as $prod)
-                        <div class="group relative flex flex-col justify-between rounded-2xl border border-neutral-200/80 bg-white hover:border-neutral-950 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div class="group relative flex flex-col justify-between rounded-2xl border border-neutral-200/80 bg-white hover:border-neutral-350 hover:shadow-lg transition-all duration-300 overflow-hidden">
                             <div>
                                 <!-- Thumbnail Box (Pure White Seamless Studio) -->
                                 <div class="relative aspect-[4/3] bg-[#FAFAFA] p-4 sm:p-5 flex items-center justify-center overflow-hidden border-b border-neutral-100">
@@ -132,28 +132,28 @@
                                         <i class="fa-solid fa-shoe-prints text-neutral-300 text-4xl group-hover:scale-110 transition duration-300"></i>
                                     @endif
                                     
-                                    <!-- Badges -->
+                                    <!-- Badges Adem & Soft -->
                                     <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                                         @if($prod->product_type === 'ready_stock')
-                                            <span class="inline-flex items-center gap-1.5 bg-neutral-950/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md shadow-xs">
+                                            <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF]"></span>
                                                 Ready Stock
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md shadow-xs">
-                                                <i class="fa-solid fa-clock text-[9px] text-white"></i>
+                                            <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
+                                                <i class="fa-regular fa-clock text-[9px] text-neutral-400"></i>
                                                 Pre-Order
                                             </span>
                                         @endif
 
                                         @if($prod->visible_to_distributor && !$prod->visible_to_umum && !$prod->visible_to_member)
-                                            <span class="bg-neutral-900 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-2xs">
+                                            <span class="bg-neutral-100 text-neutral-700 text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-md border border-neutral-200">
                                                 Distributor
                                             </span>
                                         @endif
                                     </div>
 
-                                    <span class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs z-10">
+                                    <span class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-600 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs z-10">
                                         <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Ori
                                     </span>
 
@@ -198,12 +198,12 @@
                                 </div>
                             </div>
 
-                            <!-- CTA Detail Button -->
+                            <!-- CTA Detail Button (Adem, Soft, Tactile) -->
                             <div class="p-5 pt-0">
                                 <a href="{{ route('product.detail', $prod->slug) }}" 
-                                   class="group/btn w-full text-center py-2.5 sm:py-3 bg-neutral-950 text-white border border-neutral-950 rounded-xl hover:bg-[#0000FF] hover:border-[#0000FF] active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-md">
+                                   class="group/btn w-full text-center py-2.5 sm:py-3 bg-neutral-50 hover:bg-[#0000FF] text-neutral-700 hover:text-white border border-neutral-200/90 hover:border-[#0000FF] rounded-xl active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-xs font-semibold tracking-wide shadow-2xs hover:shadow-sm">
                                     <span>Pilih Ukuran & Beli</span>
-                                    <i class="fa-solid fa-arrow-right text-[10px] group-hover/btn:translate-x-0.5 transition-transform"></i>
+                                    <i class="fa-solid fa-arrow-right text-[10px] text-neutral-400 group-hover/btn:text-white group-hover/btn:translate-x-0.5 transition-all"></i>
                                 </a>
                             </div>
                         </div>

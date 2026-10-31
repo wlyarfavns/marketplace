@@ -130,19 +130,19 @@
                 
                 <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
                     @if($product->product_type === 'ready_stock')
-                        <span class="inline-flex items-center gap-1.5 bg-neutral-950/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-md shadow-xs">
+                        <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF]"></span>
                             Ready Stock
                         </span>
                     @else
-                        <span class="inline-flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-md shadow-xs">
-                            <i class="fa-solid fa-clock text-[9px] text-white"></i>
+                        <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
+                            <i class="fa-regular fa-clock text-[9px] text-neutral-400"></i>
                             Pre-Order (PO)
                         </span>
                     @endif
 
                     @if($product->brand)
-                        <span class="bg-white/95 backdrop-blur-xs text-neutral-900 text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
+                        <span class="bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase tracking-wider font-semibold px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
                             DP Min {{ number_format($product->brand->dp_percentage, 0) }}%
                         </span>
                     @endif
@@ -215,11 +215,11 @@
                         @foreach($product->models as $m)
                             <button type="button" 
                                     @click="selectModel({{ $m->id }}, '{{ $m->model_name }}')"
-                                    :class="selectedModelId === {{ $m->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold ring-2 ring-neutral-950 shadow-sm' : 'border-neutral-200 bg-white text-neutral-900 hover:border-neutral-950 font-medium shadow-2xs'"
+                                    :class="selectedModelId === {{ $m->id }} ? 'border-[#0000FF] bg-blue-50/70 text-[#0000FF] font-bold ring-2 ring-[#0000FF]/30 shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
                                     class="p-3.5 text-left border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98]">
                                 <p class="font-bold text-xs">{{ $m->model_name }}</p>
                                 @if($m->description)
-                                    <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-neutral-300' : 'text-neutral-500'">{{ $m->description }}</p>
+                                    <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-[#0000FF]/70' : 'text-neutral-500'">{{ $m->description }}</p>
                                 @endif
                             </button>
                         @endforeach
@@ -236,7 +236,7 @@
                         @foreach($product->colors as $c)
                             <button type="button" 
                                     @click="selectColor({{ $c->id }}, '{{ $c->color_name }}')"
-                                    :class="selectedColorId === {{ $c->id }} ? 'border-neutral-950 ring-2 ring-neutral-950 bg-neutral-950 text-white font-bold shadow-sm' : 'border-neutral-200 bg-white text-neutral-900 hover:border-neutral-950 font-medium shadow-2xs'"
+                                    :class="selectedColorId === {{ $c->id }} ? 'border-[#0000FF] ring-2 ring-[#0000FF]/30 bg-blue-50/70 text-[#0000FF] font-bold shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
                                     class="flex items-center gap-2 px-4 py-2.5 border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98]">
                                 <span class="w-3.5 h-3.5 rounded-full border border-neutral-300 shrink-0" style="background-color: {{ $c->hex_code }}"></span>
                                 <span>{{ $c->color_name }}</span>
@@ -255,7 +255,7 @@
                         @foreach($product->sizes as $s)
                             <button type="button" 
                                     @click="selectSize({{ $s->id }}, '{{ $s->size_label }}')"
-                                    :class="selectedSizeId === {{ $s->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold ring-2 ring-neutral-950 shadow-sm' : 'border-neutral-200 bg-white text-neutral-900 hover:border-neutral-950 font-semibold shadow-2xs'"
+                                    :class="selectedSizeId === {{ $s->id }} ? 'border-[#0000FF] bg-blue-50/70 text-[#0000FF] font-bold ring-2 ring-[#0000FF]/30 shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-semibold shadow-2xs'"
                                     class="min-w-16 px-4 py-2.5 text-center border rounded-xl text-xs uppercase transition duration-150 cursor-pointer active:scale-[0.98]">
                                 {{ $s->size_label }}
                             </button>
@@ -288,12 +288,12 @@
                     </div>
                 </div>
 
-                <!-- Tombol Aksi Utama -->
+                <!-- Tombol Aksi Utama (Adem & Lembut) -->
                 <div class="pt-2 flex flex-col sm:flex-row gap-3">
                     <button type="submit" 
                             :disabled="!isReadyToBuy"
-                            :class="isReadyToBuy ? 'bg-neutral-950 text-white hover:bg-[#0000FF] cursor-pointer shadow-md hover:shadow-lg active:scale-[0.98]' : 'bg-neutral-200 text-neutral-400 border-neutral-300 cursor-not-allowed shadow-none'"
-                            class="flex-1 py-4 text-xs uppercase tracking-widest font-black rounded-xl border border-transparent transition-all duration-200 text-center flex items-center justify-center gap-2">
+                            :class="isReadyToBuy ? 'bg-[#0000FF] hover:bg-blue-700 text-white cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98]' : 'bg-neutral-100 text-neutral-400 border border-neutral-200 cursor-not-allowed shadow-none'"
+                            class="flex-1 py-4 text-xs uppercase tracking-wider font-bold rounded-xl transition-all duration-200 text-center flex items-center justify-center gap-2">
                         <i class="fa-solid fa-bag-shopping"></i>
                         <span>Tambah ke Keranjang</span>
                     </button>
