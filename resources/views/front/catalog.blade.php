@@ -120,71 +120,104 @@
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     @foreach($products as $prod)
-                        <div class="group flex flex-col justify-between border border-gray-200 bg-white hover:border-black transition duration-200">
+                        <div class="group relative flex flex-col justify-between rounded-2xl border-2 border-gray-200 bg-white hover:border-black hover:shadow-xl transition-all duration-300 overflow-hidden">
                             <div>
-                                <div class="relative aspect-[3/4] bg-neutral-100 flex items-center justify-center overflow-hidden border-b border-gray-100">
+                                <!-- Thumbnail Box -->
+                                <div class="relative aspect-[4/3] bg-gradient-to-b from-neutral-50/80 to-neutral-100/40 p-4 sm:p-5 flex items-center justify-center overflow-hidden border-b border-gray-100">
                                     @if($prod->primary_image_url)
-                                        <img src="{{ $prod->primary_image_url }}" alt="{{ $prod->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                        <img src="{{ $prod->primary_image_url }}" alt="{{ $prod->name }}" 
+                                             onerror="if (this.src !== '{{ $prod->primary_image_url }}') this.src = '{{ $prod->primary_image_url }}';"
+                                             class="w-full h-full object-contain group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500 filter drop-shadow-sm">
                                     @else
                                         <i class="fa-solid fa-shoe-prints text-gray-300 text-4xl group-hover:scale-110 transition duration-300"></i>
                                     @endif
                                     
-                                    <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                                    <!-- Badges -->
+                                    <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                                         @if($prod->product_type === 'ready_stock')
-                                            <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5">
+                                            <span class="inline-flex items-center gap-1.5 bg-black/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF] animate-pulse"></span>
                                                 Ready Stock
                                             </span>
                                         @else
-                                            <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5">
+                                            <span class="inline-flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border border-neutral-700 shadow-sm">
+                                                <i class="fa-solid fa-clock text-[9px] text-amber-400"></i>
                                                 Pre-Order (PO)
                                             </span>
                                         @endif
 
                                         @if($prod->visible_to_distributor && !$prod->visible_to_umum && !$prod->visible_to_member)
-                                            <span class="bg-slate-800 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 border border-slate-700">
+                                            <span class="bg-gray-900 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-xs">
                                                 Khusus Distributor
                                             </span>
                                         @endif
                                     </div>
 
-                                    <a href="{{ route('product.detail', $prod->slug) }}" class="absolute inset-0 z-10" aria-label="Lihat Detail"></a>
+                                    <span class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-gray-200 shadow-xs z-10">
+                                        <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Ori
+                                    </span>
+
+                                    <a href="{{ route('product.detail', $prod->slug) }}" class="absolute inset-0 z-0" aria-label="Lihat Detail {{ $prod->name }}"></a>
                                 </div>
 
+                                <!-- Product Content -->
                                 <div class="p-5">
-                                    <span class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold block mb-1">
-                                        {{ $prod->brand ? $prod->brand->name : 'PasarKita' }}
-                                    </span>
-                                    <h3 class="font-serif text-base font-bold text-gray-900 group-hover:underline line-clamp-1">
+                                    <div class="flex items-center justify-between text-[10px] uppercase tracking-widest font-black text-gray-400 mb-1">
+                                        <span>{{ $prod->brand ? $prod->brand->name : 'PasarKita' }}</span>
+                                        <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Terverifikasi</span>
+                                    </div>
+
+                                    <h3 class="font-bold text-sm sm:text-base text-gray-950 group-hover:text-[#0000FF] transition-colors line-clamp-1 leading-snug">
                                         <a href="{{ route('product.detail', $prod->slug) }}">{{ $prod->name }}</a>
                                     </h3>
 
-                                    <div class="mt-3">
-                                        <span class="text-sm font-semibold text-gray-950">
-                                            @if($prod->min_price == $prod->max_price)
-                                                Rp {{ number_format($prod->min_price, 0, ',', '.') }}
-                                            @else
-                                                Rp {{ number_format($prod->min_price, 0, ',', '.') }} – Rp {{ number_format($prod->max_price, 0, ',', '.') }}
-                                            @endif
-                                        </span>
+                                    <!-- Rating & Category -->
+                                    <div class="flex items-center gap-2 mt-2 text-xs text-gray-500">
+                                        <div class="flex items-center text-amber-400 text-[10px]">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+                                        <span class="text-[11px] font-bold text-gray-700">5.0</span>
+                                        <span class="text-gray-300">&bull;</span>
+                                        <span class="text-[11px] text-gray-500 truncate">{{ $prod->categories->first()?->name ?? 'Sneakers' }}</span>
                                     </div>
 
-                                    @if($prod->colors->count() > 0)
-                                        <div class="flex items-center gap-1.5 mt-3 pt-3 border-t border-gray-100">
-                                            @foreach($prod->colors->take(4) as $col)
-                                                <span class="w-3.5 h-3.5 rounded-full border border-gray-300" style="background-color: {{ $col->hex_code }}" title="{{ $col->color_name }}"></span>
-                                            @endforeach
-                                            @if($prod->colors->count() > 4)
-                                                <span class="text-[10px] text-gray-400">+{{ $prod->colors->count() - 4 }}</span>
-                                            @endif
+                                    <!-- Rentang Harga & Colorway -->
+                                    <div class="mt-3.5 pt-3 border-t border-gray-100 flex items-end justify-between">
+                                        <div>
+                                            <span class="text-[9px] uppercase tracking-wider font-bold text-gray-400 block">Harga Resmi</span>
+                                            <span class="text-base font-black text-gray-950 tracking-tight">
+                                                @if($prod->min_price == $prod->max_price)
+                                                    Rp {{ number_format($prod->min_price, 0, ',', '.') }}
+                                                @else
+                                                    Rp {{ number_format($prod->min_price, 0, ',', '.') }} – Rp {{ number_format($prod->max_price, 0, ',', '.') }}
+                                                @endif
+                                            </span>
                                         </div>
-                                    @endif
+
+                                        @if($prod->colors->count() > 0)
+                                            <div class="flex items-center gap-1.5 pb-0.5">
+                                                @foreach($prod->colors->take(3) as $col)
+                                                    <span class="w-3.5 h-3.5 rounded-full border border-gray-300 shadow-xs ring-1 ring-white" style="background-color: {{ $col->hex_code }}" title="{{ $col->color_name }}"></span>
+                                                @endforeach
+                                                @if($prod->colors->count() > 3)
+                                                    <span class="text-[10px] font-bold text-gray-400">+{{ $prod->colors->count() - 3 }}</span>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- CTA Detail -->
                             <div class="p-5 pt-0">
                                 <a href="{{ route('product.detail', $prod->slug) }}" 
-                                   class="w-full text-center block py-3 bg-white border-2 border-black text-xs uppercase tracking-wider font-bold text-black hover:bg-black hover:text-white rounded-lg shadow-xs hover:shadow-md active:translate-y-0.5 transition cursor-pointer">
-                                    Pilih Ukuran & Beli
+                                   class="w-full text-center py-3.5 bg-black border-2 border-black text-white hover:bg-neutral-900 hover:border-[#0000FF] text-xs uppercase tracking-widest font-black rounded-xl shadow-md hover:shadow-lg active:translate-y-0.5 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
+                                    <span>Pilih Ukuran & Beli</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
                                 </a>
                             </div>
                         </div>

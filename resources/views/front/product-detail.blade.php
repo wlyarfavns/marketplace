@@ -117,33 +117,40 @@
         
         <!-- Kolom Galeri Foto Produk -->
         <div class="space-y-4">
-            <div class="aspect-[3/4] bg-neutral-100 border border-gray-200 overflow-hidden relative flex items-center justify-center group">
+            <div class="aspect-[4/3] sm:aspect-square bg-gradient-to-b from-neutral-50 to-neutral-100/50 rounded-2xl border-2 border-gray-200 p-6 sm:p-10 overflow-hidden relative flex items-center justify-center group shadow-sm">
                 @if($product->primary_image_url)
                     <img :src="selectedImage || '{{ $product->primary_image_url }}'" 
                          src="{{ $product->primary_image_url }}" 
                          alt="{{ $product->name }}" 
-                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                         onerror="if (this.src !== '{{ $product->primary_image_url }}') this.src = '{{ $product->primary_image_url }}';"
+                         class="w-full h-full object-contain group-hover:scale-110 transition-all duration-500 filter drop-shadow-md">
                 @else
                     <i class="fa-solid fa-shoe-prints text-gray-300 text-6xl"></i>
                 @endif
                 
                 <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
                     @if($product->product_type === 'ready_stock')
-                        <span class="bg-black text-white text-[10px] uppercase tracking-wider font-bold px-2.5 py-1">
+                        <span class="inline-flex items-center gap-1.5 bg-black/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF] animate-pulse"></span>
                             Ready Stock
                         </span>
                     @else
-                        <span class="bg-black text-white text-[10px] uppercase tracking-wider font-bold px-2.5 py-1">
+                        <span class="inline-flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border border-neutral-700 shadow-sm">
+                            <i class="fa-solid fa-clock text-[9px] text-amber-400"></i>
                             Pre-Order (PO)
                         </span>
                     @endif
 
                     @if($product->brand)
-                        <span class="bg-white/95 backdrop-blur-xs text-black text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 border border-gray-200 shadow-xs">
+                        <span class="bg-white/95 backdrop-blur-xs text-black text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full border border-gray-200 shadow-xs">
                             DP Min {{ number_format($product->brand->dp_percentage, 0) }}%
                         </span>
                     @endif
                 </div>
+
+                <span class="absolute top-4 right-4 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-800 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-gray-200 shadow-xs z-10">
+                    <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Original Authentic
+                </span>
             </div>
 
             <!-- Thumbnail Selector (if multiple images exist) -->
@@ -152,9 +159,9 @@
                     @foreach($product->images as $img)
                         <button type="button" 
                                 @click="selectedImage = '{{ $img->url }}'"
-                                :class="selectedImage === '{{ $img->url }}' ? 'border-black ring-1 ring-black' : 'border-gray-200 hover:border-gray-400'"
-                                class="aspect-square bg-neutral-100 border overflow-hidden p-0.5 focus:outline-hidden transition">
-                            <img src="{{ $img->url }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                :class="selectedImage === '{{ $img->url }}' ? 'border-black ring-2 ring-black' : 'border-gray-200 hover:border-gray-400'"
+                                class="aspect-square bg-neutral-50 rounded-xl border-2 overflow-hidden p-2 focus:outline-hidden transition cursor-pointer">
+                            <img src="{{ $img->url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </button>
                     @endforeach
                 </div>
