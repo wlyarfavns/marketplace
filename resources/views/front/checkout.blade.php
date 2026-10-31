@@ -27,66 +27,66 @@
                 
                 <!-- Status User / Guest Notification -->
                 @guest
-                    <div class="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 text-xs flex justify-between items-center shadow-2xs">
+                    <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-xs flex justify-between items-center shadow-2xs">
                         <div>
-                            <span class="font-bold text-gray-900 uppercase">Checkout Cepat (Tamu / Guest)</span>
-                            <p class="text-gray-500 mt-0.5">Anda dapat berbelanja langsung tanpa akun. Sudah punya akun terdaftar?</p>
+                            <span class="font-bold text-gray-900 uppercase">Checkout Cepat (Guest)</span>
+                            <p class="text-gray-500 mt-0.5">Anda dapat berbelanja langsung. Punya akun terdaftar?</p>
                         </div>
-                        <a href="{{ route('login') }}" class="font-bold underline uppercase tracking-wider text-black hover:text-gray-700">Masuk Akun</a>
+                        <a href="{{ route('login') }}" class="px-4 py-2 bg-white border-2 border-black rounded-lg font-bold uppercase tracking-wider text-black hover:bg-black hover:text-white transition shadow-2xs cursor-pointer">Masuk</a>
                     </div>
                 @endguest
 
                 <!-- 1. Atribusi ID Seller Mitra (Opsional dengan Tombol Cek ID) -->
-                <div class="border-2 border-gray-200 rounded-lg p-6 bg-white space-y-3 shadow-2xs">
+                <div class="border-2 border-gray-200 rounded-xl p-6 bg-white shadow-xs space-y-3">
                     <label class="block text-xs uppercase font-bold text-gray-900 tracking-wider">
                         Kode Mitra Seller / Reseller (Opsional)
                     </label>
                     <p class="text-[11px] text-gray-500">
-                        Masukkan kode ID Seller langganan Anda untuk menghubungkan pesanan ke mitra resmi terkait.
+                        Masukkan kode ID Seller langganan Anda untuk menghubungkan pesanan ke mitra terkait.
                     </p>
                     <div class="flex gap-2">
                         <input type="text" name="seller_code" x-model="sellerCode" placeholder="Contoh: MITRA-001" 
-                            class="flex-1 text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black uppercase font-medium">
-                        <button type="button" @click="checkSeller()" class="border-2 border-black bg-white hover:bg-black hover:text-white text-black text-xs px-5 py-2.5 font-bold uppercase tracking-wider transition shadow-2xs rounded active:translate-y-0.5 cursor-pointer">
+                            class="flex-1 text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black uppercase transition">
+                        <button type="button" @click="checkSeller()" class="bg-black hover:bg-neutral-800 text-white text-xs px-5 py-2.5 font-bold uppercase tracking-wider rounded-lg transition shadow-xs cursor-pointer">
                             Cek ID
                         </button>
                     </div>
                     <template x-if="sellerMessage">
-                        <p class="text-xs font-bold" :class="isSellerValid ? 'text-green-700' : 'text-red-600'" x-text="sellerMessage"></p>
+                        <p class="text-xs font-semibold" :class="isSellerValid ? 'text-black' : 'text-red-500'" x-text="sellerMessage"></p>
                     </template>
                 </div>
 
                 <!-- 2. Data Penerima & Pengiriman -->
-                <div class="border-2 border-gray-200 rounded-lg p-6 bg-white space-y-6 shadow-2xs">
+                <div class="border-2 border-gray-200 rounded-xl p-6 bg-white shadow-xs space-y-6">
                     <h3 class="text-sm font-serif font-bold uppercase tracking-wider text-gray-950 border-b border-gray-100 pb-3">
                         Detail Penerima & Alamat Pengiriman
                     </h3>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Nama Depan *</label>
+                            <label class="text-xs font-semibold text-gray-700">Nama Depan *</label>
                             <input type="text" name="recipient_first_name" required value="{{ old('recipient_first_name', $user ? explode(' ', $user->name)[0] : '') }}"
-                                class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Nama Belakang</label>
+                            <label class="text-xs font-semibold text-gray-700">Nama Belakang</label>
                             <input type="text" name="recipient_last_name" value="{{ old('recipient_last_name') }}"
-                                class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Nomor WhatsApp Aktif *</label>
+                            <label class="text-xs font-semibold text-gray-700">Nomor WhatsApp Aktif *</label>
                             <input type="text" name="whatsapp" required placeholder="08xxxxxxxxxx" value="{{ old('whatsapp', $user ? $user->phone : '') }}"
-                                class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
-                            <p class="text-[10px] text-gray-400">Untuk konfirmasi nota & pelacakan resi ekspedisi.</p>
+                                class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
+                            <p class="text-[10px] text-gray-400">Untuk konfirmasi & pelacakan status pesanan.</p>
                         </div>
 
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Pilihan Ekspedisi *</label>
-                            <select name="courier_name" required x-model="selectedCourier" class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded bg-white focus:outline-hidden focus:border-black font-medium cursor-pointer">
-                                <option value="JNE">JNE Express (Reguler / YES)</option>
+                            <label class="text-xs font-semibold text-gray-700">Pilihan Ekspedisi *</label>
+                            <select name="courier_name" required x-model="selectedCourier" class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 bg-white focus:outline-none focus:border-black cursor-pointer transition">
+                                <option value="JNE">JNE Express</option>
                                 <option value="SiCepat">SiCepat Cargo / Reguler</option>
                                 <option value="J&T">J&T Express</option>
                                 <option value="POS">POS Indonesia</option>
@@ -96,63 +96,63 @@
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-xs font-bold text-gray-700">Alamat Pengiriman Lengkap *</label>
+                        <label class="text-xs font-semibold text-gray-700">Alamat Lengkap *</label>
                         <textarea name="address" rows="3" required placeholder="Nama jalan, nomor rumah, RT/RW, kelurahan, kecamatan..."
-                            class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">{{ old('address', $user ? $user->address : '') }}</textarea>
+                            class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">{{ old('address', $user ? $user->address : '') }}</textarea>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Kota / Kabupaten *</label>
+                            <label class="text-xs font-semibold text-gray-700">Kota / Kabupaten *</label>
                             <input type="text" name="city" required value="{{ old('city', $user ? $user->city : '') }}"
-                                class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Provinsi *</label>
+                            <label class="text-xs font-semibold text-gray-700">Provinsi *</label>
                             <input type="text" name="province" required value="{{ old('province', $user ? $user->province : '') }}"
-                                class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
                         </div>
                         <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-700">Kode Pos *</label>
+                            <label class="text-xs font-semibold text-gray-700">Kode Pos *</label>
                             <input type="text" name="postal_code" required value="{{ old('postal_code', $user ? $user->postal_code : '') }}"
-                                class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
                         </div>
                     </div>
 
                     <!-- Kirim ke Alamat Berbeda Toggle -->
                     <div class="pt-4 border-t border-gray-100">
-                        <label class="flex items-center gap-2 cursor-pointer text-xs select-none">
+                        <label class="flex items-center gap-2 cursor-pointer text-xs">
                             <input type="checkbox" name="different_shipping" value="1" x-model="differentShipping" class="text-black focus:ring-0">
-                            <span class="font-bold text-gray-800">Kirim ke alamat yang berbeda (Dropship / Hadiah)</span>
+                            <span class="font-medium text-gray-800">Kirim ke alamat yang berbeda (Dropship / Hadiah)</span>
                         </label>
 
                         <div x-show="differentShipping" x-cloak class="mt-4 pt-4 border-t border-gray-100 space-y-4">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-700">Nama Penerima Tujuan</label>
-                                    <input type="text" name="shipping_first_name" class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                    <label class="text-xs font-semibold text-gray-700">Nama Penerima Tujuan</label>
+                                    <input type="text" name="shipping_first_name" class="w-full text-xs px-3 py-2.5 border border-gray-300 focus:outline-none focus:border-black">
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-bold text-gray-700">Kota Tujuan</label>
-                                    <input type="text" name="shipping_city" class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                                    <label class="text-xs font-semibold text-gray-700">Kota Tujuan</label>
+                                    <input type="text" name="shipping_city" class="w-full text-xs px-3 py-2.5 border border-gray-300 focus:outline-none focus:border-black">
                                 </div>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-700">Alamat Tujuan Lengkap</label>
-                                <textarea name="shipping_address" rows="2" class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black"></textarea>
+                                <label class="text-xs font-semibold text-gray-700">Alamat Tujuan Lengkap</label>
+                                <textarea name="shipping_address" rows="2" class="w-full text-xs px-3 py-2.5 border border-gray-300 focus:outline-none focus:border-black"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div class="space-y-1 pt-2">
-                        <label class="text-xs font-bold text-gray-700">Catatan Khusus Pesanan</label>
-                        <input type="text" name="customer_notes" placeholder="Contoh: Packing double bubble wrap ekstra aman..."
-                            class="w-full text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black">
+                        <label class="text-xs font-semibold text-gray-700">Catatan Khusus Pesanan</label>
+                        <input type="text" name="customer_notes" placeholder="Contoh: Titip di pos satpam jika tidak ada orang..."
+                            class="w-full text-xs px-3 py-2.5 border border-gray-300 focus:outline-none focus:border-black">
                     </div>
                 </div>
 
                 <!-- 3. Skema Pilihan Pembayaran (DP vs Full Payment) -->
-                <div class="border-2 border-gray-200 rounded-lg p-6 bg-white space-y-4 shadow-2xs">
+                <div class="border-2 border-gray-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
                     <h3 class="text-sm font-serif font-bold uppercase tracking-wider text-gray-950 border-b border-gray-100 pb-3">
                         Pilihan Metode Pembayaran
                     </h3>
@@ -160,40 +160,40 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         
                         <!-- Pilihan Bayar Penuh 100% -->
-                        <label class="p-5 border-2 rounded-lg cursor-pointer transition-all flex flex-col justify-between shadow-2xs"
-                               :class="paymentMethod === 'full' ? 'border-black bg-gray-50 ring-2 ring-black' : 'border-gray-200 hover:border-gray-400 bg-white'">
+                        <label class="p-4 border-2 rounded-xl cursor-pointer transition flex flex-col justify-between shadow-2xs"
+                               :class="paymentMethod === 'full' ? 'border-black bg-gray-50 ring-2 ring-black font-semibold' : 'border-gray-200 hover:border-gray-400 bg-white'">
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-xs font-black uppercase tracking-wider text-gray-900">Pembayaran Penuh</span>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-gray-900">Pembayaran Penuh</span>
                                     <input type="radio" name="payment_method_type" value="full" x-model="paymentMethod" @change="recalculateTotals()" class="text-black focus:ring-0">
                                 </div>
                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed">
-                                    Lunasi 100% total transaksi belanja sekarang. Pesanan langsung diproses tanpa sisa tagihan.
+                                    Lunasi 100% total belanja sekarang. Pesanan langsung diproses tanpa tanggungan sisa tagihan.
                                 </p>
                             </div>
                             <div class="pt-4 border-t border-gray-200 mt-4">
-                                <span class="text-xs font-bold text-gray-900">Bayar: 100% Penuh</span>
+                                <span class="text-xs font-bold text-gray-900">Bayar: 100%</span>
                             </div>
                         </label>
 
                         <!-- Pilihan Down Payment (DP) -->
-                        <label class="p-5 border-2 rounded-lg cursor-pointer transition-all flex flex-col justify-between shadow-2xs"
-                               :class="paymentMethod === 'dp' ? 'border-black bg-gray-50 ring-2 ring-black' : 'border-gray-200 hover:border-gray-400 bg-white'">
+                        <label class="p-4 border-2 rounded-xl cursor-pointer transition flex flex-col justify-between shadow-2xs"
+                               :class="paymentMethod === 'dp' ? 'border-black bg-gray-50 ring-2 ring-black font-semibold' : 'border-gray-200 hover:border-gray-400 bg-white'">
                             <div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-xs font-black uppercase tracking-wider text-gray-900">Uang Muka (DP)</span>
-                                        <span class="bg-black text-white text-[9px] font-bold px-1.5 py-0.5 rounded" x-text="maxDpPercent + '%'"></span>
+                                        <span class="text-xs font-bold uppercase tracking-wider text-gray-900">Uang Muka (DP)</span>
+                                        <span class="bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded" x-text="maxDpPercent + '%'"></span>
                                     </div>
                                     <input type="radio" name="payment_method_type" value="dp" x-model="paymentMethod" @change="recalculateTotals()" class="text-black focus:ring-0">
                                 </div>
                                 <p class="text-[11px] text-gray-500 mt-2 leading-relaxed">
-                                    Bayar DP sesuai persentase brand (<span x-text="maxDpPercent + '%'"></span>). Sisa tagihan dibayar sebelum pengiriman.
+                                    Bayar DP sesuai persentase brand (<span x-text="maxDpPercent + '%'"></span>). Sisa tagihan dibayarkan sebelum barang dikirim.
                                 </p>
                             </div>
                             <div class="pt-4 border-t border-gray-200 mt-4 flex justify-between text-xs font-bold">
                                 <span>DP Sekarang:</span>
-                                <span class="text-gray-950 font-black" x-text="formatRupiah(dpAmount)"></span>
+                                <span class="text-gray-900" x-text="formatRupiah(dpAmount)"></span>
                             </div>
                         </label>
 
@@ -205,19 +205,19 @@
             <!-- Kolom Kanan: Ringkasan Belanja, Kupon, & Tombol Buat Pesanan (5 Cols) -->
             <div class="lg:col-span-5 space-y-6">
                 
-                <div class="border-2 border-gray-200 rounded-lg p-6 bg-gray-50 space-y-6 shadow-2xs">
+                <div class="border-2 border-gray-200 rounded-xl p-6 bg-white shadow-xs space-y-6">
                     <h3 class="text-sm font-serif font-bold uppercase tracking-wider text-gray-950 border-b border-gray-200 pb-3">
-                        Ringkasan Belanja ({{ $totalQuantity }} pasang)
+                        Ringkasan Belanja ({{ $totalQuantity }} item)
                     </h3>
 
                     <!-- Daftar Item Ringkas -->
                     <div class="space-y-3 max-h-60 overflow-y-auto divide-y divide-gray-100 pr-1">
                         @foreach($cart as $item)
-                            <div class="pt-2 first:pt-0 flex items-center justify-between gap-3 text-xs">
+                            <div class="pt-2.5 first:pt-0 flex items-center justify-between gap-3 text-xs">
                                 <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="w-10 h-12 bg-neutral-100 border border-gray-200 rounded shrink-0 overflow-hidden flex items-center justify-center">
+                                    <div class="w-10 h-12 bg-gray-50 border border-gray-200 rounded-md shrink-0 overflow-hidden flex items-center justify-center p-0.5">
                                         @if(!empty($item['image']))
-                                            <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : (str_starts_with($item['image'], 'images/') ? asset($item['image']) : asset('storage/' . $item['image'])) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
+                                            <img src="{{ $item['image'] }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-contain">
                                         @else
                                             <i class="fa-solid fa-shoe-prints text-[10px] text-gray-400"></i>
                                         @endif
@@ -239,22 +239,22 @@
                         <label class="text-xs font-bold uppercase tracking-wider text-gray-900">Kode Kupon Diskon</label>
                         <div class="flex gap-2">
                             <input type="text" name="coupon_code" x-model="couponCode" placeholder="Masukkan kode kupon" 
-                                class="flex-1 text-xs px-3.5 py-2.5 border-2 border-gray-300 rounded focus:outline-hidden focus:border-black uppercase font-medium">
-                            <button type="button" @click="checkCoupon()" class="border-2 border-black bg-white hover:bg-black hover:text-white text-black text-xs px-4 py-2.5 font-bold uppercase tracking-wider transition shadow-2xs rounded active:translate-y-0.5 cursor-pointer">
+                                class="flex-1 text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black uppercase transition">
+                            <button type="button" @click="checkCoupon()" class="bg-black hover:bg-neutral-800 text-white text-xs px-5 py-2.5 font-bold uppercase tracking-wider rounded-lg transition shadow-xs cursor-pointer">
                                 Pakai
                             </button>
                         </div>
                         <template x-if="couponMessage">
-                            <p class="text-xs font-bold" :class="isCouponValid ? 'text-green-700' : 'text-red-600'" x-text="couponMessage"></p>
+                            <p class="text-xs font-semibold" :class="isCouponValid ? 'text-black' : 'text-red-500'" x-text="couponMessage"></p>
                         </template>
 
                         <!-- Kupon promo yang tersedia -->
                         @if($availableCoupons->count() > 0)
                             <div class="pt-2">
-                                <p class="text-[10px] text-gray-500 font-bold uppercase mb-1.5">Kupon Promo Tersedia:</p>
-                                <div class="flex flex-wrap gap-2">
+                                <p class="text-[10px] text-gray-400 font-bold uppercase mb-1">Kupon Tersedia:</p>
+                                <div class="flex flex-wrap gap-1.5">
                                     @foreach($availableCoupons as $ac)
-                                        <button type="button" @click="couponCode = '{{ $ac->code }}'; checkCoupon()" class="text-[11px] font-mono font-bold border-2 border-gray-300 bg-white px-3 py-1 text-gray-800 hover:border-black hover:text-black rounded shadow-2xs cursor-pointer active:translate-y-0.5">
+                                        <button type="button" @click="couponCode = '{{ $ac->code }}'; checkCoupon()" class="text-[10px] font-bold border-2 border-gray-300 bg-white px-2.5 py-1 text-gray-800 hover:border-black rounded transition shadow-2xs cursor-pointer">
                                             {{ $ac->code }}
                                         </button>
                                     @endforeach
@@ -267,7 +267,7 @@
                     <div class="pt-4 border-t border-gray-200 space-y-2.5 text-xs">
                         <div class="flex justify-between text-gray-600">
                             <span>Subtotal Produk</span>
-                            <span class="font-bold text-gray-900" x-text="formatRupiah(subtotal)"></span>
+                            <span class="font-semibold text-gray-900" x-text="formatRupiah(subtotal)"></span>
                         </div>
                         <div class="flex justify-between text-gray-600" x-show="discountAmount > 0">
                             <span>Potongan Kupon</span>
@@ -275,22 +275,22 @@
                         </div>
                         <div class="flex justify-between text-gray-600">
                             <span>Ongkos Kirim (Ekspedisi)</span>
-                            <span class="font-bold text-green-700">Rp 0 (Promo Gratis Ongkir)</span>
+                            <span class="font-semibold text-gray-900">Rp 0 (Promo Gratis)</span>
                         </div>
                         <div class="flex justify-between text-gray-900 pt-3 border-t border-gray-200 text-sm font-bold">
                             <span>Grand Total</span>
-                            <span class="text-base font-black text-gray-950" x-text="formatRupiah(grandTotal)"></span>
+                            <span x-text="formatRupiah(grandTotal)"></span>
                         </div>
 
                         <!-- Skema DP jika dipilih -->
-                        <div x-show="paymentMethod === 'dp'" x-cloak class="mt-3 p-3.5 bg-white border-2 border-gray-300 rounded-lg space-y-2 text-xs shadow-2xs">
-                            <div class="flex justify-between font-black text-gray-950">
+                        <div x-show="paymentMethod === 'dp'" x-cloak class="mt-3 p-3.5 bg-gray-50 border-2 border-gray-300 rounded-lg space-y-1.5 text-xs">
+                            <div class="flex justify-between font-bold text-gray-900">
                                 <span>Tagihan DP (Dibayar Sekarang):</span>
-                                <span class="text-base font-black text-black" x-text="formatRupiah(dpAmount)"></span>
+                                <span class="text-black font-black" x-text="formatRupiah(dpAmount)"></span>
                             </div>
-                            <div class="flex justify-between text-[11px] text-gray-600 font-medium">
-                                <span>Sisa Pelunasan Nanti:</span>
-                                <span class="font-bold text-gray-900" x-text="formatRupiah(remainingAmount)"></span>
+                            <div class="flex justify-between text-[11px] text-gray-500">
+                                <span>Sisa Pelunasan:</span>
+                                <span x-text="formatRupiah(remainingAmount)"></span>
                             </div>
                         </div>
                     </div>
@@ -298,14 +298,14 @@
                     <!-- Rekening Tujuan Transfer Bank -->
                     <div class="pt-4 border-t border-gray-200 space-y-2">
                         <p class="text-[11px] font-bold uppercase tracking-wider text-gray-900">Transfer Bank Resmi PasarKita:</p>
-                        <div class="space-y-2 text-xs text-gray-600">
+                        <div class="space-y-1.5 text-xs text-gray-600">
                             @foreach($banks as $b)
-                                <div class="bg-white p-3 border-2 border-gray-200 rounded-lg flex justify-between items-center shadow-2xs">
+                                <div class="bg-gray-50 p-2.5 border-2 border-gray-200 rounded-lg flex justify-between items-center shadow-2xs">
                                     <div>
                                         <p class="font-bold text-gray-900">{{ $b->bank_name }}</p>
-                                        <p class="font-mono text-xs font-bold text-gray-950">{{ $b->account_number }}</p>
+                                        <p class="font-mono text-xs">{{ $b->account_number }}</p>
                                     </div>
-                                    <span class="text-[10px] text-gray-500 font-medium">{{ $b->account_holder_name }}</span>
+                                    <span class="text-[10px] text-gray-400">{{ $b->account_holder_name }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -313,13 +313,12 @@
 
                     <!-- Submit Button -->
                     <button type="submit" 
-                            class="w-full py-4 border-2 border-black bg-black text-white text-xs uppercase tracking-widest font-black hover:bg-neutral-800 transition shadow-md rounded-lg active:translate-y-0.5 cursor-pointer flex items-center justify-center gap-2">
-                        <span>Buat Pesanan Sekarang</span>
-                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                            class="w-full py-4 bg-black text-white text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-800 transition shadow-md hover:shadow-lg cursor-pointer">
+                        Buat Pesanan Sekarang &rarr;
                     </button>
 
                     <p class="text-[10px] text-gray-400 text-center leading-relaxed">
-                        Dengan menekan tombol, Anda menyetujui syarat & ketentuan transaksi aman PasarKita.
+                        Dengan menekan tombol, Anda menyetujui syarat & ketentuan transaksi PasarKita.
                     </p>
                 </div>
 
@@ -428,3 +427,4 @@
     }
 </script>
 @endsection
+

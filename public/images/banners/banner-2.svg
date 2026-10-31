@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" width="1600" height="500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="70%" stop-color="#F4F6F8"/>
+      <stop offset="100%" stop-color="#E5E9EC"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="500" fill="url(#bgGrad)"/>
+  
+  <!-- Sneaker Silhouette Graphic on the Right -->
+  <g transform="translate(950, 100) scale(1.1)">
+    <ellipse cx="250" cy="270" rx="240" ry="20" fill="#000000" opacity="0.12" />
+    <path d="M 50,230 C 80,248 430,248 495,218 C 508,210 500,192 475,192 L 65,196 C 40,196 35,215 50,230 Z" fill="#111111"/>
+    <rect x="55" y="192" width="430" height="22" rx="3" fill="#FFFFFF" stroke="#CCCCCC"/>
+    <path d="M 90,192 C 95,135 130,80 185,65 C 210,60 245,70 270,100 L 360,145 C 410,165 455,175 485,192 Z" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+    <path d="M 170,150 C 240,175 350,170 410,110 C 360,145 270,165 210,155 Z" fill="#000000"/>
+    <circle cx="160" cy="80" r="14" fill="#000000"/>
+  </g>
+  
+  <!-- Subtle Grid Pattern Accent -->
+  <g stroke="#000000" stroke-width="0.5" opacity="0.05">
+    <line x1="800" y1="0" x2="800" y2="500"/>
+    <line x1="900" y1="0" x2="900" y2="500"/>
+    <line x1="1000" y1="0" x2="1000" y2="500"/>
+    <line x1="1100" y1="0" x2="1100" y2="500"/>
+    <line x1="1200" y1="0" x2="1200" y2="500"/>
+    <line x1="1300" y1="0" x2="1300" y2="500"/>
+  </g>
+</svg>

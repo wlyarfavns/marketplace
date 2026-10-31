@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F9FAFB"/>
+      <stop offset="100%" stop-color="#ECEFF1"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="18" stdDeviation="15" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  
+  <!-- Ambient Shadow -->
+  <ellipse cx="400" cy="415" rx="260" ry="22" fill="#000000" opacity="0.12" />
+  
+  <!-- Slide Base & Footbed -->
+  <g filter="url(#shadow)">
+    <!-- Sole Bottom -->
+    <path d="M 180,390 C 220,405 540,405 600,380 C 625,370 615,355 580,355 C 450,355 300,360 200,360 C 165,360 160,380 180,390 Z" fill="#F3F4F6"/>
+    <!-- Sole Tread Grooves -->
+    <path d="M 220,385 L 235,395 M 280,388 L 295,398 M 340,390 L 355,400 M 400,390 L 415,400 M 460,388 L 475,398 M 520,384 L 535,394" stroke="#FFFFFF" stroke-width="3" opacity="0.4"/>
+    <!-- Contoured Footbed -->
+    <path d="M 190,365 C 230,360 530,355 590,355 C 610,355 600,340 570,340 C 470,340 320,345 210,348 C 175,350 170,365 190,365 Z" fill="#FFFFFF"/>
+    <!-- Strap Bridge -->
+    <path d="M 310,350 C 330,270 470,270 510,345 C 480,345 460,300 410,300 C 360,300 340,348 310,350 Z" fill="#111827"/>
+    <path d="M 330,345 C 345,285 455,285 490,342" stroke="#FFFFFF" stroke-width="2" opacity="0.3" fill="none"/>
+  </g>
+  
+  <!-- Badge Label -->
+  <g transform="translate(40, 50)">
+    <rect width="130" height="26" rx="4" fill="#000000"/>
+    <text x="65" y="17" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="900" text-anchor="middle" letter-spacing="2">PUMA</text>
+  </g>
+  <text x="40" y="105" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16" font-weight="800">Puma Leadcat 2.0 Comfort Slide</text>
+</svg>

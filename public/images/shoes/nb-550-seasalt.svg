@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F9FAFB"/>
+      <stop offset="100%" stop-color="#ECEFF1"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  
+  <!-- Ambient Shadow -->
+  <ellipse cx="400" cy="420" rx="265" ry="18" fill="#000000" opacity="0.14" />
+  
+  <!-- Sneaker Low / Runner Body -->
+  <g filter="url(#shadow)">
+    <!-- Outsole & Midsole -->
+    <path d="M 180,390 C 210,408 560,408 625,378 C 638,370 630,352 605,352 L 195,356 C 170,356 165,375 180,390 Z" fill="#4B5563"/>
+    <rect x="185" y="352" width="430" height="22" rx="3" fill="#FFFFFF"/>
+    <line x1="190" y1="368" x2="610" y2="368" stroke="#BDBDBD" stroke-width="1.5" stroke-dasharray="4,3"/>
+    
+    <!-- Main Shoe Upper Profile -->
+    <path d="M 220,352 C 225,295 260,240 315,225 C 340,220 375,230 400,260 L 490,305 C 540,325 585,335 615,352 Z" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+    
+    <!-- Heel Counter / Tab -->
+    <path d="M 220,352 C 220,290 245,245 285,235 L 295,295 C 280,320 270,335 255,352 Z" fill="#111827"/>
+    
+    <!-- Toe Mudguard Overlay -->
+    <path d="M 510,315 C 555,325 595,335 615,352 L 530,352 C 505,340 500,325 510,315 Z" fill="#111827"/>
+    
+    <!-- Eyestay & Laces -->
+    <path d="M 355,235 L 485,310" stroke="#EEEEEE" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <path d="M 365,245 L 390,240 M 390,265 L 415,260 M 415,285 L 440,280 M 440,305 L 465,300" stroke="#111827" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Tongue Top -->
+    <path d="M 335,215 C 355,205 385,215 395,235 Z" fill="#111827"/>
+    
+    <!-- Brand Specific Emblem -->
+    <g transform="translate(355, 275)">
+                    <path d="M 0,40 L 0,0 L 14,0 L 32,28 L 32,0 L 44,0 L 44,40 L 30,40 L 12,12 L 12,40 Z" fill="#111827" />
+                   </g>
+  </g>
+  
+  <!-- Badge Label -->
+  <g transform="translate(40, 50)">
+    <rect width="130" height="26" rx="4" fill="#000000"/>
+    <text x="65" y="17" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="900" text-anchor="middle" letter-spacing="2">NEW-BALANCE</text>
+  </g>
+  <text x="40" y="105" fill="#111827" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16" font-weight="800">New Balance 550 Sea Salt Black</text>
+</svg>
