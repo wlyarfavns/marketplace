@@ -6,10 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'PasarKita — Toko Sepatu Branded & Sneakers Original' }}</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,11 +24,12 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#000000',
+                        primary: '#0A0A0A',
                         secondary: '#171717',
                         surface: '#FFFFFF',
                         border: '#E5E7EB',
@@ -41,8 +42,11 @@
 
     <style>
         [x-cloak] { display: none !important; }
-        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #000000; }
-        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+        body { font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif; background-color: #FFFFFF; color: #0A0A0A; }
+        h1, h2, h3, h4, h5, h6, .font-serif, .font-display { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            letter-spacing: -0.025em; 
+        }
     </style>
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-[#0000FF] selection:text-white" x-data="cartDrawerState()">
@@ -87,10 +91,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-6">
             <!-- Brand Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <span class="text-2xl sm:text-3xl font-serif tracking-tight font-black text-black uppercase">
-                    Pasar<span class="font-light italic text-gray-500">Kita</span>
+                <span class="text-2xl sm:text-[26px] font-extrabold tracking-tighter text-neutral-950 uppercase">
+                    PASARKITA<span class="text-[#0000FF]">.</span>
                 </span>
-                <span class="hidden sm:inline-block text-[10px] uppercase tracking-widest font-black text-black border-l-2 border-gray-300 pl-3">
+                <span class="hidden sm:inline-block text-[10px] uppercase tracking-widest font-bold text-neutral-400 border-l border-neutral-200 pl-3">
                     Sneakers & Shoes
                 </span>
             </a>
@@ -120,8 +124,8 @@
             <div class="flex items-center gap-5">
                 <form action="{{ route('catalog') }}" method="GET" class="hidden lg:flex items-center relative">
                     <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari sepatu, Nike, Jordan, Samba..." 
-                        class="text-xs bg-gray-50 border border-gray-300 rounded-none px-3.5 py-2 pr-8 w-64 focus:outline-none focus:border-black transition">
-                    <button type="submit" class="absolute right-2.5 text-gray-400 hover:text-black">
+                        class="text-xs bg-neutral-50/80 border border-neutral-200 rounded-full px-4 py-2 pr-9 w-64 focus:outline-none focus:border-neutral-950 focus:bg-white transition-all placeholder:text-neutral-400">
+                    <button type="submit" class="absolute right-3 text-neutral-400 hover:text-black transition-colors">
                         <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </button>
                 </form>
@@ -290,7 +294,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             <!-- Col 1: Brand Info -->
             <div class="space-y-4">
-                <span class="text-2xl font-serif font-black text-black uppercase tracking-tight">Pasar<span class="font-light italic text-gray-500">Kita</span></span>
+                <span class="text-2xl font-extrabold text-neutral-950 uppercase tracking-tighter">PASARKITA<span class="text-[#0000FF]">.</span></span>
                 <p class="text-gray-500 leading-relaxed text-xs">
                     Toko sepatu branded dan sneakers original terpercaya milik owner PasarKita. Menghadirkan rilisan resmi dari Nike, Air Jordan, Adidas, New Balance, Puma, dan Asics dengan garansi keaslian 100% dan kemudahan Pre-Order ber-DP.
                 </p>

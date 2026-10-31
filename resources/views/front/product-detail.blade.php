@@ -117,39 +117,39 @@
         
         <!-- Kolom Galeri Foto Produk -->
         <div class="space-y-4">
-            <div class="aspect-[4/3] sm:aspect-square bg-gradient-to-b from-neutral-50 to-neutral-100/50 rounded-2xl border-2 border-gray-200 p-6 sm:p-10 overflow-hidden relative flex items-center justify-center group shadow-sm">
+            <div class="aspect-[4/3] sm:aspect-square bg-[#FAFAFA] rounded-3xl border border-neutral-200/90 p-6 sm:p-10 overflow-hidden relative flex items-center justify-center group shadow-xs">
                 @if($product->primary_image_url)
                     <img :src="selectedImage || '{{ $product->primary_image_url }}'" 
                          src="{{ $product->primary_image_url }}" 
                          alt="{{ $product->name }}" 
                          onerror="if (this.src !== '{{ $product->primary_image_url }}') this.src = '{{ $product->primary_image_url }}';"
-                         class="w-full h-full object-contain group-hover:scale-110 transition-all duration-500 filter drop-shadow-md">
+                         class="w-full h-full object-contain group-hover:scale-105 transition-all duration-500 filter drop-shadow-xs">
                 @else
-                    <i class="fa-solid fa-shoe-prints text-gray-300 text-6xl"></i>
+                    <i class="fa-solid fa-shoe-prints text-neutral-300 text-6xl"></i>
                 @endif
                 
                 <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
                     @if($product->product_type === 'ready_stock')
-                        <span class="inline-flex items-center gap-1.5 bg-black/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full shadow-sm">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF] animate-pulse"></span>
+                        <span class="inline-flex items-center gap-1.5 bg-neutral-950/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-md shadow-xs">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF]"></span>
                             Ready Stock
                         </span>
                     @else
-                        <span class="inline-flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border border-neutral-700 shadow-sm">
-                            <i class="fa-solid fa-clock text-[9px] text-amber-400"></i>
+                        <span class="inline-flex items-center gap-1.5 bg-neutral-900/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-md shadow-xs">
+                            <i class="fa-solid fa-clock text-[9px] text-white"></i>
                             Pre-Order (PO)
                         </span>
                     @endif
 
                     @if($product->brand)
-                        <span class="bg-white/95 backdrop-blur-xs text-black text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full border border-gray-200 shadow-xs">
+                        <span class="bg-white/95 backdrop-blur-xs text-neutral-900 text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
                             DP Min {{ number_format($product->brand->dp_percentage, 0) }}%
                         </span>
                     @endif
                 </div>
 
-                <span class="absolute top-4 right-4 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-800 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-gray-200 shadow-xs z-10">
-                    <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Original Authentic
+                <span class="absolute top-4 right-4 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs z-10">
+                    <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Original
                 </span>
             </div>
 
@@ -159,8 +159,8 @@
                     @foreach($product->images as $img)
                         <button type="button" 
                                 @click="selectedImage = '{{ $img->url }}'"
-                                :class="selectedImage === '{{ $img->url }}' ? 'border-black ring-2 ring-black' : 'border-gray-200 hover:border-gray-400'"
-                                class="aspect-square bg-neutral-50 rounded-xl border-2 overflow-hidden p-2 focus:outline-hidden transition cursor-pointer">
+                                :class="selectedImage === '{{ $img->url }}' ? 'border-neutral-950 ring-2 ring-neutral-950' : 'border-neutral-200 hover:border-neutral-400'"
+                                class="aspect-square bg-[#FAFAFA] rounded-xl border overflow-hidden p-2 focus:outline-hidden transition cursor-pointer">
                             <img src="{{ $img->url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </button>
                     @endforeach
@@ -169,9 +169,9 @@
 
             <!-- Catatan Produk -->
             @if($product->product_note)
-                <div class="p-4 border-l-4 border-black bg-slate-50 text-xs text-gray-700 space-y-1">
-                    <p class="font-bold text-black uppercase tracking-wide">Jaminan & Catatan Produk:</p>
-                    <p class="leading-relaxed">{{ $product->product_note }}</p>
+                <div class="p-4 rounded-xl border border-neutral-200 bg-neutral-50/70 text-xs text-neutral-700 space-y-1">
+                    <p class="font-bold text-neutral-950 uppercase tracking-wide">Jaminan & Catatan Produk:</p>
+                    <p class="leading-relaxed font-normal">{{ $product->product_note }}</p>
                 </div>
             @endif
         </div>
@@ -179,25 +179,25 @@
         <!-- Kolom Informasi & Matriks Pilihan Varian -->
         <div class="space-y-6">
             <div>
-                <span class="text-xs uppercase tracking-widest text-black font-bold block mb-1">
+                <span class="text-xs uppercase tracking-widest text-neutral-400 font-bold block mb-1">
                     Brand: {{ $product->brand ? $product->brand->name : 'PasarKita Exclusive' }}
                 </span>
-                <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-950">{{ $product->name }}</h1>
-                <p class="text-xs text-gray-500 mt-2">SKU: <span class="font-mono text-gray-900 font-medium">{{ $product->sku }}</span> &bull; Berat: {{ $product->weight_grams }} gram</p>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight leading-tight">{{ $product->name }}</h1>
+                <p class="text-xs text-neutral-500 mt-2">SKU: <span class="font-mono text-neutral-900 font-medium">{{ $product->sku }}</span> &bull; Berat: {{ $product->weight_grams }} gram</p>
             </div>
 
             <!-- Tampilan Harga Dinamis Reaktif Matriks -->
-            <div class="p-5 bg-gray-50 border border-gray-200">
+            <div class="p-6 bg-neutral-50/70 rounded-2xl border border-neutral-200/80">
                 <div class="flex items-baseline gap-3">
-                    <span class="text-3xl font-bold text-gray-950" x-text="formatRupiah(currentPrice)"></span>
+                    <span class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight" x-text="formatRupiah(currentPrice)"></span>
                     
                     <template x-if="ruleAdjustment !== 0">
-                        <span class="text-xs text-black bg-blue-100 px-2 py-0.5 rounded font-bold">
+                        <span class="text-xs text-neutral-900 bg-neutral-200/80 px-2.5 py-0.5 rounded-md font-bold">
                             Penyesuaian Reseller: <span x-text="ruleAdjustment > 0 ? '+' : ''"></span><span x-text="formatRupiah(ruleAdjustment)"></span>
                         </span>
                     </template>
                 </div>
-                <p class="text-[11px] text-gray-500 mt-1">Harga otomatis diperbarui berdasarkan perpotongan Edisi Box &times; Ukuran Sepatu yang Anda pilih.</p>
+                <p class="text-[11px] text-neutral-500 mt-1">Harga otomatis diperbarui berdasarkan perpotongan Edisi Box &times; Ukuran Sepatu yang Anda pilih.</p>
             </div>
 
             <!-- Form Tambah ke Keranjang -->
@@ -208,18 +208,18 @@
                 <!-- 1. Pemilihan Varian Model / Edisi Box -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center text-xs">
-                        <label class="font-bold uppercase tracking-wider text-gray-900">1. Pilih Edisi Box / Kemasan *</label>
-                        <span class="text-gray-500" x-text="selectedModelName ? 'Terpilih: ' + selectedModelName : 'Wajib dipilih'"></span>
+                        <label class="font-bold uppercase tracking-wider text-neutral-900">1. Pilih Edisi Box / Kemasan *</label>
+                        <span class="text-neutral-500" x-text="selectedModelName ? 'Terpilih: ' + selectedModelName : 'Wajib dipilih'"></span>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         @foreach($product->models as $m)
                             <button type="button" 
                                     @click="selectModel({{ $m->id }}, '{{ $m->model_name }}')"
-                                    :class="selectedModelId === {{ $m->id }} ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-md' : 'border-gray-300 bg-white text-gray-900 hover:border-black font-medium shadow-xs hover:shadow-sm'"
-                                    class="p-3 text-left border-2 rounded-lg text-xs transition duration-150 cursor-pointer active:translate-y-0.5">
+                                    :class="selectedModelId === {{ $m->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold ring-2 ring-neutral-950 shadow-sm' : 'border-neutral-200 bg-white text-neutral-900 hover:border-neutral-950 font-medium shadow-2xs'"
+                                    class="p-3.5 text-left border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98]">
                                 <p class="font-bold text-xs">{{ $m->model_name }}</p>
                                 @if($m->description)
-                                    <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-gray-300' : 'text-gray-500'">{{ $m->description }}</p>
+                                    <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-neutral-300' : 'text-neutral-500'">{{ $m->description }}</p>
                                 @endif
                             </button>
                         @endforeach
@@ -229,16 +229,16 @@
                 <!-- 2. Pemilihan Varian Warna / Colorway -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center text-xs">
-                        <label class="font-bold uppercase tracking-wider text-gray-900">2. Pilih Colorway / Warna *</label>
-                        <span class="text-gray-500" x-text="selectedColorName ? 'Terpilih: ' + selectedColorName : 'Wajib dipilih'"></span>
+                        <label class="font-bold uppercase tracking-wider text-neutral-900">2. Pilih Colorway / Warna *</label>
+                        <span class="text-neutral-500" x-text="selectedColorName ? 'Terpilih: ' + selectedColorName : 'Wajib dipilih'"></span>
                     </div>
                     <div class="flex flex-wrap gap-2.5">
                         @foreach($product->colors as $c)
                             <button type="button" 
                                     @click="selectColor({{ $c->id }}, '{{ $c->color_name }}')"
-                                    :class="selectedColorId === {{ $c->id }} ? 'border-black ring-2 ring-black bg-black text-white font-bold shadow-md' : 'border-gray-300 bg-white text-gray-900 hover:border-black font-medium shadow-xs hover:shadow-sm'"
-                                    class="flex items-center gap-2 px-4 py-2.5 border-2 rounded-lg text-xs transition duration-150 cursor-pointer active:translate-y-0.5">
-                                <span class="w-3.5 h-3.5 rounded-full border border-gray-400 shrink-0" style="background-color: {{ $c->hex_code }}"></span>
+                                    :class="selectedColorId === {{ $c->id }} ? 'border-neutral-950 ring-2 ring-neutral-950 bg-neutral-950 text-white font-bold shadow-sm' : 'border-neutral-200 bg-white text-neutral-900 hover:border-neutral-950 font-medium shadow-2xs'"
+                                    class="flex items-center gap-2 px-4 py-2.5 border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98]">
+                                <span class="w-3.5 h-3.5 rounded-full border border-neutral-300 shrink-0" style="background-color: {{ $c->hex_code }}"></span>
                                 <span>{{ $c->color_name }}</span>
                             </button>
                         @endforeach
@@ -248,15 +248,15 @@
                 <!-- 3. Pemilihan Varian Ukuran (Size Sepatu) -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center text-xs">
-                        <label class="font-bold uppercase tracking-wider text-gray-900">3. Pilih Ukuran Sepatu (Size EU) *</label>
-                        <span class="text-gray-500" x-text="selectedSizeLabel ? 'Terpilih: ' + selectedSizeLabel : 'Wajib dipilih'"></span>
+                        <label class="font-bold uppercase tracking-wider text-neutral-900">3. Pilih Ukuran Sepatu (Size EU) *</label>
+                        <span class="text-neutral-500" x-text="selectedSizeLabel ? 'Terpilih: ' + selectedSizeLabel : 'Wajib dipilih'"></span>
                     </div>
                     <div class="flex flex-wrap gap-2.5">
                         @foreach($product->sizes as $s)
                             <button type="button" 
                                     @click="selectSize({{ $s->id }}, '{{ $s->size_label }}')"
-                                    :class="selectedSizeId === {{ $s->id }} ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-md' : 'border-gray-300 bg-white text-gray-900 hover:border-black font-semibold shadow-xs hover:shadow-sm'"
-                                    class="min-w-16 px-4 py-2.5 text-center border-2 rounded-lg text-xs uppercase transition duration-150 cursor-pointer active:translate-y-0.5">
+                                    :class="selectedSizeId === {{ $s->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold ring-2 ring-neutral-950 shadow-sm' : 'border-neutral-200 bg-white text-neutral-900 hover:border-neutral-950 font-semibold shadow-2xs'"
+                                    class="min-w-16 px-4 py-2.5 text-center border rounded-xl text-xs uppercase transition duration-150 cursor-pointer active:scale-[0.98]">
                                 {{ $s->size_label }}
                             </button>
                         @endforeach
@@ -264,25 +264,25 @@
                 </div>
 
                 <!-- 4. Jumlah & Aturan Bonus Barang -->
-                <div class="pt-4 border-t border-gray-200 space-y-4">
+                <div class="pt-4 border-t border-neutral-200 space-y-4">
                     <div class="flex items-center gap-6">
                         <div class="space-y-1">
-                            <label class="text-xs uppercase font-bold text-gray-900 tracking-wider">Kuantitas Pasang</label>
-                            <div class="flex items-center border border-gray-300">
-                                <button type="button" @click="quantity > 1 ? quantity-- : null; recalculatePrice()" class="px-3.5 py-2 text-gray-500 hover:text-black">-</button>
+                            <label class="text-xs uppercase font-bold text-neutral-900 tracking-wider">Kuantitas Pasang</label>
+                            <div class="flex items-center border border-neutral-200 rounded-xl overflow-hidden bg-white">
+                                <button type="button" @click="quantity > 1 ? quantity-- : null; recalculatePrice()" class="px-3.5 py-2 text-neutral-500 hover:text-black transition">-</button>
                                 <input type="number" x-model="quantity" @change="recalculatePrice()" min="1" class="w-14 text-center text-xs font-semibold focus:outline-none border-none">
-                                <button type="button" @click="quantity++; recalculatePrice()" class="px-3.5 py-2 text-gray-500 hover:text-black">+</button>
+                                <button type="button" @click="quantity++; recalculatePrice()" class="px-3.5 py-2 text-neutral-500 hover:text-black transition">+</button>
                             </div>
                         </div>
 
                         <!-- Informasi Bonus Otomatis -->
                         @if($product->bonuses->where('is_active', true)->count() > 0)
                             @php $bonus = $product->bonuses->where('is_active', true)->first(); @endphp
-                            <div class="flex-1 bg-blue-50 border border-blue-200 p-3 text-xs text-black" x-show="quantity >= {{ $bonus->min_quantity }}">
-                                <p class="font-bold flex items-center gap-1.5 text-black">
-                                    <i class="fa-solid fa-gift"></i> Selamat! Anda Mendapatkan Bonus:
+                            <div class="flex-1 bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs text-neutral-900" x-show="quantity >= {{ $bonus->min_quantity }}">
+                                <p class="font-bold flex items-center gap-1.5 text-neutral-950">
+                                    <i class="fa-solid fa-gift text-[#0000FF]"></i> Selamat! Anda Mendapatkan Bonus:
                                 </p>
-                                <p class="text-[11px] text-slate-700 mt-0.5">{{ $bonus->free_item_name }} ({{ $bonus->free_item_description }})</p>
+                                <p class="text-[11px] text-neutral-600 mt-0.5">{{ $bonus->free_item_name }} ({{ $bonus->free_item_description }})</p>
                             </div>
                         @endif
                     </div>
@@ -292,8 +292,8 @@
                 <div class="pt-2 flex flex-col sm:flex-row gap-3">
                     <button type="submit" 
                             :disabled="!isReadyToBuy"
-                            :class="isReadyToBuy ? 'bg-black text-white hover:bg-neutral-800 hover:border-[#0000FF] cursor-pointer shadow-md hover:shadow-lg active:translate-y-0.5' : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed shadow-none'"
-                            class="flex-1 py-4 text-xs uppercase tracking-widest font-black rounded-lg border-2 border-black transition text-center flex items-center justify-center gap-2">
+                            :class="isReadyToBuy ? 'bg-neutral-950 text-white hover:bg-[#0000FF] cursor-pointer shadow-md hover:shadow-lg active:scale-[0.98]' : 'bg-neutral-200 text-neutral-400 border-neutral-300 cursor-not-allowed shadow-none'"
+                            class="flex-1 py-4 text-xs uppercase tracking-widest font-black rounded-xl border border-transparent transition-all duration-200 text-center flex items-center justify-center gap-2">
                         <i class="fa-solid fa-bag-shopping"></i>
                         <span>Tambah ke Keranjang</span>
                     </button>
@@ -302,7 +302,7 @@
                     @if(isset($floatingWa) && $floatingWa)
                         <a :href="'https://wa.me/{{ $floatingWa->phone }}?text=Halo%20Admin,%20saya%20tertarik%20dengan%20sepatu%20' + encodeURIComponent('{{ $product->name }}') + '%20(SKU:%20{{ $product->sku }})'"
                            target="_blank"
-                           class="border-2 border-black bg-white text-black hover:bg-black hover:text-white px-6 py-4 text-xs uppercase tracking-widest font-black rounded-lg shadow-sm hover:shadow-md active:translate-y-0.5 transition flex items-center justify-center gap-2 cursor-pointer">
+                           class="border border-neutral-300 bg-white text-neutral-950 hover:border-neutral-950 hover:bg-neutral-50 px-6 py-4 text-xs uppercase tracking-widest font-bold rounded-xl shadow-xs hover:shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
                             <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
                             <span class="hidden sm:inline">Pesan WA</span>
                         </a>
@@ -310,14 +310,14 @@
                 </div>
 
                 <template x-if="!isReadyToBuy">
-                    <p class="text-[11px] text-red-500">* Mohon lengkapi pilihan Edisi Box, Colorway, dan Ukuran Sepatu sebelum melanjutkan ke keranjang.</p>
+                    <p class="text-[11px] text-red-500 font-medium">* Mohon lengkapi pilihan Edisi Box, Colorway, dan Ukuran Sepatu sebelum melanjutkan ke keranjang.</p>
                 </template>
             </form>
 
             <!-- Deskripsi Tab -->
-            <div class="pt-8 border-t border-gray-200 space-y-3">
-                <h3 class="text-xs uppercase font-bold tracking-wider text-gray-950">Deskripsi & Spesifikasi Sepatu</h3>
-                <div class="text-xs text-gray-600 leading-relaxed font-light space-y-2">
+            <div class="pt-8 border-t border-neutral-200 space-y-3">
+                <h3 class="text-xs uppercase font-bold tracking-wider text-neutral-950">Deskripsi & Spesifikasi Sepatu</h3>
+                <div class="text-xs text-neutral-600 leading-relaxed font-normal space-y-2">
                     {!! nl2br(e($product->description)) !!}
                 </div>
             </div>

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="border-b border-gray-200 bg-gray-50 py-10">
+<div class="border-b border-neutral-200 bg-neutral-50/60 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
-        <span class="text-xs uppercase tracking-widest text-black font-bold">Proses Pesanan</span>
-        <h1 class="text-3xl font-serif font-bold text-gray-950 mt-1">Checkout & Pengiriman</h1>
+        <span class="text-xs uppercase tracking-widest text-neutral-400 font-bold">Proses Pesanan</span>
+        <h1 class="text-3xl font-extrabold text-neutral-950 tracking-tight mt-1">Checkout & Pengiriman</h1>
     </div>
 </div>
 
@@ -313,7 +313,7 @@
 
                     <!-- Submit Button -->
                     <button type="submit" 
-                            class="w-full py-4 bg-black border-2 border-black text-white text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-900 hover:border-[#0000FF] transition shadow-md hover:shadow-lg active:translate-y-0.5 cursor-pointer">
+                            class="w-full py-4 bg-neutral-950 text-white text-xs uppercase tracking-widest font-black rounded-xl hover:bg-[#0000FF] transition-all shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer">
                         Buat Pesanan Sekarang &rarr;
                     </button>
 
