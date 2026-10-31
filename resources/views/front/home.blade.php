@@ -73,29 +73,39 @@
     </div>
 </section>
 
-<!-- 3. Slider / Banner Promo (Monochrome Putih & Hitam, Rasio 21:7) -->
+<!-- 3. Banner Promo (Dominan Putih Bersih & Hitam Minimalis) -->
 @if($banners->count() > 0)
-<section class="py-16 border-b border-gray-200 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+<section class="py-14 border-b border-gray-200 bg-gray-50/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
         @foreach($banners as $banner)
-            <div class="relative w-full aspect-[21/7] bg-black border border-gray-800 overflow-hidden flex items-center p-8 sm:p-14 mb-6 last:mb-0 shadow-lg group">
+            <div class="relative w-full bg-white border border-gray-200 overflow-hidden flex items-center p-8 sm:p-12 md:p-14 shadow-xs hover:border-black transition duration-300 group min-h-[240px]">
                 @if($banner->image_url)
-                    <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition duration-700">
+                    <div class="absolute right-0 top-0 bottom-0 w-full sm:w-7/12 md:w-1/2 overflow-hidden">
+                        <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-700">
+                        <!-- Gradien halus menyatu ke warna putih di sisi kiri -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent hidden sm:block"></div>
+                        <!-- Overlay semi-transparan putih di layar mobile agar teks terbaca jelas -->
+                        <div class="absolute inset-0 bg-white/90 sm:hidden"></div>
+                    </div>
                 @endif
-                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
-                <div class="relative z-10 max-w-xl text-white space-y-4">
-                    <span class="text-[10px] tracking-widest uppercase font-bold text-gray-300 bg-white/10 px-2.5 py-1 backdrop-blur-sm border border-white/20">Promo Eksklusif PasarKita</span>
-                    <h2 class="text-2xl sm:text-4xl font-serif font-black text-white leading-tight">{{ $banner->title }}</h2>
-                    <p class="text-xs sm:text-sm text-gray-300 leading-relaxed font-light">{{ $banner->description }}</p>
+                
+                <div class="relative z-10 max-w-xl space-y-3.5">
+                    <span class="inline-block text-[10px] tracking-widest uppercase font-bold text-gray-800 bg-gray-100 px-3 py-1 border border-gray-300">
+                        Promo Eksklusif PasarKita
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-serif font-black text-black leading-tight">
+                        {{ $banner->title }}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal max-w-md">
+                        {{ $banner->description }}
+                    </p>
                     @if($banner->url)
-                        <a href="{{ $banner->url }}" class="inline-block mt-3 bg-white text-black text-xs uppercase tracking-widest font-black px-6 py-3 hover:bg-gray-200 transition">
-                            Klaim Penawaran
-                        </a>
+                        <div class="pt-1">
+                            <a href="{{ $banner->url }}" class="inline-block bg-black text-white text-xs uppercase tracking-widest font-bold px-7 py-3.5 hover:bg-neutral-800 transition shadow-xs">
+                                Klaim Penawaran &rarr;
+                            </a>
+                        </div>
                     @endif
-                </div>
-                <!-- Visual Icon Accents -->
-                <div class="absolute right-8 top-1/2 -translate-y-1/2 opacity-10 hidden md:block">
-                    <i class="fa-solid fa-shoe-prints text-[140px] text-white"></i>
                 </div>
             </div>
         @endforeach

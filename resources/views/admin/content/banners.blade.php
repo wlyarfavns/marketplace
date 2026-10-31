@@ -19,10 +19,14 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         @forelse($banners as $b)
             <div class="bg-white border border-slate-200 p-5 space-y-3">
-                <div class="aspect-[21/7] bg-slate-900 border border-slate-200 flex items-center justify-center text-white text-xs p-4 text-center">
-                    <div>
-                        <p class="font-bold text-sm">{{ $b->title }}</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">{{ $b->description }}</p>
+                <div class="aspect-[21/7] bg-slate-50 border border-slate-200 relative overflow-hidden flex items-center p-4">
+                    @if($b->image_url)
+                        <img src="{{ $b->image_url }}" alt="{{ $b->title }}" class="absolute right-0 top-0 bottom-0 w-1/2 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+                    @endif
+                    <div class="relative z-10 text-left">
+                        <p class="font-bold text-sm text-slate-900">{{ $b->title }}</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">{{ $b->description }}</p>
                     </div>
                 </div>
                 <div class="flex justify-between items-center text-xs">
