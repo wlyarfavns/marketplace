@@ -23,7 +23,7 @@
             
             <!-- Items Table -->
             <div class="lg:col-span-2 space-y-6">
-                <div class="border-2 border-gray-200 rounded-xl overflow-hidden bg-white shadow-xs divide-y divide-gray-100">
+                <div class="border border-gray-200 divide-y divide-gray-100">
                     <div class="p-4 bg-gray-50 text-[11px] uppercase tracking-wider font-bold text-gray-500 grid grid-cols-12 gap-4">
                         <div class="col-span-6">Produk & Varian</div>
                         <div class="col-span-2 text-center">Harga</div>
@@ -35,9 +35,9 @@
                         <div class="p-4 grid grid-cols-12 gap-4 items-center">
                             <!-- Produk Info -->
                             <div class="col-span-6 flex gap-4">
-                                <div class="w-16 h-20 bg-gray-50 border border-gray-200 rounded-lg p-1.5 flex items-center justify-center shrink-0 overflow-hidden">
+                                <div class="w-16 h-20 bg-neutral-100 border border-gray-200 flex items-center justify-center shrink-0 overflow-hidden">
                                     @if(!empty($item['image']))
-                                        <img src="{{ $item['image'] }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-contain">
+                                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : asset('storage/' . $item['image']) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
                                     @else
                                         <i class="fa-solid fa-shoe-prints text-gray-300"></i>
                                     @endif
@@ -49,7 +49,7 @@
                                         {{ $item['model_name'] }} &bull; {{ $item['color_name'] }} &bull; {{ $item['size_name'] }}
                                     </p>
                                     @if(!empty($item['bonus_item']))
-                                        <span class="inline-block mt-1 bg-gray-100 text-black text-[10px] px-2 py-0.5 border border-gray-300 rounded font-bold">
+                                        <span class="inline-block mt-1 bg-neutral-100 text-black text-[10px] px-1.5 py-0.5 border border-gray-300 font-medium">
                                             Bonus: {{ $item['bonus_item'] }}
                                         </span>
                                     @endif
@@ -57,13 +57,13 @@
                             </div>
 
                             <!-- Harga Satuan -->
-                            <div class="col-span-2 text-center text-xs font-semibold text-gray-800">
+                            <div class="col-span-2 text-center text-xs text-gray-700">
                                 Rp {{ number_format($item['unit_price'], 0, ',', '.') }}
                             </div>
 
                             <!-- Kuantitas -->
                             <div class="col-span-2 flex justify-center">
-                                <div class="text-xs font-bold px-3 py-1.5 border-2 border-gray-300 rounded-lg bg-gray-50 shadow-2xs">
+                                <div class="text-xs font-semibold px-2 py-1 border border-gray-200">
                                     {{ $item['quantity'] }}
                                 </div>
                             </div>
@@ -76,9 +76,7 @@
                                 <form action="{{ route('cart.remove') }}" method="POST" class="inline">
                                     @csrf
                                     <input type="hidden" name="cart_key" value="{{ $item['cart_key'] }}">
-                                    <button type="submit" class="inline-block mt-1.5 px-2 py-0.5 text-[11px] font-semibold text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-600 hover:text-white transition cursor-pointer">
-                                        Hapus
-                                    </button>
+                                    <button type="submit" class="text-[11px] text-red-500 hover:underline mt-1">Hapus</button>
                                 </form>
                             </div>
                         </div>
@@ -86,7 +84,7 @@
                 </div>
 
                 <div class="flex justify-between items-center pt-2">
-                    <a href="{{ route('catalog') }}" class="px-4 py-2.5 border-2 border-gray-300 rounded-lg text-xs font-bold text-gray-700 hover:border-black hover:text-black transition shadow-xs cursor-pointer">
+                    <a href="{{ route('catalog') }}" class="text-xs uppercase tracking-wider font-semibold text-gray-600 hover:text-black">
                         &larr; Lanjutkan Berbelanja
                     </a>
                 </div>
@@ -94,7 +92,7 @@
 
             <!-- Order Summary Card -->
             <div class="space-y-6">
-                <div class="border-2 border-gray-200 rounded-xl p-6 bg-white shadow-xs space-y-4">
+                <div class="border border-gray-200 p-6 bg-gray-50 space-y-4">
                     <h3 class="text-sm font-serif font-bold uppercase tracking-wider text-gray-950 border-b border-gray-200 pb-3">Ringkasan Pesanan</h3>
                     
                     <div class="space-y-2 text-xs">
@@ -117,7 +115,7 @@
                     </p>
 
                     <a href="{{ route('checkout.index') }}" 
-                       class="w-full block text-center py-4 bg-black text-white text-xs uppercase tracking-widest font-black rounded-lg hover:bg-neutral-800 transition shadow-md hover:shadow-lg cursor-pointer">
+                       class="w-full block text-center py-4 bg-black text-white text-xs uppercase tracking-widest font-semibold hover:bg-black transition">
                         Lanjut ke Checkout &rarr;
                     </a>
                 </div>

@@ -179,7 +179,7 @@ class PasarKitaTest extends TestCase
 
         $response = $this->get('/katalog');
         $response->assertStatus(200);
-        $response->assertSee($visibleProduct->name);
+        $response->assertSee(e($visibleProduct->name), false);
         $response->assertSee($visibleProduct->primary_image_url);
     }
 }

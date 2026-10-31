@@ -119,8 +119,8 @@
             <div class="flex items-center gap-5">
                 <form action="{{ route('catalog') }}" method="GET" class="hidden lg:flex items-center relative">
                     <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari sepatu, Nike, Jordan, Samba..." 
-                        class="text-xs bg-gray-50 border-2 border-gray-200 rounded-full px-4 py-2 pr-9 w-64 focus:outline-none focus:border-black transition">
-                    <button type="submit" class="absolute right-3 text-gray-400 hover:text-black cursor-pointer">
+                        class="text-xs bg-gray-50 border border-gray-300 rounded-none px-3.5 py-2 pr-8 w-64 focus:outline-none focus:border-black transition">
+                    <button type="submit" class="absolute right-2.5 text-gray-400 hover:text-black">
                         <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </button>
                 </form>
@@ -219,7 +219,7 @@
                         <div class="pt-4 first:pt-0 flex gap-4">
                             <div class="w-20 h-24 bg-neutral-100 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
                                 <template x-if="item.image">
-                                    <img :src="item.image" :alt="item.product_name" class="w-full h-full object-cover">
+                                    <img :src="item.image.startsWith('http') ? item.image : '/storage/' + item.image" :alt="item.product_name" class="w-full h-full object-cover">
                                 </template>
                                 <template x-if="!item.image">
                                     <i class="fa-solid fa-shoe-prints text-gray-300 text-xl"></i>
@@ -241,10 +241,10 @@
                                     </span>
                                 </template>
                                 <div class="flex justify-between items-center mt-3">
-                                    <div class="flex items-center border-2 border-gray-300 rounded-lg overflow-hidden bg-white shadow-2xs">
-                                        <button @click="updateQty(item.cart_key, item.quantity - 1)" class="w-7 h-7 flex items-center justify-center bg-gray-100 hover:bg-black hover:text-white text-xs font-black transition cursor-pointer">-</button>
-                                        <span class="w-8 text-center text-xs font-bold text-gray-900" x-text="item.quantity"></span>
-                                        <button @click="updateQty(item.cart_key, item.quantity + 1)" class="w-7 h-7 flex items-center justify-center bg-gray-100 hover:bg-black hover:text-white text-xs font-black transition cursor-pointer">+</button>
+                                    <div class="flex items-center border border-gray-300">
+                                        <button @click="updateQty(item.cart_key, item.quantity - 1)" class="px-2.5 py-1 text-xs text-gray-500 hover:text-black">-</button>
+                                        <span class="px-2 text-xs font-medium" x-text="item.quantity"></span>
+                                        <button @click="updateQty(item.cart_key, item.quantity + 1)" class="px-2.5 py-1 text-xs text-gray-500 hover:text-black">+</button>
                                     </div>
                                     <span class="text-sm font-bold text-gray-900" x-text="formatRupiah(item.subtotal)"></span>
                                 </div>
@@ -261,11 +261,11 @@
                     </div>
                     <p class="text-[11px] text-gray-500">Ongkos kirim dan potongan kupon dihitung saat checkout.</p>
                     <div class="grid grid-cols-2 gap-3 pt-2">
-                        <a href="{{ route('cart.index') }}" class="text-center py-3 border-2 border-black rounded-lg text-xs font-bold uppercase tracking-wider text-black bg-white hover:bg-black hover:text-white transition shadow-xs hover:shadow-md cursor-pointer">
+                        <a href="{{ route('cart.index') }}" class="text-center py-3 border-2 border-black text-xs font-bold uppercase tracking-wider text-black hover:bg-black hover:text-white transition">
                             Lihat Keranjang
                         </a>
-                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-neutral-800 transition shadow-md hover:shadow-lg cursor-pointer">
-                            Checkout Sekarang
+                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-black text-white text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition shadow-md">
+                            Checkout
                         </a>
                     </div>
                 </div>

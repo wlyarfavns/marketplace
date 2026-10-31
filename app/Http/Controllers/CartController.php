@@ -94,7 +94,7 @@ class CartController extends Controller
                 'quantity' => (int) $request->quantity,
                 'subtotal' => $finalPrice * (int) $request->quantity,
                 'bonus_item' => $bonusItem,
-                'image' => $product->primary_image_url,
+                'image' => $product->images()->first() ? $product->images()->first()->image_path : null,
             ];
         }
 

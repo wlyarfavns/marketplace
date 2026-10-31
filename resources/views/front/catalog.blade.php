@@ -20,7 +20,7 @@
                     <label class="text-xs uppercase font-bold text-gray-900 tracking-wider">Pencarian</label>
                     <div class="relative">
                         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari model, SKU, atau brand..." 
-                            class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 focus:outline-none focus:border-black transition">
+                            class="w-full text-xs px-3 py-2.5 border border-gray-300 focus:outline-none focus:border-black">
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@
                         @else
                             <div class="pt-1 text-[11px] text-gray-400 flex items-center gap-1.5">
                                 <i class="fa-solid fa-lock text-[10px]"></i>
-                                <span>PO khusus <a href="{{ route('login') }}" class="underline text-black font-semibold">Member</a></span>
+                                <span>PO hanya untuk <a href="{{ route('login') }}" class="underline text-black font-semibold">Member</a></span>
                             </div>
                         @endif
                     </div>
@@ -55,7 +55,7 @@
                 <!-- Brand Filter -->
                 <div class="space-y-3 py-6 border-b border-gray-200">
                     <label class="text-xs uppercase font-bold text-gray-900 tracking-wider">Brand Sepatu</label>
-                    <select name="brand" onchange="this.form.submit()" class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 bg-white focus:outline-none focus:border-black cursor-pointer transition">
+                    <select name="brand" onchange="this.form.submit()" class="w-full text-xs px-3 py-2.5 border border-gray-300 bg-white focus:outline-none focus:border-black">
                         <option value="">Semua Brand</option>
                         @foreach($brands as $b)
                             <option value="{{ $b->slug }}" {{ request('brand') === $b->slug ? 'selected' : '' }}>
@@ -68,7 +68,7 @@
                 <!-- Kategori Filter -->
                 <div class="space-y-3 py-6 border-b border-gray-200">
                     <label class="text-xs uppercase font-bold text-gray-900 tracking-wider">Kategori Sepatu</label>
-                    <select name="category" onchange="this.form.submit()" class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 bg-white focus:outline-none focus:border-black cursor-pointer transition">
+                    <select name="category" onchange="this.form.submit()" class="w-full text-xs px-3 py-2.5 border border-gray-300 bg-white focus:outline-none focus:border-black">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $c)
                             <option value="{{ $c->slug }}" {{ request('category') === $c->slug ? 'selected' : '' }}>
@@ -81,7 +81,7 @@
                 <!-- Urutkan -->
                 <div class="space-y-3 py-6 border-b border-gray-200">
                     <label class="text-xs uppercase font-bold text-gray-900 tracking-wider">Urutkan</label>
-                    <select name="sort" onchange="this.form.submit()" class="w-full text-xs px-3.5 py-2.5 rounded-lg border-2 border-gray-200 bg-white focus:outline-none focus:border-black cursor-pointer transition">
+                    <select name="sort" onchange="this.form.submit()" class="w-full text-xs px-3 py-2.5 border border-gray-300 bg-white focus:outline-none focus:border-black">
                         <option value="latest" {{ request('sort') === 'latest' ? 'selected' : '' }}>Terbaru</option>
                         <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
                         <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
@@ -89,12 +89,11 @@
                 </div>
 
                 <div class="pt-4 flex gap-2">
-                    <button type="submit" class="w-full bg-black text-white text-xs uppercase tracking-wider py-3 font-black rounded-lg hover:bg-neutral-800 transition shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-sliders text-xs"></i>
-                        <span>Terapkan Filter</span>
+                    <button type="submit" class="w-full bg-black text-white text-xs uppercase tracking-wider py-2.5 font-semibold hover:bg-black transition">
+                        Terapkan Filter
                     </button>
                     @if(request()->anyFilled(['q', 'brand', 'category', 'type', 'sort']))
-                        <a href="{{ route('catalog') }}" class="px-4 py-3 border-2 border-gray-300 text-xs text-gray-700 font-bold hover:border-black hover:text-black transition rounded-lg shadow-xs flex items-center justify-center cursor-pointer" title="Reset Semua Filter">
+                        <a href="{{ route('catalog') }}" class="px-3 py-2.5 border border-gray-300 text-xs text-gray-600 hover:text-black hover:border-black transition" title="Reset">
                             Reset
                         </a>
                     @endif
@@ -112,39 +111,37 @@
             </div>
 
             @if($products->isEmpty())
-                <div class="text-center py-20 border-2 border-dashed border-gray-200 bg-gray-50 rounded-2xl p-8">
-                    <i class="fa-solid fa-shoe-prints text-4xl text-gray-300 mb-3 block"></i>
-                    <p class="text-base font-bold text-gray-800">Tidak ada koleksi sepatu yang sesuai dengan filter.</p>
-                    <p class="text-xs text-gray-500 mt-1">Coba gunakan kata kunci lain atau reset filter pencarian Anda.</p>
-                    <a href="{{ route('catalog') }}" class="inline-block mt-5 px-6 py-3 bg-black text-white text-xs font-black uppercase tracking-wider rounded-lg shadow-sm hover:bg-neutral-800 transition cursor-pointer">
-                        Reset Filter
-                    </a>
+                <div class="text-center py-20 border border-dashed border-gray-200 bg-gray-50">
+                    <i class="fa-solid fa-shoe-prints text-3xl text-gray-300 mb-3 block"></i>
+                    <p class="text-sm font-medium text-gray-700">Tidak ada koleksi sepatu yang sesuai dengan filter.</p>
+                    <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau reset filter pencarian Anda.</p>
+                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-semibold uppercase tracking-wider border-b border-black text-black">Reset Filter</a>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     @foreach($products as $prod)
-                        <div class="group flex flex-col justify-between border-2 border-gray-200 bg-white rounded-xl overflow-hidden hover:border-black transition duration-200 shadow-xs hover:shadow-md">
+                        <div class="group flex flex-col justify-between border border-gray-200 bg-white hover:border-black transition duration-200">
                             <div>
-                                <div class="relative aspect-4/3 bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100 p-4">
+                                <div class="relative aspect-[3/4] bg-neutral-100 flex items-center justify-center overflow-hidden border-b border-gray-100">
                                     @if($prod->primary_image_url)
-                                        <img src="{{ $prod->primary_image_url }}" alt="{{ $prod->name }}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
+                                        <img src="{{ $prod->primary_image_url }}" alt="{{ $prod->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                     @else
                                         <i class="fa-solid fa-shoe-prints text-gray-300 text-4xl group-hover:scale-110 transition duration-300"></i>
                                     @endif
                                     
                                     <div class="absolute top-3 left-3 flex flex-col gap-1.5">
                                         @if($prod->product_type === 'ready_stock')
-                                            <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-2xs">
+                                            <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5">
                                                 Ready Stock
                                             </span>
                                         @else
-                                            <span class="bg-gray-800 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-2xs">
+                                            <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5">
                                                 Pre-Order (PO)
                                             </span>
                                         @endif
 
                                         @if($prod->visible_to_distributor && !$prod->visible_to_umum && !$prod->visible_to_member)
-                                            <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 border border-gray-700 rounded">
+                                            <span class="bg-slate-800 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 border border-slate-700">
                                                 Khusus Distributor
                                             </span>
                                         @endif
@@ -186,8 +183,8 @@
 
                             <div class="p-5 pt-0">
                                 <a href="{{ route('product.detail', $prod->slug) }}" 
-                                   class="w-full text-center block py-3 border-2 border-black rounded-lg text-xs uppercase tracking-wider font-bold text-black bg-white hover:bg-black hover:text-white transition shadow-xs hover:shadow-md cursor-pointer">
-                                    Pilih Ukuran & Beli &rarr;
+                                   class="w-full text-center block py-2.5 border border-black text-xs uppercase tracking-wider font-semibold text-black hover:bg-black hover:text-white hover:border-black transition">
+                                    Pilih Ukuran & Beli
                                 </a>
                             </div>
                         </div>

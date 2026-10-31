@@ -14,11 +14,11 @@
             </p>
             <div class="flex flex-wrap items-center gap-4 pt-4">
                 <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" 
-                   class="bg-black text-white text-xs uppercase tracking-widest font-black px-8 py-4 rounded-lg hover:bg-neutral-800 transition shadow-md hover:shadow-lg active:scale-98 cursor-pointer">
+                   class="bg-black text-white text-xs uppercase tracking-widest font-bold px-8 py-4 hover:bg-gray-800 transition shadow-sm">
                     Jelajahi Ready Stock
                 </a>
                 <a href="{{ route('catalog') }}" 
-                   class="border-2 border-black bg-white text-black text-xs uppercase tracking-widest font-black px-8 py-4 rounded-lg hover:bg-black hover:text-white transition shadow-xs hover:shadow-md active:scale-98 cursor-pointer">
+                   class="border-2 border-black text-black text-xs uppercase tracking-widest font-bold px-8 py-4 hover:bg-black hover:text-white transition">
                     Semua Koleksi
                 </a>
             </div>
@@ -27,7 +27,7 @@
         <div class="w-full md:w-5/12">
             <div class="relative bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm hover:border-black hover:shadow-md transition duration-300 flex flex-col justify-between group">
                 <div class="relative aspect-4/3 bg-gray-50 rounded-xl flex items-center justify-center p-4 overflow-hidden border border-gray-100">
-                    <img src="{{ asset('images/shoes/nike-dunk-panda.svg') }}" 
+                    <img src="{{ asset('images/shoes/nike-dunk-panda.jpg') }}" 
                          alt="Nike Dunk Low Retro Panda" 
                          class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
                     <span class="absolute top-3 left-3 bg-black text-white text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded shadow-xs">
@@ -66,7 +66,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             @foreach($brands as $b)
                 <a href="{{ route('catalog', ['brand' => $b->slug]) }}" 
-                   class="group bg-white p-6 border-2 border-gray-200 rounded-xl hover:border-black transition duration-200 flex flex-col justify-between h-44 shadow-2xs hover:shadow-sm">
+                   class="group bg-white p-6 border border-gray-200 hover:border-black transition duration-200 flex flex-col justify-between h-44 shadow-xs">
                     <div>
                         <span class="text-[10px] uppercase tracking-wider text-gray-400 font-bold block mb-1">Brand Mitra #{{ $loop->iteration }}</span>
                         <h3 class="font-serif text-lg font-black text-black group-hover:underline">{{ $b->name }}</h3>
@@ -87,7 +87,7 @@
 <section class="py-14 border-b border-gray-200 bg-gray-50/60">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-6">
         @foreach($banners as $banner)
-            <div class="relative w-full bg-white border-2 border-gray-200 rounded-2xl overflow-hidden flex items-center p-8 sm:p-12 md:p-14 shadow-xs hover:border-black transition duration-300 group min-h-[240px]">
+            <div class="relative w-full bg-white border border-gray-200 overflow-hidden flex items-center p-8 sm:p-12 md:p-14 shadow-xs hover:border-black transition duration-300 group min-h-[240px]">
                 @if($banner->image_url)
                     <div class="absolute right-0 top-0 bottom-0 w-full sm:w-7/12 md:w-1/2 overflow-hidden">
                         <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-700">
@@ -99,7 +99,7 @@
                 @endif
                 
                 <div class="relative z-10 max-w-xl space-y-3.5">
-                    <span class="inline-block text-[10px] tracking-widest uppercase font-bold text-gray-800 bg-gray-100 px-3 py-1 rounded-md border border-gray-300">
+                    <span class="inline-block text-[10px] tracking-widest uppercase font-bold text-gray-800 bg-gray-100 px-3 py-1 border border-gray-300">
                         Promo Eksklusif PasarKita
                     </span>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-serif font-black text-black leading-tight">
@@ -110,7 +110,7 @@
                     </p>
                     @if($banner->url)
                         <div class="pt-1">
-                            <a href="{{ $banner->url }}" class="inline-block bg-black text-white text-xs uppercase tracking-widest font-black px-7 py-3.5 rounded-lg hover:bg-neutral-800 transition shadow-sm hover:shadow-md cursor-pointer">
+                            <a href="{{ $banner->url }}" class="inline-block bg-black text-white text-xs uppercase tracking-widest font-bold px-7 py-3.5 hover:bg-neutral-800 transition shadow-xs">
                                 Klaim Penawaran &rarr;
                             </a>
                         </div>
@@ -142,12 +142,12 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($featuredProducts as $prod)
-                <div class="group flex flex-col justify-between border-2 border-gray-200 bg-white rounded-xl overflow-hidden hover:border-black transition duration-200 shadow-xs hover:shadow-md">
+                <div class="group flex flex-col justify-between border border-gray-200 bg-white hover:border-black transition duration-200 shadow-xs">
                     <div>
                         <!-- Thumbnail Box -->
-                        <div class="relative aspect-4/3 bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100 p-4">
+                        <div class="relative aspect-[3/4] bg-neutral-100 flex items-center justify-center overflow-hidden border-b border-gray-100">
                             @if($prod->primary_image_url)
-                                <img src="{{ $prod->primary_image_url }}" alt="{{ $prod->name }}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500">
+                                <img src="{{ $prod->primary_image_url }}" alt="{{ $prod->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             @else
                                 <i class="fa-solid fa-shoe-prints text-gray-300 text-4xl group-hover:scale-110 transition duration-300"></i>
                             @endif
@@ -155,17 +155,17 @@
                             <!-- Badges -->
                             <div class="absolute top-3 left-3 flex flex-col gap-1.5">
                                 @if($prod->product_type === 'ready_stock')
-                                    <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2.5 py-1 rounded shadow-2xs">
+                                    <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5">
                                         Ready Stock
                                     </span>
                                 @else
-                                    <span class="bg-gray-800 text-white text-[9px] uppercase tracking-wider font-bold px-2.5 py-1 rounded shadow-2xs">
+                                    <span class="bg-gray-800 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 border border-gray-700">
                                         Pre-Order (PO)
                                     </span>
                                 @endif
 
                                 @if($prod->visible_to_distributor && !$prod->visible_to_umum && !$prod->visible_to_member)
-                                    <span class="bg-black text-white text-[9px] uppercase tracking-wider font-bold px-2.5 py-1 border border-gray-700 rounded">
+                                    <span class="bg-gray-900 text-white text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 border border-gray-700">
                                         Khusus Distributor
                                     </span>
                                 @endif
@@ -211,8 +211,8 @@
                     <!-- CTA Detail -->
                     <div class="p-5 pt-0">
                         <a href="{{ route('product.detail', $prod->slug) }}" 
-                           class="w-full text-center block py-3 border-2 border-black rounded-lg text-xs uppercase tracking-wider font-bold text-black bg-white hover:bg-black hover:text-white transition shadow-xs hover:shadow-md cursor-pointer">
-                            Pilih Ukuran & Beli &rarr;
+                           class="w-full text-center block py-2.5 border-2 border-black text-xs uppercase tracking-wider font-bold text-black hover:bg-black hover:text-white transition">
+                            Pilih Ukuran & Beli
                         </a>
                     </div>
                 </div>
@@ -220,8 +220,8 @@
         </div>
 
         <div class="text-center mt-12">
-            <a href="{{ route('catalog') }}" class="inline-block border-2 border-black bg-white text-black px-10 py-4 rounded-lg text-xs uppercase tracking-widest font-black hover:bg-black hover:text-white transition shadow-xs hover:shadow-md cursor-pointer">
-                Buka Seluruh Katalog Sepatu &rarr;
+            <a href="{{ route('catalog') }}" class="inline-block border-2 border-black text-black px-10 py-4 text-xs uppercase tracking-widest font-black hover:bg-black hover:text-white transition">
+                Buka Seluruh Katalog Sepatu
             </a>
         </div>
     </div>
@@ -232,7 +232,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             @foreach($features as $feat)
-                <div class="space-y-3 bg-white p-6 border-2 border-gray-200 rounded-xl shadow-2xs">
+                <div class="space-y-3 bg-white p-6 border border-gray-200">
                     <span class="text-xs font-serif font-black text-black">0{{ $loop->iteration }}</span>
                     <h3 class="text-sm font-black text-black uppercase tracking-wide">{{ $feat->title }}</h3>
                     <p class="text-xs text-gray-500 leading-relaxed">{{ $feat->description }}</p>
@@ -245,7 +245,7 @@
 <!-- 6. Banner Akses Member & Kemitraan (B2B / Pre-Order) -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
-        <div class="border-2 border-black rounded-2xl p-8 sm:p-16 flex flex-col md:flex-row items-center justify-between gap-8 bg-gray-50/50 shadow-sm">
+        <div class="border-2 border-black p-8 sm:p-16 flex flex-col md:flex-row items-center justify-between gap-8 bg-gray-50/50">
             <div class="max-w-xl space-y-4">
                 <span class="text-[10px] uppercase tracking-widest font-black text-black">Tier Akses Eksklusif</span>
                 <h2 class="text-3xl font-serif font-black text-black">Bergabung Menjadi Member Sneakerhead atau Reseller PasarKita</h2>
@@ -254,10 +254,10 @@
                 </p>
             </div>
             <div class="flex flex-col sm:flex-row gap-4 shrink-0">
-                <a href="{{ route('register') }}" class="bg-black text-white text-xs uppercase tracking-widest font-black px-8 py-4 rounded-lg text-center hover:bg-neutral-800 transition shadow-md hover:shadow-lg cursor-pointer">
+                <a href="{{ route('register') }}" class="bg-black text-white text-xs uppercase tracking-widest font-bold px-8 py-4 text-center hover:bg-gray-800 transition">
                     Daftar Member Gratis
                 </a>
-                <a href="{{ route('login') }}" class="border-2 border-black bg-white text-black text-xs uppercase tracking-widest font-black px-8 py-4 rounded-lg text-center hover:bg-black hover:text-white transition shadow-xs hover:shadow-md cursor-pointer">
+                <a href="{{ route('login') }}" class="border-2 border-black text-black text-xs uppercase tracking-widest font-bold px-8 py-4 text-center hover:bg-white transition">
                     Masuk ke Akun
                 </a>
             </div>
