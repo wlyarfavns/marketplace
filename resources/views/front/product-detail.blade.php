@@ -2,32 +2,54 @@
 
 @section('content')
 <script>
+    window.productPageConfig = {
+        basePrice: {{ (float) $product->min_price }},
+        variantPrices: @json($product->variantPrices),
+        models: @json($product->models),
+        colors: @json($product->colors),
+        sizes: @json($product->sizes),
+        defaultImage: '{{ $product->primary_image_url }}',
+        ruleAdjustment: {{ $product->priceRules->where('is_active', true)->first() ? ($product->priceRules->where('is_active', true)->first()->rule_type === 'cut' ? - (float) $product->priceRules->where('is_active', true)->first()->amount : (float) $product->priceRules->where('is_active', true)->first()->amount) : 0 }},
+        bonusMinQty: {{ $product->bonuses->where('is_active', true)->first() ? (int) $product->bonuses->where('is_active', true)->first()->min_quantity : 9999 }}
+    };
+
     function productDetailState(config) {
+        const initialModel = (config.models && config.models.length > 0) ? config.models[0] : null;
+        const initialColor = (config.colors && config.colors.length > 0) ? config.colors[0] : null;
+        const initialSize = (config.sizes && config.sizes.length > 0) ? config.sizes[0] : null;
+
         return {
             basePrice: config.basePrice || 0,
             variantPrices: config.variantPrices || [],
             ruleAdjustment: config.ruleAdjustment || 0,
             bonusMinQty: config.bonusMinQty || 9999,
 
-            selectedModelId: (config.models && config.models.length > 0) ? config.models[0].id : null,
-            selectedModelName: (config.models && config.models.length > 0) ? config.models[0].model_name : '',
-            selectedColorId: null,
-            selectedColorName: '',
-            selectedSizeId: null,
-            selectedSizeLabel: '',
-            selectedImage: '{{ $product->primary_image_url }}',
+            selectedModelId: initialModel ? initialModel.id : null,
+            selectedModelName: initialModel ? initialModel.model_name : '',
+            selectedColorId: initialColor ? initialColor.id : null,
+            selectedColorName: initialColor ? initialColor.color_name : '',
+            selectedSizeId: initialSize ? initialSize.id : null,
+            selectedSizeLabel: initialSize ? initialSize.size_label : '',
+            selectedImage: config.defaultImage || '',
             quantity: 1,
 
             currentPrice: (config.basePrice || 0) + (config.ruleAdjustment || 0),
+
+            init() {
+                this.recalculatePrice();
+            },
 
             selectModel(id, name) {
                 this.selectedModelId = id;
                 this.selectedModelName = name;
                 this.recalculatePrice();
             },
-            selectColor(id, name) {
+            selectColor(id, name, image = null) {
                 this.selectedColorId = id;
                 this.selectedColorName = name;
+                if (image && image.trim() !== '') {
+                    this.selectedImage = image;
+                }
             },
             selectSize(id, label) {
                 this.selectedSizeId = id;
@@ -86,11 +108,6 @@
         };
     }
     window.productDetailState = productDetailState;
-    document.addEventListener('alpine:init', () => {
-        if (typeof Alpine !== 'undefined' && Alpine.data) {
-            Alpine.data('productDetailState', productDetailState);
-        }
-    });
 </script>
 
 <div class="border-b border-gray-100 bg-gray-50 py-4 text-xs text-gray-500">
@@ -103,15 +120,7 @@
     </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-8 py-12" 
-     x-data="productDetailState({
-        basePrice: {{ (float) $product->min_price }},
-        variantPrices: {!! json_encode($product->variantPrices) !!},
-        models: {!! json_encode($product->models) !!},
-        sizes: {!! json_encode($product->sizes) !!},
-        ruleAdjustment: {{ $product->priceRules->where('is_active', true)->first() ? ($product->priceRules->where('is_active', true)->first()->rule_type === 'cut' ? - (float) $product->priceRules->where('is_active', true)->first()->amount : (float) $product->priceRules->where('is_active', true)->first()->amount) : 0 }},
-        bonusMinQty: {{ $product->bonuses->where('is_active', true)->first() ? (int) $product->bonuses->where('is_active', true)->first()->min_quantity : 9999 }}
-     })">
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-12" x-data="productDetailState(window.productPageConfig)">
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         
@@ -159,7 +168,7 @@
                     @foreach($product->images as $img)
                         <button type="button" 
                                 @click="selectedImage = '{{ $img->url }}'"
-                                :class="selectedImage === '{{ $img->url }}' ? 'border-neutral-950 ring-2 ring-neutral-950' : 'border-neutral-200 hover:border-neutral-400'"
+                                :class="selectedImage === '{{ $img->url }}' ? 'border-[#0000FF] ring-2 ring-[#0000FF]/30' : 'border-neutral-200 hover:border-neutral-400'"
                                 class="aspect-square bg-[#FAFAFA] rounded-xl border overflow-hidden p-2 focus:outline-hidden transition cursor-pointer">
                             <img src="{{ $img->url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </button>
@@ -209,18 +218,21 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-center text-xs">
                         <label class="font-bold uppercase tracking-wider text-neutral-900">1. Pilih Edisi Box / Kemasan *</label>
-                        <span class="text-neutral-500" x-text="selectedModelName ? 'Terpilih: ' + selectedModelName : 'Wajib dipilih'"></span>
+                        <span class="text-neutral-500 font-medium" x-text="selectedModelName ? 'Terpilih: ' + selectedModelName : 'Wajib dipilih'"></span>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         @foreach($product->models as $m)
                             <button type="button" 
-                                    @click="selectModel({{ $m->id }}, '{{ $m->model_name }}')"
+                                    @click="selectModel({{ $m->id }}, {!! json_encode($m->model_name) !!})"
                                     :class="selectedModelId === {{ $m->id }} ? 'border-[#0000FF] bg-blue-50/70 text-[#0000FF] font-bold ring-2 ring-[#0000FF]/30 shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
-                                    class="p-3.5 text-left border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98]">
-                                <p class="font-bold text-xs">{{ $m->model_name }}</p>
-                                @if($m->description)
-                                    <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-[#0000FF]/70' : 'text-neutral-500'">{{ $m->description }}</p>
-                                @endif
+                                    class="p-3.5 text-left border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98] flex justify-between items-start">
+                                <div>
+                                    <p class="font-bold text-xs">{{ $m->model_name }}</p>
+                                    @if($m->description)
+                                        <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-[#0000FF]/70' : 'text-neutral-500'">{{ $m->description }}</p>
+                                    @endif
+                                </div>
+                                <i class="fa-solid fa-circle-check text-xs mt-0.5 text-[#0000FF]" x-show="selectedModelId === {{ $m->id }}"></i>
                             </button>
                         @endforeach
                     </div>
@@ -230,16 +242,17 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-center text-xs">
                         <label class="font-bold uppercase tracking-wider text-neutral-900">2. Pilih Colorway / Warna *</label>
-                        <span class="text-neutral-500" x-text="selectedColorName ? 'Terpilih: ' + selectedColorName : 'Wajib dipilih'"></span>
+                        <span class="text-neutral-500 font-medium" x-text="selectedColorName ? 'Terpilih: ' + selectedColorName : 'Wajib dipilih'"></span>
                     </div>
                     <div class="flex flex-wrap gap-2.5">
                         @foreach($product->colors as $c)
                             <button type="button" 
-                                    @click="selectColor({{ $c->id }}, '{{ $c->color_name }}')"
+                                    @click="selectColor({{ $c->id }}, {!! json_encode($c->color_name) !!}, '{{ $c->image_url ?? '' }}')"
                                     :class="selectedColorId === {{ $c->id }} ? 'border-[#0000FF] ring-2 ring-[#0000FF]/30 bg-blue-50/70 text-[#0000FF] font-bold shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
-                                    class="flex items-center gap-2 px-4 py-2.5 border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98]">
-                                <span class="w-3.5 h-3.5 rounded-full border border-neutral-300 shrink-0" style="background-color: {{ $c->hex_code }}"></span>
+                                    class="flex items-center gap-2.5 px-4 py-2.5 border rounded-xl text-xs transition-all duration-150 cursor-pointer active:scale-[0.98]">
+                                <span class="w-4 h-4 rounded-full border border-neutral-300 shrink-0 ring-1 ring-white shadow-2xs" style="background-color: {{ $c->hex_code }}"></span>
                                 <span>{{ $c->color_name }}</span>
+                                <i class="fa-solid fa-check text-[10px] ml-1 text-[#0000FF]" x-show="selectedColorId === {{ $c->id }}"></i>
                             </button>
                         @endforeach
                     </div>
@@ -249,12 +262,12 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-center text-xs">
                         <label class="font-bold uppercase tracking-wider text-neutral-900">3. Pilih Ukuran Sepatu (Size EU) *</label>
-                        <span class="text-neutral-500" x-text="selectedSizeLabel ? 'Terpilih: ' + selectedSizeLabel : 'Wajib dipilih'"></span>
+                        <span class="text-neutral-500 font-medium" x-text="selectedSizeLabel ? 'Terpilih: ' + selectedSizeLabel : 'Wajib dipilih'"></span>
                     </div>
                     <div class="flex flex-wrap gap-2.5">
                         @foreach($product->sizes as $s)
                             <button type="button" 
-                                    @click="selectSize({{ $s->id }}, '{{ $s->size_label }}')"
+                                    @click="selectSize({{ $s->id }}, {!! json_encode($s->size_label) !!})"
                                     :class="selectedSizeId === {{ $s->id }} ? 'border-[#0000FF] bg-blue-50/70 text-[#0000FF] font-bold ring-2 ring-[#0000FF]/30 shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-semibold shadow-2xs'"
                                     class="min-w-16 px-4 py-2.5 text-center border rounded-xl text-xs uppercase transition duration-150 cursor-pointer active:scale-[0.98]">
                                 {{ $s->size_label }}

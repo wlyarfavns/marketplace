@@ -17,8 +17,9 @@ class ProductColor extends Model
      */
     protected $fillable = [
         'product_id',
-        'name',
-        'color_code',
+        'color_name',
+        'hex_code',
+        'color_image_path',
         'sort_order',
     ];
 
@@ -32,6 +33,26 @@ class ProductColor extends Model
         return [
             'sort_order' => 'integer',
         ];
+    }
+
+    /**
+     * Get URL for color-specific image if present.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (empty($this->color_image_path)) {
+            return null;
+        }
+
+        if (str_starts_with($this->color_image_path, 'http://') || str_starts_with($this->color_image_path, 'https://')) {
+            return $this->color_image_path;
+        }
+
+        if (str_starts_with($this->color_image_path, 'images/')) {
+            return asset($this->color_image_path);
+        }
+
+        return asset('storage/'.$this->color_image_path);
     }
 
     // ── Relationships ────────────────────────────────────────────────
