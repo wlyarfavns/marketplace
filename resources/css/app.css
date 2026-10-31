@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@layer base {
+    body {
+        font-family: 'Inter', sans-serif;
+        color: #111827;
+        background-color: #FFFFFF;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4 {
+        font-family: 'Playfair Display', serif;
+    }
+}
