@@ -167,13 +167,19 @@ class PasarKitaTest extends TestCase
         $this->assertDatabaseHas('brands', ['slug' => 'adidas']);
         $this->assertDatabaseHas('brands', ['slug' => 'new-balance']);
 
-        $productWithImage = Product::has('images')->first();
-        $this->assertNotNull($productWithImage);
-        $this->assertNotNull($productWithImage->primary_image_url);
+        $visibleProduct = Product::active()
+            ->where('visible_to_umum', true)
+            ->where('product_type', 'ready_stock')
+            ->has('images')
+            ->latest()
+            ->first();
+
+        $this->assertNotNull($visibleProduct);
+        $this->assertNotNull($visibleProduct->primary_image_url);
 
         $response = $this->get('/katalog');
         $response->assertStatus(200);
-        $response->assertSee($productWithImage->name);
-        $response->assertSee($productWithImage->primary_image_url);
+        $response->assertSee($visibleProduct->name);
+        $response->assertSee($visibleProduct->primary_image_url);
     }
 }

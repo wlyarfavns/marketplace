@@ -50,9 +50,9 @@
     <div class="border-b border-gray-200 bg-white text-gray-700 text-xs py-2.5 px-4 sm:px-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-4 text-gray-600">
-                <span><i class="fa-solid fa-certificate text-black mr-1.5"></i> 100% Authentic Branded Shoes</span>
+                <span><i class="fa-solid fa-certificate text-black mr-1.5"></i> 100% Sepatu Branded Asli & Bergaransi Resmi</span>
                 <span class="hidden md:inline">•</span>
-                <span class="hidden md:inline"><i class="fa-solid fa-box text-black mr-1.5"></i> Double-Box Packing & Pengiriman Seluruh Indonesia</span>
+                <span class="hidden md:inline"><i class="fa-solid fa-box text-black mr-1.5"></i> Pengemasan Kotak Ganda & Pengiriman ke Seluruh Indonesia</span>
             </div>
             <div class="flex items-center gap-5 text-gray-700">
                 @auth
@@ -73,9 +73,9 @@
                         <button type="submit" class="text-gray-500 hover:text-black font-medium">Keluar</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Masuk Member</a>
+                    <a href="{{ route('login') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Masuk Akun</a>
                     <span class="text-gray-300">|</span>
-                    <a href="{{ route('register') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Daftar Akun</a>
+                    <a href="{{ route('register') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Daftar Member</a>
                 @endauth
             </div>
         </div>
@@ -90,29 +90,29 @@
                     Pasar<span class="font-light italic text-gray-500">Kita</span>
                 </span>
                 <span class="hidden sm:inline-block text-[10px] uppercase tracking-widest font-black text-black border-l-2 border-gray-300 pl-3">
-                    Sneakers & Shoes
+                    Toko Sepatu Branded
                 </span>
             </a>
 
             <!-- Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
                 <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
-                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
+                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Stok Siap Kirim</a>
                 
                 @auth
                     @if(in_array(Auth::user()->customer_type, ['member', 'distributor']) || Auth::user()->role === 'admin')
                         <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">
-                            <span>Pre-Order (PO)</span>
+                            <span>Prapesan (PO)</span>
                             <span class="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Eksklusif</span>
                         </a>
                     @endif
                 @else
-                    <span class="text-gray-400 cursor-not-allowed text-xs flex items-center gap-1" title="Login untuk membuka katalog PO sepatu">
-                        <i class="fa-solid fa-lock text-[10px]"></i> PO (Member Only)
+                    <span class="text-gray-400 cursor-not-allowed text-xs flex items-center gap-1" title="Masuk untuk membuka katalog Prapesan sepatu">
+                        <i class="fa-solid fa-lock text-[10px]"></i> Prapesan (Khusus Member)
                     </span>
                 @endauth
 
-                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
+                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-black pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi Sepatu</a>
             </nav>
 
             <!-- Actions (Search, Cart Drawer Trigger, My Account) -->
@@ -219,7 +219,7 @@
                         <div class="pt-4 first:pt-0 flex gap-4">
                             <div class="w-20 h-24 bg-neutral-100 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
                                 <template x-if="item.image">
-                                    <img :src="item.image.startsWith('http') ? item.image : '/storage/' + item.image" :alt="item.product_name" class="w-full h-full object-cover">
+                                    <img :src="item.image.startsWith('http') ? item.image : (item.image.startsWith('images/') ? '/' + item.image : '/storage/' + item.image)" :alt="item.product_name" class="w-full h-full object-cover">
                                 </template>
                                 <template x-if="!item.image">
                                     <i class="fa-solid fa-shoe-prints text-gray-300 text-xl"></i>
@@ -237,7 +237,7 @@
                                 </p>
                                 <template x-if="item.bonus_item">
                                     <span class="inline-block mt-1 bg-gray-100 text-black text-[10px] px-1.5 py-0.5 border border-gray-300 font-bold">
-                                        Bonus: <span x-text="item.bonus_item"></span>
+                                        Hadiah Bonus: <span x-text="item.bonus_item"></span>
                                     </span>
                                 </template>
                                 <div class="flex justify-between items-center mt-3">
@@ -261,11 +261,11 @@
                     </div>
                     <p class="text-[11px] text-gray-500">Ongkos kirim dan potongan kupon dihitung saat checkout.</p>
                     <div class="grid grid-cols-2 gap-3 pt-2">
-                        <a href="{{ route('cart.index') }}" class="text-center py-3 border-2 border-black text-xs font-bold uppercase tracking-wider text-black hover:bg-black hover:text-white transition">
+                        <a href="{{ route('cart.index') }}" class="text-center py-3.5 border-2 border-black bg-white text-xs font-black uppercase tracking-wider text-black hover:bg-black hover:text-white transition shadow-xs cursor-pointer active:scale-95">
                             Lihat Keranjang
                         </a>
-                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-black text-white text-xs font-bold uppercase tracking-wider hover:bg-gray-800 transition shadow-md">
-                            Checkout
+                        <a href="{{ route('checkout.index') }}" class="text-center py-3.5 bg-black text-white text-xs font-black uppercase tracking-wider hover:bg-neutral-800 transition shadow-md border-2 border-black cursor-pointer active:scale-95">
+                            Lanjut Pembayaran
                         </a>
                     </div>
                 </div>
@@ -315,7 +315,7 @@
             <div class="space-y-3">
                 <h4 class="text-xs uppercase font-black text-black tracking-wider">Layanan Pelanggan</h4>
                 <ul class="space-y-2 text-gray-500">
-                    <li><a href="{{ route('checkout.index') }}" class="hover:text-black hover:underline transition">Checkout Cepat (Guest)</a></li>
+                    <li><a href="{{ route('checkout.index') }}" class="hover:text-black hover:underline transition">Checkout Cepat (Tamu)</a></li>
                     <li><a href="{{ route('account.dashboard') }}" class="hover:text-black hover:underline transition">Halaman Akun Saya</a></li>
                     <li><a href="{{ route('account.orders') }}" class="hover:text-black hover:underline transition">Lacak Riwayat Pesanan</a></li>
                     <li><a href="{{ route('admin.login') }}" class="hover:text-black hover:underline transition">Portal Administrator</a></li>
