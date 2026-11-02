@@ -85,10 +85,10 @@
     <table class="header">
         <tr>
             <td style="width: 50%;">
-                <div class="logo">PASARKITA</div>
+                <div class="logo">FOOTWORK</div>
                 <div style="color: #666; font-size: 10px; margin-top: 4px;">
                     Toko Sepatu Branded & Sneakers Original Terpercaya<br>
-                    Website: pasarkita.com &bull; CS WhatsApp Resmi
+                    Website: footwork.id &bull; CS WhatsApp Resmi
                 </div>
             </td>
             <td style="width: 50%; text-align: right;">
@@ -189,8 +189,8 @@
 
     <!-- Footer Dokumen -->
     <div class="footer">
-        Faktur ini diterbitkan secara sah oleh sistem PasarKita dan berlaku sebagai bukti transaksi resmi.<br>
-        Terima kasih atas kepercayaan Anda berbelanja sepatu branded original di PasarKita.
+        Faktur ini diterbitkan secara sah oleh sistem FOOTWORK dan berlaku sebagai bukti transaksi resmi.<br>
+        Terima kasih atas kepercayaan Anda berbelanja sepatu branded original di FOOTWORK.
     </div>
 
 </body>

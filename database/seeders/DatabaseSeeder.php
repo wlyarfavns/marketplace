@@ -30,13 +30,13 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Users dengan berbagai Role & Tipe
         $admin = User::create([
-            'name' => 'Administrator PasarKita',
+            'name' => 'Administrator FOOTWORK',
             'email' => 'admin@pasarkita.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'customer_type' => 'umum',
             'phone' => '081234567890',
-            'address' => 'PasarKita Sneaker Hub Lt. 3, Jl. Sudirman No. 12',
+            'address' => 'FOOTWORK Sneaker Hub Lt. 3, Jl. Sudirman No. 12',
             'city' => 'Jakarta Selatan',
             'province' => 'DKI Jakarta',
             'postal_code' => '12190',
@@ -188,12 +188,12 @@ class DatabaseSeeder extends Seeder
             $createdCategories[$c['slug']] = Category::create(array_merge($c, ['is_active' => true]));
         }
 
-        // 4. Data Master Sellers (Mitra & Outlet Resmi PasarKita)
+        // 4. Data Master Sellers (Mitra & Outlet Resmi FOOTWORK)
         $sellersData = [
-            ['seller_code' => 'MITRA-001', 'brand_id' => $createdBrands['nike']->id, 'name' => 'PasarKita Jakarta Flagship', 'phone' => '081299112233'],
-            ['seller_code' => 'MITRA-002', 'brand_id' => $createdBrands['air-jordan']->id, 'name' => 'PasarKita Hub Surabaya', 'phone' => '081388223344'],
-            ['seller_code' => 'MITRA-003', 'brand_id' => $createdBrands['adidas']->id, 'name' => 'PasarKita Hub Bandung', 'phone' => '081577334455'],
-            ['seller_code' => 'SELLER-SOLO', 'brand_id' => $createdBrands['new-balance']->id, 'name' => 'PasarKita Official Outlet Solo', 'phone' => '081866445566'],
+            ['seller_code' => 'MITRA-001', 'brand_id' => $createdBrands['nike']->id, 'name' => 'FOOTWORK Jakarta Flagship', 'phone' => '081299112233'],
+            ['seller_code' => 'MITRA-002', 'brand_id' => $createdBrands['air-jordan']->id, 'name' => 'FOOTWORK Hub Surabaya', 'phone' => '081388223344'],
+            ['seller_code' => 'MITRA-003', 'brand_id' => $createdBrands['adidas']->id, 'name' => 'FOOTWORK Hub Bandung', 'phone' => '081577334455'],
+            ['seller_code' => 'SELLER-SOLO', 'brand_id' => $createdBrands['new-balance']->id, 'name' => 'FOOTWORK Official Outlet Solo', 'phone' => '081866445566'],
         ];
 
         foreach ($sellersData as $s) {
@@ -202,9 +202,9 @@ class DatabaseSeeder extends Seeder
 
         // 5. Data Bank Accounts
         $banks = [
-            ['bank_name' => 'Bank Central Asia (BCA)', 'account_number' => '8820991823', 'account_holder_name' => 'PT PASARKITA DIGITAL INDONESIA', 'is_active' => true],
-            ['bank_name' => 'Bank Mandiri', 'account_number' => '1370019283741', 'account_holder_name' => 'PT PASARKITA DIGITAL INDONESIA', 'is_active' => true],
-            ['bank_name' => 'Bank Syariah Indonesia (BSI)', 'account_number' => '7112233445', 'account_holder_name' => 'PT PASARKITA DIGITAL INDONESIA', 'is_active' => true],
+            ['bank_name' => 'Bank Central Asia (BCA)', 'account_number' => '8820991823', 'account_holder_name' => 'PT FOOTWORK DIGITAL INDONESIA', 'is_active' => true],
+            ['bank_name' => 'Bank Mandiri', 'account_number' => '1370019283741', 'account_holder_name' => 'PT FOOTWORK DIGITAL INDONESIA', 'is_active' => true],
+            ['bank_name' => 'Bank Syariah Indonesia (BSI)', 'account_number' => '7112233445', 'account_holder_name' => 'PT FOOTWORK DIGITAL INDONESIA', 'is_active' => true],
         ];
         foreach ($banks as $b) {
             BankAccount::create($b);
@@ -212,7 +212,7 @@ class DatabaseSeeder extends Seeder
 
         // 6. Data Customer Service (Termasuk Floating WA)
         CustomerService::create([
-            'name' => 'CS PasarKita Sneaker Care',
+            'name' => 'CS FOOTWORK Sneaker Care',
             'phone' => '6281234567890',
             'is_floating_whatsapp' => true,
             'is_active' => true,
@@ -230,7 +230,7 @@ class DatabaseSeeder extends Seeder
 
         // 8. Data Keunggulan (Features)
         $features = [
-            ['title' => '100% Original Authentic Guaranteed', 'description' => 'Jaminan keaslian 100% uang kembali untuk seluruh koleksi sepatu branded resmi di PasarKita.', 'sort_order' => 1],
+            ['title' => '100% Original Authentic Guaranteed', 'description' => 'Jaminan keaslian 100% uang kembali untuk seluruh koleksi sepatu branded resmi di FOOTWORK.', 'sort_order' => 1],
             ['title' => 'Skema Pre-Order DP Terpercaya', 'description' => 'Pesan sneaker rilisan terbatas cukup dengan Down Payment (DP) mulai 25%, pelunasan saat sepatu siap kirim.', 'sort_order' => 2],
             ['title' => 'Tier Member & Diskon Grosir Reseller', 'description' => 'Dapatkan penawaran harga terbaik untuk reseller dan komunitas sneakerhead dengan aturan diskon otomatis.', 'sort_order' => 3],
             ['title' => 'Double-Box Packing & Fast Delivery', 'description' => 'Setiap pasang sepatu dikemas menggunakan kardus double-box tebal dan bubble wrap untuk menjaga keutuhan box original.', 'sort_order' => 4],
@@ -241,9 +241,9 @@ class DatabaseSeeder extends Seeder
 
         // 9. Data Social Media
         $socials = [
-            ['platform' => 'Instagram', 'icon_class' => 'fab fa-instagram', 'brand_color' => '#000000', 'url' => 'https://instagram.com/pasarkita.official', 'sort_order' => 1],
-            ['platform' => 'TikTok', 'icon_class' => 'fab fa-tiktok', 'brand_color' => '#000000', 'url' => 'https://tiktok.com/@pasarkita.id', 'sort_order' => 2],
-            ['platform' => 'YouTube', 'icon_class' => 'fab fa-youtube', 'brand_color' => '#000000', 'url' => 'https://youtube.com/@pasarkita', 'sort_order' => 3],
+            ['platform' => 'Instagram', 'icon_class' => 'fab fa-instagram', 'brand_color' => '#000000', 'url' => 'https://instagram.com/footwork.official', 'sort_order' => 1],
+            ['platform' => 'TikTok', 'icon_class' => 'fab fa-tiktok', 'brand_color' => '#000000', 'url' => 'https://tiktok.com/@footwork.id', 'sort_order' => 2],
+            ['platform' => 'YouTube', 'icon_class' => 'fab fa-youtube', 'brand_color' => '#000000', 'url' => 'https://youtube.com/@footwork', 'sort_order' => 3],
         ];
         foreach ($socials as $s) {
             SocialMedia::create(array_merge($s, ['is_active' => true]));
@@ -252,7 +252,7 @@ class DatabaseSeeder extends Seeder
         // 10. Data Banners Promo (Menggunakan File SVG Lokal Cepat & Ringan)
         Banner::create([
             'title' => 'Official Drop: Branded Sneakers Collection',
-            'description' => 'Koleksi rilisan terbaru dari Nike, Jordan, Adidas, hingga New Balance dengan jaminan 100% original bergaransi PasarKita.',
+            'description' => 'Koleksi rilisan terbaru dari Nike, Jordan, Adidas, hingga New Balance dengan jaminan 100% original bergaransi FOOTWORK.',
             'image_path' => 'images/banners/banner-official-drop.jpg',
             'url' => '/katalog',
             'sort_order' => 1,
@@ -260,7 +260,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Banner::create([
             'title' => 'Pre-Order Rilisan Langka & Edisi Terbatas',
-            'description' => 'Amankan siluet sneaker langka dan size favoritmu dengan skema DP mulai 25% khusus Member & Mitra PasarKita.',
+            'description' => 'Amankan siluet sneaker langka dan size favoritmu dengan skema DP mulai 25% khusus Member & Mitra FOOTWORK.',
             'image_path' => 'images/banners/banner-preorder-vault.jpg',
             'url' => '/katalog?type=po',
             'sort_order' => 2,
@@ -269,7 +269,7 @@ class DatabaseSeeder extends Seeder
 
         // 11. Data Kupon
         Coupon::create([
-            'code' => 'PASARKITA10',
+            'code' => 'FOOTWORK10',
             'discount_type' => 'percentage',
             'discount_value' => 10.00,
             'max_discount' => 100000.00,
@@ -591,7 +591,7 @@ class DatabaseSeeder extends Seeder
             'price_rule' => [
                 'type' => 'cut',
                 'amount' => 75000,
-                'description' => 'Potongan otomatis Rp 75.000 per pasang khusus order reseller/distributor PasarKita',
+                'description' => 'Potongan otomatis Rp 75.000 per pasang khusus order reseller/distributor FOOTWORK',
             ],
         ]);
 
@@ -1066,7 +1066,7 @@ class DatabaseSeeder extends Seeder
             'visible_to_member' => false,
             'visible_to_distributor' => true, // HANYA DISTRIBUTOR
             'weight_grams' => 4500,
-            'product_note' => 'Khusus Mitra Distributor & Reseller berlisensi PasarKita. Minimal pembelian 1 paket seri (isi 5 pasang lengkap size run EU 40-44).',
+            'product_note' => 'Khusus Mitra Distributor & Reseller berlisensi FOOTWORK. Minimal pembelian 1 paket seri (isi 5 pasang lengkap size run EU 40-44).',
             'description' => 'Paket grosir partai resmi Adidas Samba OG paling dicari di pasar sneaker. Sol gum klasik dengan kulit asli halus dan suede T-toe khas, perpaduan Cloud White dan aksen Core Black.',
             'min_price' => 8250000,
             'max_price' => 8250000,

@@ -13,7 +13,7 @@
         <div class="text-center py-20 border border-dashed border-neutral-200 bg-neutral-50/50 rounded-2xl">
             <i class="fa-solid fa-bag-shopping text-4xl text-neutral-300 mb-4 block"></i>
             <h3 class="text-lg font-bold text-neutral-900 tracking-tight">Keranjang Anda masih kosong</h3>
-            <p class="text-xs text-neutral-500 mt-1">Silakan pilih sepatu branded favorit Anda di katalog PasarKita.</p>
+            <p class="text-xs text-neutral-500 mt-1">Silakan pilih sepatu branded favorit Anda di katalog FOOTWORK.</p>
             <a href="{{ route('catalog') }}" class="inline-block mt-6 bg-neutral-950 hover:bg-neutral-800 text-white px-8 py-3.5 text-xs uppercase tracking-wider font-semibold rounded-xl shadow-xs hover:shadow-sm active:scale-[0.98] transition cursor-pointer">
                 Mulai Berbelanja &rarr;
             </a>

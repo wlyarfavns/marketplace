@@ -297,7 +297,7 @@
 
                     <!-- Rekening Tujuan Transfer Bank -->
                     <div class="pt-4 border-t border-gray-200 space-y-2">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-gray-900">Transfer Bank Resmi PasarKita:</p>
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-gray-900">Transfer Bank Resmi FOOTWORK:</p>
                         <div class="space-y-1.5 text-xs text-gray-600">
                             @foreach($banks as $b)
                                 <div class="bg-white p-2.5 border border-gray-200 flex justify-between items-center">
@@ -318,7 +318,7 @@
                     </button>
 
                     <p class="text-[10px] text-gray-400 text-center leading-relaxed">
-                        Dengan menekan tombol, Anda menyetujui syarat & ketentuan transaksi PasarKita.
+                        Dengan menekan tombol, Anda menyetujui syarat & ketentuan transaksi FOOTWORK.
                     </p>
                 </div>
 

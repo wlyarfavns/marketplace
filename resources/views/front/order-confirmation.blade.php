@@ -60,7 +60,7 @@
     <!-- Rincian Rekening Bank Resmi -->
     <div class="border border-gray-200 p-6 bg-gray-50 space-y-4">
         <h3 class="text-xs uppercase font-bold tracking-wider text-gray-900 border-b border-gray-200 pb-2">
-            Silakan Transfer Tepat ke Salah Satu Rekening Resmi PasarKita:
+            Silakan Transfer Tepat ke Salah Satu Rekening Resmi FOOTWORK:
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             @foreach($banks as $b)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk Administrator — PasarKita Back-Office</title>
+    <title>Masuk Administrator — FOOTWORK Back-Office</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
     <div class="max-w-md w-full bg-white border border-gray-200 p-8 sm:p-10 space-y-6">
         <div class="text-center space-y-2">
             <span class="text-2xl font-serif font-bold text-gray-950 uppercase tracking-tight block">
-                Pasar<span class="font-light italic text-gray-500">Kita</span>
+                FOOTWORK
             </span>
             <span class="text-[10px] uppercase tracking-widest text-gray-400 font-bold block">Back-Office Administrator</span>
             <p class="text-xs text-gray-500 font-light">Masuk untuk mengelola seluruh 16 modul operasional marketplace.</p>
@@ -37,7 +37,7 @@
             <div class="space-y-1">
                 <label class="text-xs font-semibold text-gray-700">Email Administrator</label>
                 <div class="relative">
-                    <input type="email" name="email" required value="{{ old('email', 'admin@pasarkita.com') }}" placeholder="admin@pasarkita.com"
+                    <input type="email" name="email" required value="{{ old('email', 'admin@footwork.id') }}" placeholder="admin@footwork.id"
                            class="w-full text-xs px-3.5 py-2.5 border border-gray-300 focus:outline-none focus:border-black">
                 </div>
                 @error('email')
@@ -64,7 +64,7 @@
         </form>
 
         <div class="p-3 bg-gray-50 border border-gray-200 text-xs text-gray-500 text-center">
-            <span class="font-semibold text-gray-800">Akun Super Admin:</span> admin@pasarkita.com &bull; Pass: <code class="font-mono text-black">password</code>
+            <span class="font-semibold text-gray-800">Akun Super Admin:</span> admin@footwork.id &bull; Pass: <code class="font-mono text-black">password</code>
         </div>
 
         <div class="text-center pt-2 border-t border-gray-100">

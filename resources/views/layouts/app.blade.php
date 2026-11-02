@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? 'PasarKita — Toko Sepatu Branded & Sneakers Original' }}</title>
+    <title>{{ $title ?? 'FOOTWORK — Toko Sepatu Branded & Sneakers Original' }}</title>
     
     <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,7 +91,7 @@
             <!-- Brand Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3">
                 <span class="text-2xl sm:text-[26px] font-extrabold tracking-tighter text-neutral-950 uppercase">
-                    PASARKITA.
+                    FOOTWORK.
                 </span>
                 <span class="hidden sm:inline-block text-[10px] uppercase tracking-widest font-bold text-neutral-400 border-l border-neutral-200 pl-3">
                     Sneakers & Shoes
@@ -280,7 +280,7 @@
 
     <!-- 6. Floating WhatsApp Button -->
     @if(isset($floatingWa) && $floatingWa)
-        <a href="https://wa.me/{{ $floatingWa->phone }}?text=Halo%20Admin%20PasarKita,%20saya%20ingin%20bertanya%20mengenai%20koleksi%20sepatu%20branded..." 
+        <a href="https://wa.me/{{ $floatingWa->phone }}?text=Halo%20Admin%20FOOTWORK,%20saya%20ingin%20bertanya%20mengenai%20koleksi%20sepatu%20branded..." 
            target="_blank" 
            class="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white w-13 h-13 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition duration-200"
            title="Chat WhatsApp CS {{ $floatingWa->name }}">
@@ -293,9 +293,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             <!-- Col 1: Brand Info -->
             <div class="space-y-4">
-                <span class="text-2xl font-extrabold text-neutral-950 uppercase tracking-tighter">PASARKITA.</span>
+                <span class="text-2xl font-extrabold text-neutral-950 uppercase tracking-tighter">FOOTWORK.</span>
                 <p class="text-gray-500 leading-relaxed text-xs">
-                    Toko sepatu branded dan sneakers original terpercaya milik owner PasarKita. Menghadirkan rilisan resmi dari Nike, Air Jordan, Adidas, New Balance, Puma, dan Asics dengan garansi keaslian 100% dan kemudahan Pre-Order ber-DP.
+                    Toko sepatu branded dan sneakers original terpercaya milik FOOTWORK. Menghadirkan rilisan resmi dari Nike, Air Jordan, Adidas, New Balance, Puma, dan Asics dengan garansi keaslian 100% dan kemudahan Pre-Order ber-DP.
                 </p>
                 <div class="flex items-center gap-3 pt-2 text-sm text-black">
                     <a href="#" class="w-8 h-8 rounded-full border border-gray-300 hover:bg-black hover:text-white transition flex items-center justify-center"><i class="fa-brands fa-instagram"></i></a>
@@ -340,7 +340,7 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8 mt-12 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-[11px] gap-2">
-            <p>&copy; 2026 PasarKita. Seluruh hak cipta dilindungi undang-undang.</p>
+            <p>&copy; 2026 FOOTWORK. Seluruh hak cipta dilindungi undang-undang.</p>
             <p>Toko Sepatu Branded Original &bull; Tema Dominan Putih & Hitam</p>
         </div>
     </footer>

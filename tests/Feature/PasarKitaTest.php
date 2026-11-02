@@ -15,7 +15,7 @@ class PasarKitaTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('PasarKita');
+        $response->assertSee('FOOTWORK');
     }
 
     public function test_catalog_loads_successfully(): void

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page_title', '14. Media Sosial PasarKita')
+@section('page_title', '14. Media Sosial FOOTWORK')
 
 @section('content')
 <div class="space-y-6" x-data="{ addModal: false }">
@@ -78,7 +78,7 @@
 
                 <div class="space-y-1">
                     <label class="font-semibold text-slate-700">URL / Tautan Profil Lengkap *</label>
-                    <input type="url" name="url" required placeholder="https://instagram.com/pasarkita.official" class="w-full px-3 py-2 border border-slate-300">
+                    <input type="url" name="url" required placeholder="https://instagram.com/footwork.official" class="w-full px-3 py-2 border border-slate-300">
                 </div>
 
                 <div class="space-y-1">

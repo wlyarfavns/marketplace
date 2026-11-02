@@ -64,7 +64,7 @@
 
                 <div class="space-y-1">
                     <label class="font-semibold text-slate-700">Atas Nama Pemilik (A/N) *</label>
-                    <input type="text" name="account_holder_name" required placeholder="PT PASARKITA DIGITAL INDONESIA" class="w-full px-3 py-2 border border-slate-300 uppercase">
+                    <input type="text" name="account_holder_name" required placeholder="PT FOOTWORK DIGITAL INDONESIA" class="w-full px-3 py-2 border border-slate-300 uppercase">
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">

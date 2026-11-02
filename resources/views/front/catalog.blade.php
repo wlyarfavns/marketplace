@@ -4,7 +4,7 @@
 <div class="border-b border-neutral-200 bg-neutral-50/60 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <span class="text-xs uppercase tracking-widest text-neutral-400 font-bold">Katalog Sepatu Branded</span>
-        <h1 class="text-3xl font-extrabold text-neutral-950 tracking-tight mt-1">Koleksi PasarKita</h1>
+        <h1 class="text-3xl font-extrabold text-neutral-950 tracking-tight mt-1">Koleksi FOOTWORK</h1>
     </div>
 </div>
 
@@ -163,7 +163,7 @@
                                 <!-- Product Content -->
                                 <div class="p-5">
                                     <div class="flex items-center justify-between text-[11px] font-bold tracking-wider uppercase text-neutral-400 mb-1.5">
-                                        <span>{{ $prod->brand ? $prod->brand->name : 'PasarKita' }}</span>
+                                        <span>{{ $prod->brand ? $prod->brand->name : 'FOOTWORK' }}</span>
                                         <span class="text-neutral-400 font-medium text-[10px] normal-case capitalize">{{ $prod->categories->first()?->name ?? 'Sneakers' }}</span>
                                     </div>
 

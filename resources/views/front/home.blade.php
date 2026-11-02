@@ -57,7 +57,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
             <div>
                 <span class="text-[11px] uppercase tracking-widest font-bold text-neutral-400">Brand Resmi Terdaftar</span>
-                <h2 class="text-2xl font-bold text-neutral-950 tracking-tight mt-1">Brand Pilihan di PasarKita</h2>
+                <h2 class="text-2xl font-bold text-neutral-950 tracking-tight mt-1">Brand Pilihan di FOOTWORK</h2>
             </div>
             <a href="{{ route('catalog') }}" class="text-xs uppercase tracking-wider font-semibold border-b border-neutral-300 pb-0.5 text-neutral-700 hover:text-neutral-950 hover:border-neutral-950 transition">
                 Lihat Seluruh Brand &rarr;
@@ -99,7 +99,7 @@
                 
                 <div class="relative z-10 max-w-xl space-y-3.5">
                     <span class="inline-block text-[10px] tracking-widest uppercase font-bold text-neutral-700 bg-neutral-100 px-3 py-1 rounded-md border border-neutral-200/80">
-                        Promo Eksklusif PasarKita
+                        Promo Eksklusif FOOTWORK
                     </span>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-950 leading-tight tracking-tight">
                         {{ $banner->title }}
@@ -185,7 +185,7 @@
                         <!-- Product Content -->
                         <div class="p-5">
                             <div class="flex items-center justify-between text-[11px] font-bold tracking-wider uppercase text-neutral-400 mb-1.5">
-                                <span>{{ $prod->brand ? $prod->brand->name : 'PasarKita' }}</span>
+                                <span>{{ $prod->brand ? $prod->brand->name : 'FOOTWORK' }}</span>
                                 <span class="text-neutral-400 font-medium text-[10px] normal-case capitalize">{{ $prod->categories->first()?->name ?? 'Sneakers' }}</span>
                             </div>
                             
@@ -264,7 +264,7 @@
         <div class="border border-neutral-200 p-8 sm:p-14 flex flex-col md:flex-row items-center justify-between gap-8 bg-neutral-50/40 rounded-3xl">
             <div class="max-w-xl space-y-4">
                 <span class="text-[10px] uppercase tracking-widest font-bold text-neutral-400">Tier Akses Eksklusif</span>
-                <h2 class="text-3xl font-extrabold text-neutral-950 tracking-tight">Bergabung Menjadi Member Sneakerhead atau Reseller PasarKita</h2>
+                <h2 class="text-3xl font-extrabold text-neutral-950 tracking-tight">Bergabung Menjadi Member Sneakerhead atau Reseller FOOTWORK</h2>
                 <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
                     Dapatkan akses prioritas ke seluruh katalog Pre-Order (PO) sepatu langka, pemanfaatan kupon diskon member, aturan potongan harga grosir otomatis untuk reseller partai, serta keamanan double-box packing terpercaya.
                 </p>

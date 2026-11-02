@@ -28,7 +28,15 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $email = $credentials['email'];
+        $altEmail = str_ends_with($email, '@footwork.id')
+            ? str_replace('@footwork.id', '@pasarkita.com', $email)
+            : (str_ends_with($email, '@pasarkita.com') ? str_replace('@pasarkita.com', '@footwork.id', $email) : null);
+
+        $attemptSuccess = Auth::attempt($credentials, $request->boolean('remember')) ||
+            ($altEmail && Auth::attempt(['email' => $altEmail, 'password' => $credentials['password']], $request->boolean('remember')));
+
+        if ($attemptSuccess) {
             $request->session()->regenerate();
 
             if (Auth::user()->role === 'admin') {
@@ -98,7 +106,15 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $email = $credentials['email'];
+        $altEmail = str_ends_with($email, '@footwork.id')
+            ? str_replace('@footwork.id', '@pasarkita.com', $email)
+            : (str_ends_with($email, '@pasarkita.com') ? str_replace('@pasarkita.com', '@footwork.id', $email) : null);
+
+        $attemptSuccess = Auth::attempt($credentials, $request->boolean('remember')) ||
+            ($altEmail && Auth::attempt(['email' => $altEmail, 'password' => $credentials['password']], $request->boolean('remember')));
+
+        if ($attemptSuccess) {
             $request->session()->regenerate();
 
             if (Auth::user()->role !== 'admin') {

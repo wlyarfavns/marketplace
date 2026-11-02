@@ -49,10 +49,10 @@
                 </a>
             </div>
             <div class="space-y-1.5 text-[11px] text-neutral-600">
-                <p><span class="font-semibold text-neutral-900">1. Administrator:</span> admin@pasarkita.com (pass: password)</p>
-                <p><span class="font-semibold text-neutral-900">2. Member:</span> member@pasarkita.com (pass: password)</p>
-                <p><span class="font-semibold text-neutral-900">3. Distributor:</span> distributor@pasarkita.com (pass: password)</p>
-                <p><span class="font-semibold text-neutral-900">4. Customer Umum:</span> umum@pasarkita.com (pass: password)</p>
+                <p><span class="font-semibold text-neutral-900">1. Administrator:</span> admin@footwork.id (pass: password)</p>
+                <p><span class="font-semibold text-neutral-900">2. Member:</span> member@footwork.id (pass: password)</p>
+                <p><span class="font-semibold text-neutral-900">3. Distributor:</span> distributor@footwork.id (pass: password)</p>
+                <p><span class="font-semibold text-neutral-900">4. Customer Umum:</span> umum@footwork.id (pass: password)</p>
             </div>
         </div>
 

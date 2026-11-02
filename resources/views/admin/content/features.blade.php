@@ -7,7 +7,7 @@
     
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-lg font-bold text-slate-900">4 Pilar Nilai Jual PasarKita</h2>
+            <h2 class="text-lg font-bold text-slate-900">4 Pilar Nilai Jual FOOTWORK</h2>
             <p class="text-xs text-slate-500 mt-0.5">Kelola keunggulan toko yang tampil di beranda untuk membangun kepercayaan calon pembeli.</p>
         </div>
         <button @click="addModal = true" class="bg-slate-900 text-white text-xs uppercase tracking-wider font-semibold px-4 py-2.5 hover:bg-slate-800 transition">

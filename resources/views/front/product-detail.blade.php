@@ -189,7 +189,7 @@
         <div class="space-y-6">
             <div>
                 <span class="text-xs uppercase tracking-widest text-neutral-400 font-bold block mb-1">
-                    Brand: {{ $product->brand ? $product->brand->name : 'PasarKita Exclusive' }}
+                    Brand: {{ $product->brand ? $product->brand->name : 'FOOTWORK Exclusive' }}
                 </span>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-950 tracking-tight leading-tight">{{ $product->name }}</h1>
                 <p class="text-xs text-neutral-500 mt-2">SKU: <span class="font-mono text-neutral-900 font-medium">{{ $product->sku }}</span> &bull; Berat: {{ $product->weight_grams }} gram</p>
