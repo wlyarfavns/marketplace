@@ -11,6 +11,7 @@ use Tests\TestCase;
 class OtpRegistrationTest extends TestCase
 {
     use DatabaseTransactions;
+
     public function test_registration_creates_pending_user_and_sends_otp(): void
     {
         Mail::fake();
@@ -91,5 +92,15 @@ class OtpRegistrationTest extends TestCase
         $response->assertSessionHasErrors('otp');
         $this->assertGuest();
     }
-}
 
+    public function test_login_with_pasarkita_or_footwork_email(): void
+    {
+        $response = $this->post('/login', [
+            'email' => 'admin@pasarkita.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/admin/dashboard');
+        $this->assertAuthenticated();
+    }
+}
