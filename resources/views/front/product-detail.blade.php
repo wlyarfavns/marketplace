@@ -14,15 +14,22 @@
     };
 
     function productDetailState(config) {
-        const initialModel = (config.models && config.models.length > 0) ? config.models[0] : null;
-        const initialColor = (config.colors && config.colors.length > 0) ? config.colors[0] : null;
-        const initialSize = (config.sizes && config.sizes.length > 0) ? config.sizes[0] : null;
+        const models = config.models || [];
+        const colors = config.colors || [];
+        const sizes = config.sizes || [];
+
+        const initialModel = models.length > 0 ? models[0] : null;
+        const initialColor = colors.length > 0 ? colors[0] : null;
+        const initialSize = sizes.length > 0 ? sizes[0] : null;
 
         return {
             basePrice: config.basePrice || 0,
             variantPrices: config.variantPrices || [],
             ruleAdjustment: config.ruleAdjustment || 0,
             bonusMinQty: config.bonusMinQty || 9999,
+            models: models,
+            colors: colors,
+            sizes: sizes,
 
             selectedModelId: initialModel ? initialModel.id : null,
             selectedModelName: initialModel ? initialModel.model_name : '',
@@ -39,21 +46,27 @@
                 this.recalculatePrice();
             },
 
-            selectModel(id, name) {
+            selectModel(id) {
                 this.selectedModelId = id;
-                this.selectedModelName = name;
+                const found = this.models.find(m => m.id === id);
+                this.selectedModelName = found ? found.model_name : '';
                 this.recalculatePrice();
             },
-            selectColor(id, name, image = null) {
+            selectColor(id) {
                 this.selectedColorId = id;
-                this.selectedColorName = name;
-                if (image && image.trim() !== '') {
-                    this.selectedImage = image;
+                const found = this.colors.find(c => c.id === id);
+                this.selectedColorName = found ? found.color_name : '';
+                if (found && found.image_url) {
+                    this.selectedImage = found.image_url;
+                } else if (found && found.color_image_path) {
+                    const p = found.color_image_path;
+                    this.selectedImage = (p.startsWith('http://') || p.startsWith('https://')) ? p : (p.startsWith('images/') ? '/' + p : '/storage/' + p);
                 }
             },
-            selectSize(id, label) {
+            selectSize(id) {
                 this.selectedSizeId = id;
-                this.selectedSizeLabel = label;
+                const found = this.sizes.find(s => s.id === id);
+                this.selectedSizeLabel = found ? found.size_label : '';
                 this.recalculatePrice();
             },
             recalculatePrice() {
@@ -223,7 +236,7 @@
                     <div class="grid grid-cols-2 gap-3">
                         @foreach($product->models as $m)
                             <button type="button" 
-                                    @click="selectModel({{ $m->id }}, {!! json_encode($m->model_name) !!})"
+                                    @click="selectModel({{ $m->id }})"
                                     :class="selectedModelId === {{ $m->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold shadow-xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
                                     class="p-3.5 text-left border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98] flex justify-between items-start">
                                 <div>
@@ -247,7 +260,7 @@
                     <div class="flex flex-wrap gap-2.5">
                         @foreach($product->colors as $c)
                             <button type="button" 
-                                    @click="selectColor({{ $c->id }}, {!! json_encode($c->color_name) !!}, '{{ $c->image_url ?? '' }}')"
+                                    @click="selectColor({{ $c->id }})"
                                     :class="selectedColorId === {{ $c->id }} ? 'border-neutral-950 ring-2 ring-neutral-900/20 bg-neutral-100 text-neutral-950 font-bold shadow-xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
                                     class="flex items-center gap-2.5 px-4 py-2.5 border rounded-xl text-xs transition-all duration-150 cursor-pointer active:scale-[0.98]">
                                 <span class="w-4 h-4 rounded-full border border-neutral-300 shrink-0 ring-1 ring-white shadow-2xs" style="background-color: {{ $c->hex_code }}"></span>
@@ -267,7 +280,7 @@
                     <div class="flex flex-wrap gap-2.5">
                         @foreach($product->sizes as $s)
                             <button type="button" 
-                                    @click="selectSize({{ $s->id }}, {!! json_encode($s->size_label) !!})"
+                                    @click="selectSize({{ $s->id }})"
                                     :class="selectedSizeId === {{ $s->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold shadow-xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-semibold shadow-2xs'"
                                     class="min-w-16 px-4 py-2.5 text-center border rounded-xl text-xs uppercase transition duration-150 cursor-pointer active:scale-[0.98]">
                                 {{ $s->size_label }}
