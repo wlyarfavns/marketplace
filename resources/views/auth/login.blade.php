@@ -21,12 +21,23 @@
                 @enderror
             </div>
 
-            <div class="space-y-1">
+            <div class="space-y-1" x-data="{ showPassword: false }">
                 <div class="flex justify-between items-center">
                     <label class="text-xs font-bold text-neutral-900">Kata Sandi *</label>
                 </div>
-                <input type="password" name="password" required placeholder="••••••••"
-                       class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:border-neutral-950">
+                <div class="relative">
+                    <input :type="showPassword ? 'text' : 'password'" 
+                           name="password" 
+                           required 
+                           placeholder="••••••••"
+                           class="w-full text-xs px-3.5 py-2.5 pr-10 rounded-xl border border-neutral-200 focus:outline-none focus:border-neutral-950">
+                    <button type="button" 
+                            @click="showPassword = !showPassword" 
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 transition cursor-pointer p-1"
+                            title="Tampilkan / Sembunyikan Kata Sandi">
+                        <i :class="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" class="text-sm"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="flex items-center justify-between text-xs">

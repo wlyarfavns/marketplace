@@ -13,6 +13,7 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex items-center justify-center p-4">
 
@@ -45,10 +46,22 @@
                 @enderror
             </div>
 
-            <div class="space-y-1">
+            <div class="space-y-1" x-data="{ showPassword: false }">
                 <label class="text-xs font-semibold text-gray-700">Kata Sandi</label>
-                <input type="password" name="password" required value="password" placeholder="••••••••"
-                       class="w-full text-xs px-3.5 py-2.5 border border-gray-300 focus:outline-none focus:border-black">
+                <div class="relative">
+                    <input :type="showPassword ? 'text' : 'password'" 
+                           name="password" 
+                           required 
+                           value="password" 
+                           placeholder="••••••••"
+                           class="w-full text-xs px-3.5 py-2.5 pr-10 border border-gray-300 focus:outline-none focus:border-black">
+                    <button type="button" 
+                            @click="showPassword = !showPassword" 
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition cursor-pointer p-1"
+                            title="Tampilkan / Sembunyikan Kata Sandi">
+                        <i :class="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" class="text-sm"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="flex items-center justify-between text-xs">
