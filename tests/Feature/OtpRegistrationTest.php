@@ -4,11 +4,13 @@ namespace Tests\Feature;
 
 use App\Mail\OtpMail;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class OtpRegistrationTest extends TestCase
 {
+    use DatabaseTransactions;
     public function test_registration_creates_pending_user_and_sends_otp(): void
     {
         Mail::fake();
@@ -90,3 +92,4 @@ class OtpRegistrationTest extends TestCase
         $this->assertGuest();
     }
 }
+
