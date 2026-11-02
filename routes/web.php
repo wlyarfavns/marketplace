@@ -49,6 +49,9 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::get('/verify-otp', [AuthController::class, 'showVerifyOtp'])->name('otp.verify');
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('otp.verify.post');
+Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Auth

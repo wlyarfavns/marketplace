@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    // Customer / Member Login
     public function showLogin()
     {
         if (Auth::check()) {
@@ -28,30 +29,43 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $email = $credentials['email'];
-        $altEmail = str_ends_with($email, '@footwork.id')
-            ? str_replace('@footwork.id', '@pasarkita.com', $email)
-            : (str_ends_with($email, '@pasarkita.com') ? str_replace('@pasarkita.com', '@footwork.id', $email) : null);
-
-        $attemptSuccess = Auth::attempt($credentials, $request->boolean('remember')) ||
-            ($altEmail && Auth::attempt(['email' => $altEmail, 'password' => $credentials['password']], $request->boolean('remember')));
-
-        if ($attemptSuccess) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            if (Auth::user()->role === 'admin') {
+            $user = Auth::user();
+
+            if ($user->role !== 'admin' && ! $user->email_verified_at) {
+                Auth::logout();
+                $otp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+                $user->update([
+                    'otp_code' => $otp,
+                    'otp_expires_at' => now()->addMinutes(10),
+                ]);
+
+                try {
+                    Mail::to($user->email)->send(new OtpMail($otp, $user->name));
+                } catch (\Throwable $e) {
+                    report($e);
+                }
+
+                session(['pending_verification_user_id' => $user->id]);
+
+                return redirect()->route('otp.verify')
+                    ->with('info', 'Email Anda belum diverifikasi. Kode OTP baru telah dikirimkan ke email Anda.');
+            }
+
+            if ($user->role === 'admin') {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            return redirect()->intended(route('home'))->with('success', 'Selamat datang kembali, '.Auth::user()->name);
+            return redirect()->intended(route('home'))->with('success', 'Selamat datang kembali, '.$user->name);
         }
 
         return back()->withErrors([
-            'email' => 'Kredensial yang dimasukkan tidak cocok dengan data kami.',
+            'email' => 'Email atau kata sandi tidak cocok.',
         ])->onlyInput('email');
     }
 
-    // Customer Register
     public function showRegister()
     {
         if (Auth::check()) {
@@ -72,6 +86,8 @@ class AuthController extends Controller
             'province' => 'nullable|string|max:100',
         ]);
 
+        $otp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -80,16 +96,97 @@ class AuthController extends Controller
             'city' => $validated['city'] ?? null,
             'province' => $validated['province'] ?? null,
             'role' => 'customer',
-            'customer_type' => 'member', // Pendaftar baru otomatis terdaftar sebagai member
+            'customer_type' => 'member',
             'status' => 'active',
+            'otp_code' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+            'email_verified_at' => null,
         ]);
 
-        Auth::login($user);
+        try {
+            Mail::to($user->email)->send(new OtpMail($otp, $user->name));
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
-        return redirect()->route('home')->with('success', 'Pendaftaran berhasil! Akun Anda aktif dengan status Member.');
+        session(['pending_verification_user_id' => $user->id]);
+
+        return redirect()->route('otp.verify')->with('success', 'Pendaftaran berhasil! Masukkan kode OTP yang telah dikirim ke email Anda.');
     }
 
-    // Admin Login
+    public function showVerifyOtp()
+    {
+        $userId = session('pending_verification_user_id');
+        $user = $userId ? User::find($userId) : null;
+
+        if (! $user) {
+            return redirect()->route('register')->with('error', 'Sesi verifikasi tidak ditemukan. Silakan daftar kembali.');
+        }
+
+        if ($user->email_verified_at) {
+            return redirect()->route('login')->with('info', 'Akun Anda sudah terverifikasi. Silakan masuk.');
+        }
+
+        return view('auth.verify-otp', compact('user'));
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string|size:6',
+        ]);
+
+        $userId = session('pending_verification_user_id');
+        $user = $userId ? User::find($userId) : null;
+
+        if (! $user) {
+            return redirect()->route('register')->with('error', 'Sesi verifikasi tidak ditemukan. Silakan daftar kembali.');
+        }
+
+        if (! $user->otp_code || ! $user->otp_expires_at || now()->isAfter($user->otp_expires_at)) {
+            return back()->withErrors(['otp' => 'Kode OTP telah kadaluarsa. Silakan klik kirim ulang kode.']);
+        }
+
+        if ($user->otp_code !== trim($request->otp)) {
+            return back()->withErrors(['otp' => 'Kode OTP yang Anda masukkan salah.']);
+        }
+
+        $user->update([
+            'email_verified_at' => now(),
+            'otp_code' => null,
+            'otp_expires_at' => null,
+        ]);
+
+        session()->forget('pending_verification_user_id');
+        Auth::login($user);
+
+        return redirect()->route('home')->with('success', 'Verifikasi berhasil! Selamat datang di FOOTWORK.');
+    }
+
+    public function resendOtp()
+    {
+        $userId = session('pending_verification_user_id');
+        $user = $userId ? User::find($userId) : null;
+
+        if (! $user) {
+            return redirect()->route('register')->with('error', 'Sesi verifikasi tidak ditemukan.');
+        }
+
+        $otp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+        $user->update([
+            'otp_code' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+        ]);
+
+        try {
+            Mail::to($user->email)->send(new OtpMail($otp, $user->name));
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        return back()->with('success', 'Kode OTP baru telah berhasil dikirim ke '.$user->email);
+    }
+
     public function showAdminLogin()
     {
         if (Auth::check() && Auth::user()->role === 'admin') {
@@ -106,15 +203,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $email = $credentials['email'];
-        $altEmail = str_ends_with($email, '@footwork.id')
-            ? str_replace('@footwork.id', '@pasarkita.com', $email)
-            : (str_ends_with($email, '@pasarkita.com') ? str_replace('@pasarkita.com', '@footwork.id', $email) : null);
-
-        $attemptSuccess = Auth::attempt($credentials, $request->boolean('remember')) ||
-            ($altEmail && Auth::attempt(['email' => $altEmail, 'password' => $credentials['password']], $request->boolean('remember')));
-
-        if ($attemptSuccess) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
             if (Auth::user()->role !== 'admin') {
