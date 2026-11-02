@@ -41,22 +41,7 @@
             </button>
         </form>
 
-        <div class="p-4 bg-neutral-50 border border-neutral-200 rounded-2xl text-xs space-y-2.5">
-            <div class="flex justify-between items-center">
-                <p class="font-bold text-neutral-900 uppercase tracking-wide text-[10px]">Akun Demo Tersedia:</p>
-                <a href="{{ route('admin.login') }}" class="text-[10px] text-neutral-900 hover:underline font-semibold flex items-center gap-1">
-                    <i class="fa-solid fa-shield-halved"></i> Portal Admin &rarr;
-                </a>
-            </div>
-            <div class="space-y-1.5 text-[11px] text-neutral-600">
-                <p><span class="font-semibold text-neutral-900">1. Administrator:</span> admin@footwork.id (pass: password)</p>
-                <p><span class="font-semibold text-neutral-900">2. Member:</span> member@footwork.id (pass: password)</p>
-                <p><span class="font-semibold text-neutral-900">3. Distributor:</span> distributor@footwork.id (pass: password)</p>
-                <p><span class="font-semibold text-neutral-900">4. Customer Umum:</span> umum@footwork.id (pass: password)</p>
-            </div>
-        </div>
-
-        <p class="text-xs text-center text-neutral-500">
+        <p class="text-xs text-center text-neutral-500 pt-2 border-t border-neutral-100">
             Belum memiliki akun? 
             <a href="{{ route('register') }}" class="font-bold text-neutral-950 hover:underline">Daftar sekarang</a>
         </p>

@@ -132,9 +132,13 @@
                 <!-- Cart Button -->
                 <button @click="openDrawer()" class="relative p-2 text-gray-800 hover:text-black transition cursor-pointer" title="Keranjang Belanja">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
-                    <span class="absolute -top-1 -right-1 bg-neutral-950 text-white text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md ring-2 ring-white"
+                    <span x-show="cartCount > 0" 
+                          x-cloak
+                          class="absolute -top-0.5 -right-0.5 text-[11px] font-bold text-neutral-950 leading-none"
                           x-text="cartCount">
-                        {{ count(session('cart', [])) }}
+                        @if(count(session('cart', [])) > 0)
+                            {{ count(session('cart', [])) }}
+                        @endif
                     </span>
                 </button>
 

@@ -63,9 +63,7 @@
             </button>
         </form>
 
-        <div class="p-3 bg-gray-50 border border-gray-200 text-xs text-gray-500 text-center">
-            <span class="font-semibold text-gray-800">Akun Super Admin:</span> admin@footwork.id &bull; Pass: <code class="font-mono text-black">password</code>
-        </div>
+
 
         <div class="text-center pt-2 border-t border-gray-100">
             <a href="{{ route('home') }}" class="text-xs text-gray-400 hover:text-black transition">
