@@ -96,9 +96,9 @@
                             </div>
                             <div>
                                 @if($ro->order_status === 'completed')
-                                    <span class="bg-blue-50 text-black px-2.5 py-1 border border-blue-200 font-semibold uppercase text-[10px]">Selesai</span>
+                                    <span class="bg-black text-white px-2.5 py-1 border border-black font-semibold uppercase text-[10px]">Selesai</span>
                                 @elseif($ro->order_status === 'processing')
-                                    <span class="bg-blue-50 text-blue-700 px-2.5 py-1 border border-blue-200 font-semibold uppercase text-[10px]">Diproses</span>
+                                    <span class="bg-neutral-100 text-neutral-800 px-2.5 py-1 border border-neutral-300 font-semibold uppercase text-[10px]">Diproses</span>
                                 @else
                                     <span class="bg-amber-50 text-amber-700 px-2.5 py-1 border border-amber-200 font-semibold uppercase text-[10px]">Menunggu</span>
                                 @endif

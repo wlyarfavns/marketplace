@@ -313,7 +313,7 @@
 
                     <!-- Submit Button -->
                     <button type="submit" 
-                            class="w-full py-4 bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-wider font-bold rounded-xl transition-all shadow-xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
+                            class="w-full py-4 bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-wider font-bold rounded-xl transition-all shadow-xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
                         Buat Pesanan Sekarang &rarr;
                     </button>
 

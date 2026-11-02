@@ -140,7 +140,7 @@
                 <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
                     @if($product->product_type === 'ready_stock')
                         <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF]"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-neutral-900"></span>
                             Ready Stock
                         </span>
                     @else
@@ -158,7 +158,7 @@
                 </div>
 
                 <span class="absolute top-4 right-4 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md border border-neutral-200/80 shadow-2xs z-10">
-                    <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Original
+                    <i class="fa-solid fa-check text-[9px] text-neutral-900"></i> 100% Original
                 </span>
             </div>
 
@@ -168,7 +168,7 @@
                     @foreach($product->images as $img)
                         <button type="button" 
                                 @click="selectedImage = '{{ $img->url }}'"
-                                :class="selectedImage === '{{ $img->url }}' ? 'border-[#0000FF] ring-2 ring-[#0000FF]/30' : 'border-neutral-200 hover:border-neutral-400'"
+                                :class="selectedImage === '{{ $img->url }}' ? 'border-neutral-950 ring-2 ring-neutral-900/20' : 'border-neutral-200 hover:border-neutral-400'"
                                 class="aspect-square bg-[#FAFAFA] rounded-xl border overflow-hidden p-2 focus:outline-hidden transition cursor-pointer">
                             <img src="{{ $img->url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </button>
@@ -224,15 +224,15 @@
                         @foreach($product->models as $m)
                             <button type="button" 
                                     @click="selectModel({{ $m->id }}, {!! json_encode($m->model_name) !!})"
-                                    :class="selectedModelId === {{ $m->id }} ? 'border-[#0000FF] bg-blue-50/70 text-[#0000FF] font-bold ring-2 ring-[#0000FF]/30 shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
+                                    :class="selectedModelId === {{ $m->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold shadow-xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
                                     class="p-3.5 text-left border rounded-xl text-xs transition duration-150 cursor-pointer active:scale-[0.98] flex justify-between items-start">
                                 <div>
                                     <p class="font-bold text-xs">{{ $m->model_name }}</p>
                                     @if($m->description)
-                                        <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-[#0000FF]/70' : 'text-neutral-500'">{{ $m->description }}</p>
+                                        <p class="text-[10px] mt-0.5" :class="selectedModelId === {{ $m->id }} ? 'text-neutral-300' : 'text-neutral-500'">{{ $m->description }}</p>
                                     @endif
                                 </div>
-                                <i class="fa-solid fa-circle-check text-xs mt-0.5 text-[#0000FF]" x-show="selectedModelId === {{ $m->id }}"></i>
+                                <i class="fa-solid fa-circle-check text-xs mt-0.5 text-white" x-show="selectedModelId === {{ $m->id }}"></i>
                             </button>
                         @endforeach
                     </div>
@@ -248,11 +248,11 @@
                         @foreach($product->colors as $c)
                             <button type="button" 
                                     @click="selectColor({{ $c->id }}, {!! json_encode($c->color_name) !!}, '{{ $c->image_url ?? '' }}')"
-                                    :class="selectedColorId === {{ $c->id }} ? 'border-[#0000FF] ring-2 ring-[#0000FF]/30 bg-blue-50/70 text-[#0000FF] font-bold shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
+                                    :class="selectedColorId === {{ $c->id }} ? 'border-neutral-950 ring-2 ring-neutral-900/20 bg-neutral-100 text-neutral-950 font-bold shadow-xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-medium shadow-2xs'"
                                     class="flex items-center gap-2.5 px-4 py-2.5 border rounded-xl text-xs transition-all duration-150 cursor-pointer active:scale-[0.98]">
                                 <span class="w-4 h-4 rounded-full border border-neutral-300 shrink-0 ring-1 ring-white shadow-2xs" style="background-color: {{ $c->hex_code }}"></span>
                                 <span>{{ $c->color_name }}</span>
-                                <i class="fa-solid fa-check text-[10px] ml-1 text-[#0000FF]" x-show="selectedColorId === {{ $c->id }}"></i>
+                                <i class="fa-solid fa-check text-[10px] ml-1 text-neutral-950" x-show="selectedColorId === {{ $c->id }}"></i>
                             </button>
                         @endforeach
                     </div>
@@ -268,7 +268,7 @@
                         @foreach($product->sizes as $s)
                             <button type="button" 
                                     @click="selectSize({{ $s->id }}, {!! json_encode($s->size_label) !!})"
-                                    :class="selectedSizeId === {{ $s->id }} ? 'border-[#0000FF] bg-blue-50/70 text-[#0000FF] font-bold ring-2 ring-[#0000FF]/30 shadow-2xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-semibold shadow-2xs'"
+                                    :class="selectedSizeId === {{ $s->id }} ? 'border-neutral-950 bg-neutral-950 text-white font-bold shadow-xs' : 'border-neutral-200 bg-white text-neutral-800 hover:border-neutral-400 font-semibold shadow-2xs'"
                                     class="min-w-16 px-4 py-2.5 text-center border rounded-xl text-xs uppercase transition duration-150 cursor-pointer active:scale-[0.98]">
                                 {{ $s->size_label }}
                             </button>
@@ -293,7 +293,7 @@
                             @php $bonus = $product->bonuses->where('is_active', true)->first(); @endphp
                             <div class="flex-1 bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs text-neutral-900" x-show="quantity >= {{ $bonus->min_quantity }}">
                                 <p class="font-bold flex items-center gap-1.5 text-neutral-950">
-                                    <i class="fa-solid fa-gift text-[#0000FF]"></i> Selamat! Anda Mendapatkan Bonus:
+                                    <i class="fa-solid fa-gift text-neutral-950"></i> Selamat! Anda Mendapatkan Bonus:
                                 </p>
                                 <p class="text-[11px] text-neutral-600 mt-0.5">{{ $bonus->free_item_name }} ({{ $bonus->free_item_description }})</p>
                             </div>
@@ -305,7 +305,7 @@
                 <div class="pt-2 flex flex-col sm:flex-row gap-3">
                     <button type="submit" 
                             :disabled="!isReadyToBuy"
-                            :class="isReadyToBuy ? 'bg-[#0000FF] hover:bg-blue-700 text-white cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98]' : 'bg-neutral-100 text-neutral-400 border border-neutral-200 cursor-not-allowed shadow-none'"
+                            :class="isReadyToBuy ? 'bg-neutral-950 hover:bg-neutral-800 text-white cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98]' : 'bg-neutral-100 text-neutral-400 border border-neutral-200 cursor-not-allowed shadow-none'"
                             class="flex-1 py-4 text-xs uppercase tracking-wider font-bold rounded-xl transition-all duration-200 text-center flex items-center justify-center gap-2">
                         <i class="fa-solid fa-bag-shopping"></i>
                         <span>Tambah ke Keranjang</span>

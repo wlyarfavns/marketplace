@@ -23,7 +23,7 @@
                         <i class="fa-regular fa-clock"></i> Menunggu Transfer Pembayaran
                     </span>
                 @elseif($order->payment_status === 'waiting_verification')
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-800 border border-blue-200 text-xs font-semibold uppercase">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-100 text-neutral-800 border border-neutral-300 text-xs font-semibold uppercase">
                         <i class="fa-solid fa-hourglass-half"></i> Menunggu Verifikasi Admin
                     </span>
                 @elseif($order->payment_status === 'verified')

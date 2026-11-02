@@ -29,19 +29,19 @@
                     <label class="text-xs uppercase font-bold text-neutral-900 tracking-wider">Tipe Produk</label>
                     <div class="space-y-2 text-xs">
                         <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="type" value="" {{ !request('type') ? 'checked' : '' }} onchange="this.form.submit()" class="text-[#0000FF] focus:ring-0">
+                            <input type="radio" name="type" value="" {{ !request('type') ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-900 focus:ring-0">
                             <span class="text-neutral-700">Semua Sepatu</span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="type" value="ready_stock" {{ request('type') === 'ready_stock' ? 'checked' : '' }} onchange="this.form.submit()" class="text-[#0000FF] focus:ring-0">
+                            <input type="radio" name="type" value="ready_stock" {{ request('type') === 'ready_stock' ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-900 focus:ring-0">
                             <span class="text-neutral-700">Ready Stock</span>
                         </label>
 
                         @if($userType !== 'umum')
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="type" value="po" {{ request('type') === 'po' ? 'checked' : '' }} onchange="this.form.submit()" class="text-[#0000FF] focus:ring-0">
+                                <input type="radio" name="type" value="po" {{ request('type') === 'po' ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-900 focus:ring-0">
                                 <span class="font-semibold text-neutral-900">Pre-Order (PO)</span>
-                                <span class="bg-blue-50 text-[#0000FF] border border-blue-200 text-[9px] font-bold px-1.5 py-0.2 rounded">MEMBER</span>
+                                <span class="bg-neutral-100 text-neutral-800 border border-neutral-300 text-[9px] font-bold px-1.5 py-0.2 rounded">MEMBER</span>
                             </label>
                         @else
                             <div class="pt-1 text-[11px] text-neutral-400 flex items-center gap-1.5">
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="pt-4 flex gap-2">
-                    <button type="submit" class="w-full bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-widest py-3 font-semibold rounded-xl active:scale-[0.98] transition-all shadow-xs hover:shadow-sm cursor-pointer">
+                    <button type="submit" class="w-full bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-widest py-3 font-semibold rounded-xl active:scale-[0.98] transition-all shadow-xs hover:shadow-sm cursor-pointer">
                         Terapkan Filter
                     </button>
                     @if(request()->anyFilled(['q', 'brand', 'category', 'type', 'sort']))
@@ -115,7 +115,7 @@
                     <i class="fa-solid fa-shoe-prints text-3xl text-neutral-300 mb-3 block"></i>
                     <p class="text-sm font-semibold text-neutral-700">Tidak ada koleksi sepatu yang sesuai dengan filter.</p>
                     <p class="text-xs text-neutral-400 mt-1">Coba gunakan kata kunci lain atau reset filter pencarian Anda.</p>
-                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-semibold uppercase tracking-wider px-6 py-2.5 bg-neutral-50 hover:bg-[#0000FF] text-neutral-800 hover:text-white border border-neutral-300 rounded-xl transition shadow-2xs">Reset Filter</a>
+                    <a href="{{ route('catalog') }}" class="inline-block mt-4 text-xs font-semibold uppercase tracking-wider px-6 py-2.5 bg-neutral-50 hover:bg-neutral-950 text-neutral-800 hover:text-white border border-neutral-300 hover:border-neutral-950 rounded-xl transition shadow-2xs">Reset Filter</a>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
@@ -136,7 +136,7 @@
                                     <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                                         @if($prod->product_type === 'ready_stock')
                                             <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF]"></span>
+                                                <span class="w-1.5 h-1.5 rounded-full bg-neutral-900"></span>
                                                 Ready Stock
                                             </span>
                                         @else
@@ -154,7 +154,7 @@
                                     </div>
 
                                     <span class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-600 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs z-10">
-                                        <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Ori
+                                        <i class="fa-solid fa-check text-[9px] text-neutral-900"></i> 100% Ori
                                     </span>
 
                                     <a href="{{ route('product.detail', $prod->slug) }}" class="absolute inset-0 z-0" aria-label="Lihat Detail {{ $prod->name }}"></a>
@@ -167,7 +167,7 @@
                                         <span class="text-neutral-400 font-medium text-[10px] normal-case capitalize">{{ $prod->categories->first()?->name ?? 'Sneakers' }}</span>
                                     </div>
 
-                                    <h3 class="font-bold text-sm sm:text-[15px] text-neutral-900 group-hover:text-[#0000FF] transition-colors line-clamp-1 leading-snug tracking-tight">
+                                    <h3 class="font-bold text-sm sm:text-[15px] text-neutral-900 group-hover:text-black transition-colors line-clamp-1 leading-snug tracking-tight">
                                         <a href="{{ route('product.detail', $prod->slug) }}">{{ $prod->name }}</a>
                                     </h3>
 
@@ -201,7 +201,7 @@
                             <!-- CTA Detail Button (Adem, Soft, Tactile) -->
                             <div class="p-5 pt-0">
                                 <a href="{{ route('product.detail', $prod->slug) }}" 
-                                   class="group/btn w-full text-center py-2.5 sm:py-3 bg-neutral-50 hover:bg-[#0000FF] text-neutral-700 hover:text-white border border-neutral-200/90 hover:border-[#0000FF] rounded-xl active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-xs font-semibold tracking-wide shadow-2xs hover:shadow-sm">
+                                   class="group/btn w-full text-center py-2.5 sm:py-3 bg-neutral-50 hover:bg-neutral-950 text-neutral-800 hover:text-white border border-neutral-200/90 hover:border-neutral-950 rounded-xl active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-xs font-semibold tracking-wide shadow-2xs hover:shadow-sm">
                                     <span>Pilih Ukuran & Beli</span>
                                     <i class="fa-solid fa-arrow-right text-[10px] text-neutral-400 group-hover/btn:text-white group-hover/btn:translate-x-0.5 transition-all"></i>
                                 </a>

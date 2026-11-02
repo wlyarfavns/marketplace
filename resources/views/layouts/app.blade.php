@@ -33,7 +33,6 @@
                         secondary: '#171717',
                         surface: '#FFFFFF',
                         border: '#E5E7EB',
-                        brandBlue: '#0000FF',
                     }
                 }
             }
@@ -49,7 +48,7 @@
         }
     </style>
 </head>
-<body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-[#0000FF] selection:text-white" x-data="cartDrawerState()">
+<body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-neutral-900 selection:text-white" x-data="cartDrawerState()">
 
     <!-- 1. Top Bar (Dominan Putih & Hitam Minimalis) -->
     <div class="border-b border-gray-200 bg-white text-gray-700 text-xs py-2.5 px-4 sm:px-8">
@@ -92,7 +91,7 @@
             <!-- Brand Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3">
                 <span class="text-2xl sm:text-[26px] font-extrabold tracking-tighter text-neutral-950 uppercase">
-                    PASARKITA<span class="text-[#0000FF]">.</span>
+                    PASARKITA.
                 </span>
                 <span class="hidden sm:inline-block text-[10px] uppercase tracking-widest font-bold text-neutral-400 border-l border-neutral-200 pl-3">
                     Sneakers & Shoes
@@ -101,12 +100,12 @@
 
             <!-- Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
-                <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
-                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
+                <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
+                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
                 
                 @auth
                     @if(in_array(Auth::user()->customer_type, ['member', 'distributor']) || Auth::user()->role === 'admin')
-                        <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">
+                        <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">
                             <span>Pre-Order (PO)</span>
                             <span class="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Eksklusif</span>
                         </a>
@@ -117,7 +116,7 @@
                     </span>
                 @endauth
 
-                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-[#0000FF] pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
+                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
             </nav>
 
             <!-- Actions (Search, Cart Drawer Trigger, My Account) -->
@@ -133,7 +132,7 @@
                 <!-- Cart Button -->
                 <button @click="openDrawer()" class="relative p-2 text-gray-800 hover:text-black transition cursor-pointer" title="Keranjang Belanja">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
-                    <span class="absolute -top-1 -right-1 bg-[#0000FF] text-white text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md ring-2 ring-white"
+                    <span class="absolute -top-1 -right-1 bg-neutral-950 text-white text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md ring-2 ring-white"
                           x-text="cartCount">
                         {{ count(session('cart', [])) }}
                     </span>
@@ -269,7 +268,7 @@
                         <a href="{{ route('cart.index') }}" class="text-center py-3 bg-white border border-neutral-300 rounded-xl text-xs font-semibold uppercase tracking-wider text-neutral-800 hover:border-neutral-950 transition shadow-2xs active:scale-[0.98] cursor-pointer">
                             Lihat Keranjang
                         </a>
-                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-[#0000FF] hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
+                        <a href="{{ route('checkout.index') }}" class="text-center py-3 bg-neutral-950 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
                             Checkout
                         </a>
                     </div>
@@ -294,7 +293,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             <!-- Col 1: Brand Info -->
             <div class="space-y-4">
-                <span class="text-2xl font-extrabold text-neutral-950 uppercase tracking-tighter">PASARKITA<span class="text-[#0000FF]">.</span></span>
+                <span class="text-2xl font-extrabold text-neutral-950 uppercase tracking-tighter">PASARKITA.</span>
                 <p class="text-gray-500 leading-relaxed text-xs">
                     Toko sepatu branded dan sneakers original terpercaya milik owner PasarKita. Menghadirkan rilisan resmi dari Nike, Air Jordan, Adidas, New Balance, Puma, dan Asics dengan garansi keaslian 100% dan kemudahan Pre-Order ber-DP.
                 </p>

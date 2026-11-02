@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- 1. Hero Section Editorial Clean Minimalist (Dominan Putih & Hitam dengan Aksen Biru Lembut) -->
+<!-- 1. Hero Section Editorial Clean Minimalist (Dominan Putih & Hitam Natural Elegan) -->
 <section class="border-b border-neutral-200 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-16 lg:py-24 flex flex-col md:flex-row items-center justify-between gap-12">
         <div class="max-w-xl space-y-6">
@@ -14,12 +14,12 @@
             </p>
             <div class="flex flex-wrap items-center gap-4 pt-2">
                 <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" 
-                   class="bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-xs hover:shadow-md active:scale-[0.98] cursor-pointer inline-flex items-center gap-2">
+                   class="bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-xs hover:shadow-md active:scale-[0.98] cursor-pointer inline-flex items-center gap-2">
                     <span>Jelajahi Ready Stock</span>
                     <i class="fa-solid fa-arrow-right text-[11px]"></i>
                 </a>
                 <a href="{{ route('catalog') }}" 
-                   class="border border-neutral-300 bg-white hover:border-[#0000FF] hover:text-[#0000FF] text-neutral-800 text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-2xs active:scale-[0.98] cursor-pointer">
+                   class="border border-neutral-300 bg-white hover:border-neutral-950 hover:text-neutral-950 text-neutral-800 text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-2xs active:scale-[0.98] cursor-pointer">
                     Semua Koleksi
                 </a>
             </div>
@@ -40,7 +40,7 @@
                     <h3 class="text-xl sm:text-2xl font-bold text-neutral-950 tracking-tight">Nike Dunk Low Retro "Panda"</h3>
                     <p class="text-xs text-neutral-500 leading-relaxed font-normal">Siluet street-classic paling versatile dengan perpaduan warna kontras hitam dan putih ikonik.</p>
                     <div class="pt-2">
-                        <a href="{{ route('product.detail', 'nike-dunk-low-retro-panda') }}" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-neutral-50 hover:bg-[#0000FF] text-neutral-800 hover:text-white border border-neutral-200/90 hover:border-[#0000FF] text-xs uppercase tracking-wider font-semibold rounded-xl transition-all duration-200 shadow-2xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
+                        <a href="{{ route('product.detail', 'nike-dunk-low-retro-panda') }}" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-neutral-50 hover:bg-neutral-950 text-neutral-800 hover:text-white border border-neutral-200/90 hover:border-neutral-950 text-xs uppercase tracking-wider font-semibold rounded-xl transition-all duration-200 shadow-2xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
                             <span>Lihat Detail Sepatu</span>
                             <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
@@ -59,7 +59,7 @@
                 <span class="text-[11px] uppercase tracking-widest font-bold text-neutral-400">Brand Resmi Terdaftar</span>
                 <h2 class="text-2xl font-bold text-neutral-950 tracking-tight mt-1">Brand Pilihan di PasarKita</h2>
             </div>
-            <a href="{{ route('catalog') }}" class="text-xs uppercase tracking-wider font-semibold border-b border-neutral-300 pb-0.5 text-neutral-700 hover:text-[#0000FF] hover:border-[#0000FF] transition">
+            <a href="{{ route('catalog') }}" class="text-xs uppercase tracking-wider font-semibold border-b border-neutral-300 pb-0.5 text-neutral-700 hover:text-neutral-950 hover:border-neutral-950 transition">
                 Lihat Seluruh Brand &rarr;
             </a>
         </div>
@@ -70,12 +70,12 @@
                    class="group bg-white p-6 rounded-2xl border border-neutral-200/90 hover:border-neutral-400 hover:shadow-md transition-all duration-200 flex flex-col justify-between h-44 shadow-2xs">
                     <div>
                         <span class="text-[10px] uppercase tracking-wider text-neutral-400 font-bold block mb-1">Brand Mitra #{{ $loop->iteration }}</span>
-                        <h3 class="text-lg font-bold text-neutral-950 group-hover:text-[#0000FF] transition-colors tracking-tight">{{ $b->name }}</h3>
+                        <h3 class="text-lg font-bold text-neutral-950 group-hover:text-black transition-colors tracking-tight">{{ $b->name }}</h3>
                         <p class="text-xs text-neutral-500 line-clamp-2 mt-2 leading-relaxed">{{ $b->description }}</p>
                     </div>
                     <div class="flex items-center justify-between pt-3 border-t border-neutral-100 text-[11px] text-neutral-600 font-medium">
                         <span>DP Mulai {{ number_format($b->dp_percentage, 0) }}%</span>
-                        <i class="fa-solid fa-arrow-right text-neutral-400 group-hover:text-[#0000FF] group-hover:translate-x-0.5 transition"></i>
+                        <i class="fa-solid fa-arrow-right text-neutral-400 group-hover:text-black group-hover:translate-x-0.5 transition"></i>
                     </div>
                 </a>
             @endforeach
@@ -109,7 +109,7 @@
                     </p>
                     @if($banner->url)
                         <div class="pt-1">
-                            <a href="{{ $banner->url }}" class="inline-flex items-center gap-2 bg-neutral-50 hover:bg-[#0000FF] text-neutral-800 hover:text-white border border-neutral-300 hover:border-[#0000FF] text-xs uppercase tracking-wider font-semibold px-7 py-3 rounded-xl transition-all duration-200 shadow-2xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
+                            <a href="{{ $banner->url }}" class="inline-flex items-center gap-2 bg-neutral-950 hover:bg-neutral-800 text-white border border-neutral-950 hover:border-neutral-800 text-xs uppercase tracking-wider font-semibold px-7 py-3 rounded-xl transition-all duration-200 shadow-2xs hover:shadow-sm active:scale-[0.98] cursor-pointer">
                                 <span>Klaim Penawaran</span>
                                 <i class="fa-solid fa-arrow-right text-[11px]"></i>
                             </a>
@@ -158,7 +158,7 @@
                             <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                                 @if($prod->product_type === 'ready_stock')
                                     <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-[#0000FF]"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-neutral-900"></span>
                                         Ready Stock
                                     </span>
                                 @else
@@ -176,7 +176,7 @@
                             </div>
 
                             <span class="absolute top-3 right-3 inline-flex items-center gap-1 bg-white/95 backdrop-blur-xs text-neutral-600 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs z-10">
-                                <i class="fa-solid fa-check text-[9px] text-[#0000FF]"></i> 100% Ori
+                                <i class="fa-solid fa-check text-[9px] text-neutral-900"></i> 100% Ori
                             </span>
 
                             <a href="{{ route('product.detail', $prod->slug) }}" class="absolute inset-0 z-0" aria-label="Lihat Detail {{ $prod->name }}"></a>
@@ -189,7 +189,7 @@
                                 <span class="text-neutral-400 font-medium text-[10px] normal-case capitalize">{{ $prod->categories->first()?->name ?? 'Sneakers' }}</span>
                             </div>
                             
-                            <h3 class="font-bold text-sm sm:text-[15px] text-neutral-900 group-hover:text-[#0000FF] transition-colors line-clamp-1 leading-snug tracking-tight">
+                            <h3 class="font-bold text-sm sm:text-[15px] text-neutral-900 group-hover:text-black transition-colors line-clamp-1 leading-snug tracking-tight">
                                 <a href="{{ route('product.detail', $prod->slug) }}">{{ $prod->name }}</a>
                             </h3>
 
@@ -224,7 +224,7 @@
                     <!-- CTA Detail Button (Adem, Soft, Tactile) -->
                     <div class="p-5 pt-0">
                         <a href="{{ route('product.detail', $prod->slug) }}" 
-                           class="group/btn w-full text-center py-2.5 sm:py-3 bg-neutral-50 hover:bg-[#0000FF] text-neutral-700 hover:text-white border border-neutral-200/90 hover:border-[#0000FF] rounded-xl active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-xs font-semibold tracking-wide shadow-2xs hover:shadow-sm">
+                           class="group/btn w-full text-center py-2.5 sm:py-3 bg-neutral-50 hover:bg-neutral-950 text-neutral-800 hover:text-white border border-neutral-200/90 hover:border-neutral-950 rounded-xl active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-xs font-semibold tracking-wide shadow-2xs hover:shadow-sm">
                             <span>Pilih Ukuran & Beli</span>
                             <i class="fa-solid fa-arrow-right text-[10px] text-neutral-400 group-hover/btn:text-white group-hover/btn:translate-x-0.5 transition-all"></i>
                         </a>
@@ -235,7 +235,7 @@
 
         <!-- Tombol Buka Katalog Adem & Soft -->
         <div class="text-center mt-12">
-            <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 bg-neutral-50 hover:bg-[#0000FF] text-neutral-700 hover:text-white border border-neutral-300 hover:border-[#0000FF] px-8 py-3.5 text-xs uppercase tracking-wider font-semibold rounded-xl shadow-2xs hover:shadow-sm active:scale-[0.98] transition-all cursor-pointer">
+            <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 bg-neutral-50 hover:bg-neutral-950 text-neutral-800 hover:text-white border border-neutral-300 hover:border-neutral-950 px-8 py-3.5 text-xs uppercase tracking-wider font-semibold rounded-xl shadow-2xs hover:shadow-sm active:scale-[0.98] transition-all cursor-pointer">
                 <span>Buka Seluruh Katalog Sepatu</span>
                 <i class="fa-solid fa-arrow-right text-[11px]"></i>
             </a>
@@ -270,7 +270,7 @@
                 </p>
             </div>
             <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-                <a href="{{ route('register') }}" class="bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl text-center transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-[0.98]">
+                <a href="{{ route('register') }}" class="bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl text-center transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-[0.98]">
                     Daftar Member Gratis
                 </a>
                 <a href="{{ route('login') }}" class="border border-neutral-300 bg-white text-neutral-800 text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-xl text-center hover:border-neutral-950 hover:bg-neutral-50 transition-all duration-200 active:scale-[0.98]">

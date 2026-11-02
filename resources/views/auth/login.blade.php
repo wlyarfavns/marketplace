@@ -36,7 +36,7 @@
                 </label>
             </div>
 
-            <button type="submit" class="w-full py-3.5 bg-[#0000FF] hover:bg-blue-700 text-white text-xs uppercase tracking-widest font-bold rounded-xl active:scale-[0.98] transition shadow-xs hover:shadow-md cursor-pointer">
+            <button type="submit" class="w-full py-3.5 bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-widest font-bold rounded-xl active:scale-[0.98] transition shadow-xs hover:shadow-md cursor-pointer">
                 Masuk ke Akun
             </button>
         </form>
@@ -44,7 +44,7 @@
         <div class="p-4 bg-neutral-50 border border-neutral-200 rounded-2xl text-xs space-y-2.5">
             <div class="flex justify-between items-center">
                 <p class="font-bold text-neutral-900 uppercase tracking-wide text-[10px]">Akun Demo Tersedia:</p>
-                <a href="{{ route('admin.login') }}" class="text-[10px] text-[#0000FF] hover:underline font-semibold flex items-center gap-1">
+                <a href="{{ route('admin.login') }}" class="text-[10px] text-neutral-900 hover:underline font-semibold flex items-center gap-1">
                     <i class="fa-solid fa-shield-halved"></i> Portal Admin &rarr;
                 </a>
             </div>
