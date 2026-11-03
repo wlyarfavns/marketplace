@@ -63,7 +63,7 @@ class AuthController extends Controller
             }
 
             if ($user->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->route('admin.dashboard');
             }
 
             return redirect()->intended(route('home'))->with('success', 'Selamat datang kembali, '.$user->name);
@@ -228,7 +228,7 @@ class AuthController extends Controller
                 return back()->withErrors(['email' => 'Akun Anda tidak memiliki hak akses administrator.']);
             }
 
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors([

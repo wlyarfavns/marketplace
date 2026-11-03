@@ -50,6 +50,25 @@
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-neutral-900 selection:text-white" x-data="cartDrawerState()">
 
+    <!-- Admin Alert Bar jika Login sebagai Administrator -->
+    @auth
+        @if(Auth::user()->role === 'admin')
+            <div class="bg-neutral-950 text-white text-xs py-2 px-4 sm:px-8 border-b border-neutral-800">
+                <div class="max-w-7xl mx-auto flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="font-bold">Mode Administrator:</span>
+                        <span class="text-neutral-400 hidden sm:inline">Anda sedang melihat tampilan etalase toko.</span>
+                    </div>
+                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 bg-white text-neutral-950 text-[11px] font-extrabold px-3.5 py-1 rounded-md hover:bg-neutral-100 transition shadow-xs">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span>Buka Dashboard Panel Admin &rarr;</span>
+                    </a>
+                </div>
+            </div>
+        @endif
+    @endauth
+
     <!-- 1. Top Bar Minimalis -->
     <div class="border-b border-gray-200 bg-white text-gray-700 text-xs py-2.5 px-4 sm:px-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
@@ -62,15 +81,18 @@
                 @auth
                     <div class="flex items-center gap-2">
                         <span class="text-gray-500">Halo,</span>
-                        <a href="{{ route('account.dashboard') }}" class="font-bold text-black hover:underline">
-                            {{ Auth::user()->name }}
-                            <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 ml-1 bg-black text-white rounded">
-                                {{ Auth::user()->customer_type }}
+                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('account.dashboard') }}" class="font-bold text-black hover:underline flex items-center gap-1">
+                            <span>{{ Auth::user()->name }}</span>
+                            <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 bg-black text-white rounded">
+                                {{ Auth::user()->role === 'admin' ? 'ADMIN' : Auth::user()->customer_type }}
                             </span>
                         </a>
                     </div>
                     @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="text-xs bg-black text-white font-bold px-2.5 py-0.5 hover:bg-gray-800 transition">Panel Admin</a>
+                        <a href="{{ route('admin.dashboard') }}" class="text-xs bg-black text-white font-bold px-3 py-1 rounded-md hover:bg-neutral-800 transition shadow-2xs flex items-center gap-1">
+                            <i class="fa-solid fa-gauge text-[10px]"></i>
+                            <span>Panel Admin</span>
+                        </a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
