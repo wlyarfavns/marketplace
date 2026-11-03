@@ -50,7 +50,7 @@
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-neutral-900 selection:text-white" x-data="cartDrawerState()">
 
-    <!-- 1. Top Bar (Dominan Putih & Hitam Minimalis) -->
+    <!-- 1. Top Bar Minimalis -->
     <div class="border-b border-gray-200 bg-white text-gray-700 text-xs py-2.5 px-4 sm:px-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-4 text-gray-600">
@@ -292,7 +292,7 @@
         </a>
     @endif
 
-    <!-- 7. Footer (Dominan Putih Bersih dengan Detail Hitam) -->
+    <!-- 7. Footer -->
     <footer class="border-t border-gray-200 bg-white text-gray-600 pt-16 pb-12 mt-20 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
             <!-- Col 1: Brand Info -->
@@ -345,7 +345,6 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8 mt-12 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-gray-400 text-[11px] gap-2">
             <p>&copy; 2026 FOOTWORK. Seluruh hak cipta dilindungi undang-undang.</p>
-            <p>Toko Sepatu Branded Original &bull; Tema Dominan Putih & Hitam</p>
         </div>
     </footer>
 
