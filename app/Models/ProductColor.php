@@ -24,6 +24,15 @@ class ProductColor extends Model
     ];
 
     /**
+     * The accessors to append to the model's array and JSON form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'image_url',
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

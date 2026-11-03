@@ -56,11 +56,20 @@
                 this.selectedColorId = id;
                 const found = this.colors.find(c => c.id === id);
                 this.selectedColorName = found ? found.color_name : '';
-                if (found && found.image_url) {
-                    this.selectedImage = found.image_url;
-                } else if (found && found.color_image_path) {
-                    const p = found.color_image_path;
-                    this.selectedImage = (p.startsWith('http://') || p.startsWith('https://')) ? p : (p.startsWith('images/') ? '/' + p : '/storage/' + p);
+                if (found && (found.image_url || found.color_image_path)) {
+                    this.selectedImage = found.image_url || (found.color_image_path.startsWith('http') ? found.color_image_path : '/' + found.color_image_path.replace(/^\//, ''));
+                }
+            },
+            setImage(url) {
+                this.selectedImage = url;
+                const found = this.colors.find(c => {
+                    if (c.image_url && (c.image_url === url || url.endsWith(c.image_url))) return true;
+                    if (c.color_image_path && url.includes(c.color_image_path)) return true;
+                    return false;
+                });
+                if (found) {
+                    this.selectedColorId = found.id;
+                    this.selectedColorName = found.color_name;
                 }
             },
             selectSize(id) {
@@ -180,8 +189,8 @@
                 <div class="grid grid-cols-4 gap-3">
                     @foreach($product->images as $img)
                         <button type="button" 
-                                @click="selectedImage = '{{ $img->url }}'"
-                                :class="selectedImage === '{{ $img->url }}' ? 'border-neutral-950 ring-2 ring-neutral-900/20' : 'border-neutral-200 hover:border-neutral-400'"
+                                @click="setImage('{{ $img->url }}')"
+                                :class="(selectedImage === '{{ $img->url }}' || (selectedImage && selectedImage.includes('{{ basename($img->image_path) }}'))) ? 'border-neutral-950 ring-2 ring-neutral-900/20 shadow-xs' : 'border-neutral-200 hover:border-neutral-400'"
                                 class="aspect-square bg-[#FAFAFA] rounded-xl border overflow-hidden p-2 focus:outline-hidden transition cursor-pointer">
                             <img src="{{ $img->url }}" alt="{{ $product->name }}" class="w-full h-full object-contain">
                         </button>

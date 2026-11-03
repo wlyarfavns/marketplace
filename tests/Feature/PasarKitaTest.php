@@ -34,6 +34,18 @@ class PasarKitaTest extends TestCase
         }
     }
 
+    public function test_product_detail_contains_colorway_images(): void
+    {
+        $asics = Product::where('slug', 'asics-gel-kayano-14-metallic-silver-black')->first();
+        if ($asics) {
+            $response = $this->get('/produk/'.$asics->slug);
+            $response->assertStatus(200);
+            $response->assertSee('asics-gel-kayano-white.jpg');
+            $response->assertSee('Metallic Silver & Black');
+            $response->assertSee('Pure White & Smoke Grey');
+        }
+    }
+
     public function test_cart_page_loads(): void
     {
         $response = $this->get('/keranjang');

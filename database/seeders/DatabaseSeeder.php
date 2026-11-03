@@ -315,6 +315,7 @@ class DatabaseSeeder extends Seeder
                         'product_id' => $product->id,
                         'color_name' => $c['name'],
                         'hex_code' => $c['hex'],
+                        'color_image_path' => $c['color_image_path'] ?? null,
                         'sort_order' => $cIdx + 1,
                     ]);
                 }
@@ -878,15 +879,18 @@ class DatabaseSeeder extends Seeder
             'product_type' => 'ready_stock',
             'visible_to_umum' => true,
             'category_ids' => [$createdCategories['running-performance']->id, $createdCategories['sneakers-lifestyle']->id, $createdCategories['training-gym']->id],
-            'images' => [['url' => 'images/shoes/asics-gel-kayano.jpg']],
+            'images' => [
+                ['url' => 'images/shoes/asics-gel-kayano.jpg'],
+                ['url' => 'images/shoes/asics-gel-kayano-white.jpg'],
+            ],
             'min_price' => 2299000,
             'max_price' => 2449000,
             'model_price_increment' => 150000,
             'description' => 'Mewakili estetika lari retro akhir 2000-an, GEL-Kayano 14 memperbarui performa pendahulunya dengan teknologi bantalan GEL ikonis.',
             'product_note' => 'Sepatu lari techwear era akhir 2000-an dengan teknologi bantalan GEL ikonis.',
             'colors' => [
-                ['name' => 'Metallic Silver & Black', 'hex' => '#111827'],
-                ['name' => 'Pure White & Smoke Grey', 'hex' => '#9CA3AF'],
+                ['name' => 'Metallic Silver & Black', 'hex' => '#111827', 'color_image_path' => 'images/shoes/asics-gel-kayano.jpg'],
+                ['name' => 'Pure White & Smoke Grey', 'hex' => '#9CA3AF', 'color_image_path' => 'images/shoes/asics-gel-kayano-white.jpg'],
             ],
             'models' => [
                 ['name' => 'Performance Run Box', 'description' => 'Box original resmi Asics GEL BNIB'],
