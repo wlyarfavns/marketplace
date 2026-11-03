@@ -329,7 +329,7 @@
                         <a :href="'https://wa.me/{{ $floatingWa->phone }}?text=Halo%20Admin,%20saya%20tertarik%20dengan%20sepatu%20' + encodeURIComponent('{{ $product->name }}') + '%20(SKU:%20{{ $product->sku }})'"
                            target="_blank"
                            class="border border-neutral-300 bg-white text-neutral-950 hover:border-neutral-950 hover:bg-neutral-50 px-6 py-4 text-xs uppercase tracking-widest font-bold rounded-xl shadow-xs hover:shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
-                            <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
+                            <i class="fa-brands fa-whatsapp text-lg text-[#25D366]"></i>
                             <span class="hidden sm:inline">Pesan WA</span>
                         </a>
                     @endif
