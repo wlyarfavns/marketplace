@@ -193,14 +193,10 @@
                    class="px-4 py-2 rounded-full border border-neutral-200 bg-white hover:border-neutral-950 transition font-semibold text-neutral-800 shadow-2xs">
                     Ready Stock
                 </a>
-                @auth
-                    @if(in_array(Auth::user()->customer_type, ['member', 'distributor']))
-                        <a href="{{ route('catalog', ['type' => 'po']) }}" 
-                           class="px-4 py-2 rounded-full border border-neutral-200 bg-white hover:border-neutral-950 transition font-semibold text-neutral-800 shadow-2xs">
-                            Pre-Order (PO)
-                        </a>
-                    @endif
-                @endauth
+                <a href="{{ route('catalog', ['type' => 'po']) }}" 
+                   class="px-4 py-2 rounded-full border border-neutral-200 bg-white hover:border-neutral-950 transition font-semibold text-neutral-800 shadow-2xs">
+                    Pre-Order (PO)
+                </a>
                 <a href="{{ route('catalog') }}" 
                    class="px-4 py-2 rounded-full border border-neutral-200 bg-white hover:border-neutral-950 transition font-semibold text-neutral-800 shadow-2xs">
                     Semua
@@ -234,12 +230,6 @@
                                     <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-800 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
                                         <i class="fa-regular fa-clock text-[9px] text-neutral-400"></i>
                                         Pre-Order
-                                    </span>
-                                @endif
-
-                                @if($prod->visible_to_distributor && !$prod->visible_to_umum && !$prod->visible_to_member)
-                                    <span class="bg-neutral-100 text-neutral-700 text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-md border border-neutral-200">
-                                        Distributor
                                     </span>
                                 @endif
                             </div>
@@ -403,20 +393,20 @@
     </div>
 </section>
 
-<!-- 7. Banner Akses Member & Kemitraan (B2B / Pre-Order) -->
+<!-- 7. Banner Akses Pelanggan (Pre-Order & Promo) -->
 <section class="py-16 sm:py-20 bg-neutral-50/40">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <div class="border border-neutral-200/90 p-8 sm:p-14 flex flex-col md:flex-row items-center justify-between gap-8 bg-white rounded-3xl shadow-xs">
             <div class="max-w-xl space-y-3">
-                <span class="text-[10px] uppercase tracking-widest font-bold text-neutral-400">Tier Akses Eksklusif</span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">Bergabung Menjadi Member Sneakerhead atau Reseller FOOTWORK</h2>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-neutral-400">Akses Eksklusif</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-950 tracking-tight">Bergabung Menjadi Pelanggan FOOTWORK</h2>
                 <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed font-normal">
-                    Dapatkan akses prioritas ke seluruh katalog Pre-Order (PO) sepatu langka, pemanfaatan kupon diskon member, aturan potongan harga grosir otomatis untuk reseller partai, serta keamanan double-box packing terpercaya.
+                    Dapatkan akses ke seluruh katalog sneakers original, rilisan Pre-Order (PO) terpercaya dengan skema Down Payment (DP), kupon diskon promo, serta jaminan proteksi kemasan double-box.
                 </p>
             </div>
             <div class="flex flex-col sm:flex-row gap-3 shrink-0">
                 <a href="{{ route('register') }}" class="bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full text-center transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-[0.98]">
-                    Daftar Member Gratis
+                    Daftar Akun Pelanggan
                 </a>
                 <a href="{{ route('login') }}" class="border border-neutral-300 bg-white text-neutral-800 hover:text-neutral-950 text-xs uppercase tracking-wider font-semibold px-8 py-3.5 rounded-full text-center hover:border-neutral-950 hover:bg-neutral-50 transition-all duration-200 active:scale-[0.98]">
                     Masuk ke Akun

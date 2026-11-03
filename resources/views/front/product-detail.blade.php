@@ -76,7 +76,7 @@
                         vp.product_size_id === this.selectedSizeId
                     );
                     if (match) {
-                        const rawPrice = match.price_umum || match.price_member || match.price_distributor || match.price || this.basePrice;
+                        const rawPrice = match.price_umum || match.price || this.basePrice;
                         this.currentPrice = parseFloat(rawPrice) + this.ruleAdjustment;
                         return;
                     }

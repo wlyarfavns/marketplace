@@ -84,7 +84,7 @@
                         <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('account.dashboard') }}" class="font-bold text-black hover:underline flex items-center gap-1">
                             <span>{{ Auth::user()->name }}</span>
                             <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 bg-black text-white rounded">
-                                {{ Auth::user()->role === 'admin' ? 'ADMIN' : Auth::user()->customer_type }}
+                                {{ Auth::user()->role === 'admin' ? 'ADMIN' : 'PELANGGAN' }}
                             </span>
                         </a>
                     </div>
@@ -99,7 +99,7 @@
                         <button type="submit" class="text-gray-500 hover:text-black font-medium">Keluar</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Masuk Member</a>
+                    <a href="{{ route('login') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Masuk Akun</a>
                     <span class="text-gray-300">|</span>
                     <a href="{{ route('register') }}" class="hover:text-black hover:underline transition font-semibold text-gray-800">Daftar Akun</a>
                 @endauth
@@ -124,20 +124,9 @@
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
                 <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
                 <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
-                
-                @auth
-                    @if(in_array(Auth::user()->customer_type, ['member', 'distributor']) || Auth::user()->role === 'admin')
-                        <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">
-                            <span>Pre-Order (PO)</span>
-                            <span class="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Eksklusif</span>
-                        </a>
-                    @endif
-                @else
-                    <span class="text-gray-400 cursor-not-allowed text-xs flex items-center gap-1" title="Login untuk membuka katalog PO sepatu">
-                        <i class="fa-solid fa-lock text-[10px]"></i> PO (Member Only)
-                    </span>
-                @endauth
-
+                <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">
+                    <span>Pre-Order (PO)</span>
+                </a>
                 <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
             </nav>
 
@@ -337,7 +326,7 @@
                     <li><a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black hover:underline transition">Ready Stock Sneakers</a></li>
                     <li><a href="{{ route('catalog', ['type' => 'po']) }}" class="hover:text-black hover:underline transition">Pre-Order Eksklusif (PO)</a></li>
                     <li><a href="{{ route('catalog') }}" class="hover:text-black hover:underline transition">Semua Koleksi Sepatu</a></li>
-                    <li><a href="{{ route('login') }}" class="hover:text-black hover:underline transition">Program Mitra Reseller Sepatu</a></li>
+                    <li><a href="{{ route('login') }}" class="hover:text-black hover:underline transition">Akses Masuk Pelanggan</a></li>
                 </ul>
             </div>
 

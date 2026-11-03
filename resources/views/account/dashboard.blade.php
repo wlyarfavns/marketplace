@@ -9,7 +9,7 @@
         </div>
         <div class="flex items-center gap-3">
             <span class="px-3 py-1 bg-black text-white text-xs font-semibold uppercase tracking-wider">
-                Status: {{ $user->customer_type }}
+                Peran: {{ $user->role === 'admin' ? 'Administrator' : 'Pelanggan' }}
             </span>
             <a href="{{ route('account.profile') }}" class="px-4 py-2 border border-gray-300 text-xs font-semibold hover:border-black transition">
                 Edit Profil & Alamat

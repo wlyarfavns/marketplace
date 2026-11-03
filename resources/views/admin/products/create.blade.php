@@ -83,21 +83,15 @@
                 </div>
             </div>
 
-            <!-- Checkbox Visibilitas Role Sesuai PRD Poin 4.2.2 -->
+            <!-- Visibilitas Katalog Pelanggan -->
             <div class="p-4 bg-slate-50 border border-slate-200 space-y-2 text-xs">
-                <label class="font-bold uppercase tracking-wider text-slate-800 block">Hak Akses Visibilitas Produk</label>
-                <div class="flex flex-wrap gap-6 pt-1">
+                <label class="font-bold uppercase tracking-wider text-slate-800 block">Katalog Pelanggan</label>
+                <div class="pt-1">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" name="visible_to_umum" value="1" checked class="text-black focus:ring-0">
-                        <span>Pengunjung Umum (Non-Member)</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" name="visible_to_member" value="1" checked class="text-black focus:ring-0">
-                        <span>Pelanggan Terdaftar (Member)</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" name="visible_to_distributor" value="1" checked class="text-black focus:ring-0">
-                        <span>Mitra B2B (Distributor Grosir)</span>
+                        <input type="hidden" name="visible_to_member" value="1">
+                        <input type="hidden" name="visible_to_distributor" value="1">
+                        <span class="font-semibold text-slate-800">Tampilkan produk ini di katalog toko untuk pelanggan</span>
                     </label>
                 </div>
             </div>

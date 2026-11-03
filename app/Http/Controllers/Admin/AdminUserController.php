@@ -26,10 +26,6 @@ class AdminUserController extends Controller
             $query->where('role', $request->role);
         }
 
-        if ($request->filled('customer_type')) {
-            $query->where('customer_type', $request->customer_type);
-        }
-
         $users = $query->latest()->paginate(15)->withQueryString();
 
         return view('admin.users.index', compact('users'));
@@ -42,7 +38,6 @@ class AdminUserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|in:admin,customer',
-            'customer_type' => 'required|in:umum,member,distributor',
             'status' => 'required|in:active,inactive',
             'phone' => 'nullable|string|max:20',
         ]);

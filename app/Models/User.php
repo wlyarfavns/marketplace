@@ -88,16 +88,6 @@ class User extends Authenticatable
         return $query->where('role', 'customer');
     }
 
-    public function scopeMember(Builder $query): Builder
-    {
-        return $query->where('customer_type', 'member');
-    }
-
-    public function scopeDistributor(Builder $query): Builder
-    {
-        return $query->where('customer_type', 'distributor');
-    }
-
     // ── Helper Methods ───────────────────────────────────────────────
 
     public function isAdmin(): bool
@@ -112,16 +102,16 @@ class User extends Authenticatable
 
     public function isMember(): bool
     {
-        return $this->customer_type === 'member';
+        return $this->role === 'customer';
     }
 
     public function isDistributor(): bool
     {
-        return $this->customer_type === 'distributor';
+        return false;
     }
 
     public function isUmum(): bool
     {
-        return $this->customer_type === 'umum' || $this->customer_type === null;
+        return $this->role === 'customer';
     }
 }

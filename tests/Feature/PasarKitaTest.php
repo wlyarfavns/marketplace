@@ -40,49 +40,26 @@ class PasarKitaTest extends TestCase
         $response->assertStatus(200);
     }
 
-    // 2. Pengujian Role Pengunjung (Guest) vs PO
-    public function test_guest_cannot_view_po_product(): void
+    // 2. Pengujian Produk Pre-Order (PO)
+    public function test_po_product_loads_successfully(): void
     {
-        $poProduct = Product::where('product_type', 'po')->first();
-        if ($poProduct) {
-            $response = $this->get('/produk/'.$poProduct->slug);
-            // Pengunjung dilarang melihat PO dan diarahkan ke login
-            $response->assertRedirect('/login');
-        }
-    }
-
-    // 3. Pengujian Role Member (Registered Member)
-    public function test_member_can_view_po_product_and_my_account(): void
-    {
-        $member = User::where('role', 'customer')->where('customer_type', 'member')->first();
-        $this->actingAs($member);
-
         $poProduct = Product::where('product_type', 'po')->first();
         if ($poProduct) {
             $response = $this->get('/produk/'.$poProduct->slug);
             $response->assertStatus(200);
+            $response->assertSee($poProduct->name);
         }
+    }
+
+    // 3. Pengujian Role Pelanggan (Customer)
+    public function test_pelanggan_can_access_account_dashboard(): void
+    {
+        $customer = User::where('role', 'customer')->first();
+        $this->actingAs($customer);
 
         $dashboardResponse = $this->get('/akun/dashboard');
         $dashboardResponse->assertStatus(200);
         $dashboardResponse->assertSee('Akun Saya');
-    }
-
-    // 4. Pengujian Role Distributor (Tier B2B)
-    public function test_distributor_can_view_exclusive_product(): void
-    {
-        $distributor = User::where('role', 'customer')->where('customer_type', 'distributor')->first();
-        $this->actingAs($distributor);
-
-        $exclusiveProduct = Product::where('visible_to_distributor', true)
-            ->where('visible_to_umum', false)
-            ->where('visible_to_member', false)
-            ->first();
-
-        if ($exclusiveProduct) {
-            $response = $this->get('/produk/'.$exclusiveProduct->slug);
-            $response->assertStatus(200);
-        }
     }
 
     // 5. Pengujian Role Administrator (Panel Back-Office)

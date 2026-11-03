@@ -43,12 +43,12 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
         ]);
 
-        $member = User::create([
-            'name' => 'Dimas Sneakerhead (Member)',
-            'email' => 'member@pasarkita.com',
+        $pelanggan = User::create([
+            'name' => 'Dimas Sneakerhead (Pelanggan)',
+            'email' => 'pelanggan@pasarkita.com',
             'password' => Hash::make('password'),
             'role' => 'customer',
-            'customer_type' => 'member',
+            'customer_type' => 'umum',
             'phone' => '081298765432',
             'address' => 'Komp. Melati Indah Blok B3 No. 14',
             'city' => 'Bandung',
@@ -57,37 +57,7 @@ class DatabaseSeeder extends Seeder
             'default_seller_code' => 'MITRA-001',
             'favorite_courier' => 'JNE',
             'status' => 'active',
-        ]);
-
-        $distributor = User::create([
-            'name' => 'Toko Sepatu Jaya (Distributor)',
-            'email' => 'distributor@pasarkita.com',
-            'password' => Hash::make('password'),
-            'role' => 'customer',
-            'customer_type' => 'distributor',
-            'phone' => '081377889900',
-            'address' => 'Ruko Sneaker Square Blok A No. 8',
-            'city' => 'Surabaya',
-            'province' => 'Jawa Timur',
-            'postal_code' => '60281',
-            'default_seller_code' => 'MITRA-002',
-            'favorite_courier' => 'SiCepat',
-            'status' => 'active',
-        ]);
-
-        $customerUmum = User::create([
-            'name' => 'Budi Santoso (Customer Biasa)',
-            'email' => 'umum@pasarkita.com',
-            'password' => Hash::make('password'),
-            'role' => 'customer',
-            'customer_type' => 'umum',
-            'phone' => '081555667788',
-            'address' => 'Jl. Cempaka Putih Timur No. 45',
-            'city' => 'Jakarta Pusat',
-            'province' => 'DKI Jakarta',
-            'postal_code' => '10510',
-            'favorite_courier' => 'J&T',
-            'status' => 'active',
+            'email_verified_at' => now(),
         ]);
 
         // 2. Data Master Brands (8 Brand Sepatu Branded Dunia)
@@ -567,7 +537,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Air Jordan 1 Retro High OG "Chicago Lost & Found"',
             'slug' => 'air-jordan-1-retro-high-og-chicago',
             'product_type' => 'po',
-            'visible_to_umum' => false, // Khusus Member & Distributor
+            'visible_to_umum' => true,
             'visible_to_member' => true,
             'visible_to_distributor' => true,
             'weight_grams' => 1100,
@@ -1062,9 +1032,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Paket Seri Grosir Adidas Samba OG (Bundle 5 Pasang Size Run)',
             'slug' => 'paket-seri-grosir-adidas-samba-og',
             'product_type' => 'ready_stock',
-            'visible_to_umum' => false,
-            'visible_to_member' => false,
-            'visible_to_distributor' => true, // HANYA DISTRIBUTOR
+            'visible_to_umum' => true,
+            'visible_to_member' => true,
+            'visible_to_distributor' => true,
             'weight_grams' => 4500,
             'product_note' => 'Khusus Mitra Distributor & Reseller berlisensi FOOTWORK. Minimal pembelian 1 paket seri (isi 5 pasang lengkap size run EU 40-44).',
             'description' => 'Paket grosir partai resmi Adidas Samba OG paling dicari di pasar sneaker. Sol gum klasik dengan kulit asli halus dan suede T-toe khas, perpaduan Cloud White dan aksen Core Black.',

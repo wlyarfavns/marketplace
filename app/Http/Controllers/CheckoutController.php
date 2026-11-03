@@ -47,10 +47,9 @@ class CheckoutController extends Controller
             ->where('show_on_checkout', true)
             ->where(function ($q) use ($user) {
                 $q->where('target_audience', 'all');
-                if ($user && $user->customer_type !== 'umum') {
+                if ($user) {
                     $q->orWhere('target_audience', 'member_only');
-                }
-                if (! $user || $user->customer_type === 'umum') {
+                } else {
                     $q->orWhere('target_audience', 'non_member_only');
                 }
             })

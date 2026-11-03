@@ -34,7 +34,7 @@
                 <i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-black group-hover:translate-x-0.5 transition"></i>
             </div>
             <div class="text-3xl font-bold text-slate-900">{{ number_format($totalCustomers) }}</div>
-            <p class="text-xs text-slate-500 group-hover:text-slate-800 transition">Kelola Member, Distributor & Umum &rarr;</p>
+            <p class="text-xs text-slate-500 group-hover:text-slate-800 transition">Kelola Akun Pelanggan &rarr;</p>
         </a>
 
         <a href="{{ route('admin.products.index') }}" 

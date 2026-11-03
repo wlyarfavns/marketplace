@@ -37,18 +37,10 @@
                             <span class="text-neutral-700">Ready Stock</span>
                         </label>
 
-                        @if($userType !== 'umum')
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="type" value="po" {{ request('type') === 'po' ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-900 focus:ring-0">
-                                <span class="font-semibold text-neutral-900">Pre-Order (PO)</span>
-                                <span class="bg-neutral-100 text-neutral-800 border border-neutral-300 text-[9px] font-bold px-1.5 py-0.2 rounded">MEMBER</span>
-                            </label>
-                        @else
-                            <div class="pt-1 text-[11px] text-neutral-400 flex items-center gap-1.5">
-                                <i class="fa-solid fa-lock text-[10px]"></i>
-                                <span>PO khusus <a href="{{ route('login') }}" class="underline text-neutral-900 font-semibold">Member</a></span>
-                            </div>
-                        @endif
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="type" value="po" {{ request('type') === 'po' ? 'checked' : '' }} onchange="this.form.submit()" class="text-neutral-900 focus:ring-0">
+                            <span class="font-semibold text-neutral-900">Pre-Order (PO)</span>
+                        </label>
                     </div>
                 </div>
 
@@ -106,7 +98,7 @@
             <div class="flex justify-between items-center mb-6 text-xs text-neutral-500">
                 <p>Menampilkan <span class="font-bold text-neutral-900">{{ $products->total() }}</span> produk sepatu</p>
                 <div class="text-neutral-400">
-                    Akses Anda: <span class="uppercase font-bold text-neutral-900">{{ $userType }}</span>
+                    Katalog: <span class="font-bold text-neutral-900">FOOTWORK Official</span>
                 </div>
             </div>
 
@@ -143,12 +135,6 @@
                                             <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-xs text-neutral-700 text-[10px] uppercase font-semibold tracking-wider px-2.5 py-1 rounded-md border border-neutral-200/80 shadow-2xs">
                                                 <i class="fa-regular fa-clock text-[9px] text-neutral-400"></i>
                                                 Pre-Order
-                                            </span>
-                                        @endif
-
-                                        @if($prod->visible_to_distributor && !$prod->visible_to_umum && !$prod->visible_to_member)
-                                            <span class="bg-neutral-100 text-neutral-700 text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-md border border-neutral-200">
-                                                Distributor
                                             </span>
                                         @endif
                                     </div>

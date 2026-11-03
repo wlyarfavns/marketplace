@@ -25,21 +25,9 @@ class FrontController extends Controller
         $floatingWa = CustomerService::active()->floatingWhatsapp()->first();
         $socials = SocialMedia::active()->ordered()->get();
 
-        // Ambil produk yang diizinkan sesuai role user saat ini
-        $user = Auth::user();
-        $userType = $user ? $user->customer_type : 'umum';
-
+        // Ambil produk katalog terbaru untuk pelanggan
         $featuredProducts = Product::active()
             ->with(['brand', 'categories', 'images', 'colors', 'variantPrices'])
-            ->when($userType === 'umum', function ($q) {
-                $q->where('product_type', 'ready_stock')->where('visible_to_umum', true);
-            })
-            ->when($userType === 'member', function ($q) {
-                $q->where('visible_to_member', true);
-            })
-            ->when($userType === 'distributor', function ($q) {
-                $q->where('visible_to_distributor', true);
-            })
             ->latest()
             ->take(8)
             ->get();
@@ -51,19 +39,7 @@ class FrontController extends Controller
 
     public function catalog(Request $request)
     {
-        $user = Auth::user();
-        $userType = $user ? $user->customer_type : 'umum';
-
         $query = Product::active()->with(['brand', 'categories', 'images', 'colors']);
-
-        // Batasan Role Produk
-        if ($userType === 'umum') {
-            $query->where('product_type', 'ready_stock')->where('visible_to_umum', true);
-        } elseif ($userType === 'member') {
-            $query->where('visible_to_member', true);
-        } elseif ($userType === 'distributor') {
-            $query->where('visible_to_distributor', true);
-        }
 
         // Filter Pencarian
         if ($request->filled('q')) {
@@ -91,12 +67,7 @@ class FrontController extends Controller
 
         // Filter Jenis Produk (Ready Stock vs PO)
         if ($request->filled('type') && in_array($request->type, ['ready_stock', 'po'])) {
-            if ($request->type === 'po' && $userType === 'umum') {
-                // Pengunjung dilarang filter PO, diarahkan ke ready_stock
-                $query->where('product_type', 'ready_stock');
-            } else {
-                $query->where('product_type', $request->type);
-            }
+            $query->where('product_type', $request->type);
         }
 
         // Pengurutan (Sorting)
@@ -114,14 +85,11 @@ class FrontController extends Controller
         $categories = Category::active()->get();
         $floatingWa = CustomerService::active()->floatingWhatsapp()->first();
 
-        return view('front.catalog', compact('products', 'brands', 'categories', 'userType', 'floatingWa'));
+        return view('front.catalog', compact('products', 'brands', 'categories', 'floatingWa'));
     }
 
     public function productDetail($slug)
     {
-        $user = Auth::user();
-        $userType = $user ? $user->customer_type : 'umum';
-
         $product = Product::where('slug', $slug)
             ->with([
                 'brand', 'categories', 'images',
@@ -131,27 +99,15 @@ class FrontController extends Controller
             ])
             ->firstOrFail();
 
-        // Validasi Akses Peran
-        if ($userType === 'umum' && ($product->product_type === 'po' || ! $product->visible_to_umum)) {
-            return redirect()->route('login')->with('error', 'Produk ini bertipe Pre-Order atau eksklusif. Silakan login sebagai Member atau Hubungi Admin.');
-        }
-
-        if ($userType === 'member' && ! $product->visible_to_member) {
-            abort(403, 'Produk ini eksklusif untuk tier Distributor.');
-        }
-
         $relatedProducts = Product::active()
             ->where('id', '!=', $product->id)
             ->where('brand_id', $product->brand_id)
-            ->when($userType === 'umum', function ($q) {
-                $q->where('product_type', 'ready_stock')->where('visible_to_umum', true);
-            })
             ->take(4)
             ->get();
 
         $floatingWa = CustomerService::active()->floatingWhatsapp()->first();
 
-        return view('front.product-detail', compact('product', 'relatedProducts', 'userType', 'floatingWa'));
+        return view('front.product-detail', compact('product', 'relatedProducts', 'floatingWa'));
     }
 
     // AJAX Cek ID Seller
@@ -208,11 +164,11 @@ class FrontController extends Controller
 
         // Cek Target Audiens
         $user = Auth::user();
-        if ($coupon->target_audience === 'member_only' && (! $user || $user->customer_type === 'umum')) {
-            return response()->json(['valid' => false, 'message' => 'Voucher ini khusus untuk akun Member terdaftar.'], 400);
+        if ($coupon->target_audience === 'member_only' && ! $user) {
+            return response()->json(['valid' => false, 'message' => 'Voucher ini khusus untuk akun Pelanggan terdaftar.'], 400);
         }
-        if ($coupon->target_audience === 'non_member_only' && $user && $user->customer_type !== 'umum') {
-            return response()->json(['valid' => false, 'message' => 'Voucher ini khusus untuk Pengunjung baru / Non-Member.'], 400);
+        if ($coupon->target_audience === 'non_member_only' && $user) {
+            return response()->json(['valid' => false, 'message' => 'Voucher ini khusus untuk Pengunjung baru.'], 400);
         }
 
         // Cek Minimal Belanja

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// --- FRONT-STORE PUBLIC ROUTES (Pengunjung, Member, Distributor) ---
+// --- FRONT-STORE PUBLIC ROUTES (Katalog & Detail Produk) ---
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/katalog', [FrontController::class, 'catalog'])->name('catalog');
 Route::get('/produk/{slug}', [FrontController::class, 'productDetail'])->name('product.detail');
@@ -37,14 +37,14 @@ Route::post('/keranjang/tambah', [CartController::class, 'add'])->name('cart.add
 Route::post('/keranjang/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/keranjang/hapus', [CartController::class, 'remove'])->name('cart.remove');
 
-// Checkout & Konfirmasi (Mendukung Guest Checkout & Member)
+// Checkout & Konfirmasi (Mendukung Guest Checkout & Pelanggan)
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout/proses', [CheckoutController::class, 'process'])->name('checkout.process');
 Route::get('/pesanan/konfirmasi/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::post('/pesanan/unggah-bukti/{orderNumber}', [CheckoutController::class, 'uploadProof'])->name('checkout.upload-proof');
 
 // --- AUTHENTICATION ROUTES ---
-// Customer / Member
+// Role 1: Pelanggan (Customer)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -54,11 +54,11 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('otp.veri
 Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Admin Auth
+// Role 2: Admin Auth
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.post');
 
-// --- MEMBER & DISTRIBUTOR PRIVATE ROUTES (Akun Saya) ---
+// --- PELANGGAN PRIVATE ROUTES (Akun Saya) ---
 Route::middleware(['auth'])->prefix('akun')->name('account.')->group(function () {
     Route::get('/dashboard', [AccountController::class, 'dashboard'])->name('dashboard');
     Route::get('/pesanan', [AccountController::class, 'orders'])->name('orders');
@@ -104,7 +104,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/sellers/report', [AdminSellerController::class, 'salesReport'])->name('sellers.report');
     Route::get('/sellers/report/export', [AdminSellerController::class, 'exportSalesReport'])->name('sellers.report.export');
 
-    // 8. Kelola Pengguna & Customer Tier
+    // 8. Kelola Pengguna (Admin & Pelanggan)
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::put('/users/{id}', [AdminUserController::class, 'update'])->name('users.update');
     Route::put('/users/{id}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');

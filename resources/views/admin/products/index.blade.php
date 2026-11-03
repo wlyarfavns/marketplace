@@ -59,7 +59,7 @@
                     <th class="p-4">SKU / Nama Produk</th>
                     <th class="p-4">Brand</th>
                     <th class="p-4">Tipe Stok</th>
-                    <th class="p-4">Visibilitas Tier</th>
+                    <th class="p-4">Katalog Pelanggan</th>
                     <th class="p-4 text-right">Rentang Harga</th>
                     <th class="p-4 text-center">Status</th>
                     <th class="p-4 text-center">Aksi</th>
@@ -83,10 +83,12 @@
                                 <span class="bg-slate-900 text-white font-semibold px-2 py-0.5 uppercase text-[10px]">Pre-Order</span>
                             @endif
                         </td>
-                        <td class="p-4 space-x-1">
-                            <span class="px-1.5 py-0.5 text-[10px] font-medium border {{ $p->visible_to_umum ? 'bg-slate-100 text-slate-800 border-slate-300' : 'text-slate-300 border-slate-200 line-through' }}">Umum</span>
-                            <span class="px-1.5 py-0.5 text-[10px] font-medium border {{ $p->visible_to_member ? 'bg-slate-100 text-slate-800 border-slate-300' : 'text-slate-300 border-slate-200 line-through' }}">Member</span>
-                            <span class="px-1.5 py-0.5 text-[10px] font-medium border {{ $p->visible_to_distributor ? 'bg-slate-100 text-slate-800 border-slate-300' : 'text-slate-300 border-slate-200 line-through' }}">Distributor</span>
+                        <td class="p-4">
+                            @if($p->visible_to_umum || $p->visible_to_member)
+                                <span class="bg-slate-100 text-slate-800 font-semibold px-2 py-0.5 border border-slate-200 text-[10px]">Tampil di Toko</span>
+                            @else
+                                <span class="text-slate-400 border border-slate-200 px-2 py-0.5 text-[10px]">Disembunyikan</span>
+                            @endif
                         </td>
                         <td class="p-4 text-right font-bold text-slate-900">
                             @if($p->min_price == $p->max_price)

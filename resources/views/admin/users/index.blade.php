@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page_title', '8. Kelola Pengguna & Customer Tier (Umum, Member, Distributor)')
+@section('page_title', '8. Kelola Pengguna (Admin & Pelanggan)')
 
 @section('content')
 <div class="space-y-6" x-data="{ editModal: false, resetModal: false, selectedUser: {} }">
@@ -8,13 +8,13 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h2 class="text-lg font-bold text-slate-900">Manajemen Pengguna & Hak Akses</h2>
-            <p class="text-xs text-slate-500 mt-0.5">Kelola role (Admin vs Customer) dan customer tier (Umum, Member, Distributor).</p>
+            <p class="text-xs text-slate-500 mt-0.5">Kelola 2 role pengguna sistem: Administrator dan Pelanggan.</p>
         </div>
     </div>
 
     <!-- Filter Bar -->
     <div class="bg-white border border-slate-200 p-4">
-        <form action="{{ route('admin.users.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+        <form action="{{ route('admin.users.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari Nama / Email / HP..." 
                        class="w-full px-3 py-2 border border-slate-300 focus:outline-none focus:border-slate-800">
@@ -24,22 +24,13 @@
                 <select name="role" class="w-full px-3 py-2 border border-slate-300 bg-white">
                     <option value="">Semua Role</option>
                     <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="customer" {{ request('role') === 'customer' ? 'selected' : '' }}>Customer</option>
-                </select>
-            </div>
-
-            <div>
-                <select name="customer_type" class="w-full px-3 py-2 border border-slate-300 bg-white">
-                    <option value="">Semua Tier Pelanggan</option>
-                    <option value="umum" {{ request('customer_type') === 'umum' ? 'selected' : '' }}>Umum / Non-Member</option>
-                    <option value="member" {{ request('customer_type') === 'member' ? 'selected' : '' }}>Registered Member</option>
-                    <option value="distributor" {{ request('customer_type') === 'distributor' ? 'selected' : '' }}>Distributor Grosir (B2B)</option>
+                    <option value="customer" {{ request('role') === 'customer' ? 'selected' : '' }}>Pelanggan</option>
                 </select>
             </div>
 
             <div class="flex gap-2">
                 <button type="submit" class="w-full bg-slate-900 text-white font-semibold py-2">Filter</button>
-                @if(request()->anyFilled(['q', 'role', 'customer_type']))
+                @if(request()->anyFilled(['q', 'role']))
                     <a href="{{ route('admin.users.index') }}" class="px-3 py-2 border border-slate-300 text-slate-500">Reset</a>
                 @endif
             </div>
@@ -53,8 +44,7 @@
                 <tr>
                     <th class="p-4">Nama & Email</th>
                     <th class="p-4">Nomor WhatsApp</th>
-                    <th class="p-4">Role Sistem</th>
-                    <th class="p-4">Customer Tier</th>
+                    <th class="p-4">Role Pengguna</th>
                     <th class="p-4">Kota / Domisili</th>
                     <th class="p-4 text-center">Status</th>
                     <th class="p-4 text-center">Aksi</th>
@@ -70,18 +60,9 @@
                         <td class="p-4 font-mono text-slate-700">{{ $u->phone ?? '-' }}</td>
                         <td class="p-4">
                             @if($u->role === 'admin')
-                                <span class="bg-slate-900 text-white font-bold px-2 py-0.5 text-[10px] uppercase">Admin</span>
+                                <span class="bg-slate-900 text-white font-bold px-2.5 py-1 text-[10px] uppercase rounded-xs">Admin</span>
                             @else
-                                <span class="bg-slate-100 text-slate-700 font-medium px-2 py-0.5 text-[10px] uppercase">Customer</span>
-                            @endif
-                        </td>
-                        <td class="p-4">
-                            @if($u->customer_type === 'distributor')
-                                <span class="bg-amber-100 text-amber-900 font-bold px-2.5 py-1 text-[10px] uppercase border border-amber-300">Distributor (B2B)</span>
-                            @elseif($u->customer_type === 'member')
-                                <span class="bg-blue-50 text-blue-800 font-bold px-2.5 py-1 text-[10px] uppercase border border-blue-200">Member</span>
-                            @else
-                                <span class="bg-slate-100 text-slate-600 font-medium px-2 py-0.5 text-[10px] uppercase">Umum</span>
+                                <span class="bg-slate-100 text-slate-800 font-bold px-2.5 py-1 text-[10px] uppercase border border-slate-200 rounded-xs">Pelanggan</span>
                             @endif
                         </td>
                         <td class="p-4 text-slate-600">{{ $u->city ?? '-' }}</td>
@@ -95,7 +76,7 @@
                                 <button type="button" 
                                         @click="editModal = true; selectedUser = {{ json_encode($u) }}"
                                         class="px-2.5 py-1 bg-slate-100 hover:bg-slate-900 hover:text-white border border-slate-300 text-slate-800 text-[10px] font-semibold uppercase">
-                                    Edit Tier
+                                    Edit Role
                                 </button>
                                 <button type="button" 
                                         @click="resetModal = true; selectedUser = {{ json_encode($u) }}"
@@ -107,7 +88,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="p-8 text-center text-slate-400">Tidak ada data pengguna yang ditemukan.</td>
+                        <td colspan="6" class="p-8 text-center text-slate-400">Tidak ada data pengguna yang ditemukan.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -116,11 +97,11 @@
 
     <div>{{ $users->links() }}</div>
 
-    <!-- Modal Edit Tier & Role -->
+    <!-- Modal Edit Role Pengguna -->
     <div x-show="editModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
         <div class="bg-white max-w-md w-full p-6 border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-                <h3 class="text-sm font-bold text-slate-900 uppercase">Ubah Role & Customer Tier</h3>
+                <h3 class="text-sm font-bold text-slate-900 uppercase">Ubah Data & Role Pengguna</h3>
                 <button @click="editModal = false" class="text-slate-400 hover:text-black">&times;</button>
             </div>
 
@@ -139,19 +120,10 @@
                 </div>
 
                 <div class="space-y-1">
-                    <label class="font-semibold text-slate-700">Role Sistem *</label>
-                    <select name="role" x-model="selectedUser.role" required class="w-full px-3 py-2 border border-slate-300 bg-white">
-                        <option value="customer">Customer (Pelanggan / Pembeli)</option>
-                        <option value="admin">Administrator (Akses Penuh Back-Office)</option>
-                    </select>
-                </div>
-
-                <div class="space-y-1">
-                    <label class="font-semibold text-slate-700">Customer Tier (Tingkatan Hak Akses) *</label>
-                    <select name="customer_type" x-model="selectedUser.customer_type" required class="w-full px-3 py-2 border border-slate-300 bg-white font-bold">
-                        <option value="umum">Umum (Hanya Ready Stock, Tidak Ada PO)</option>
-                        <option value="member">Member (Akses PO & Kupon Khusus Member)</option>
-                        <option value="distributor">Distributor (B2B Grosir, Rule Diskon Otomatis, Produk Eksklusif)</option>
+                    <label class="font-semibold text-slate-700">Role Pengguna Sistem *</label>
+                    <select name="role" x-model="selectedUser.role" required class="w-full px-3 py-2 border border-slate-300 bg-white font-semibold">
+                        <option value="customer">Pelanggan (Customer / Pembeli Toko)</option>
+                        <option value="admin">Administrator (Akses Penuh Panel Admin)</option>
                     </select>
                 </div>
 
@@ -165,7 +137,7 @@
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
                     <button type="button" @click="editModal = false" class="px-4 py-2 border border-slate-300 text-slate-600">Batal</button>
-                    <button type="submit" class="px-5 py-2 bg-slate-900 text-white font-bold uppercase tracking-wider">Perbarui Pengguna</button>
+                    <button type="submit" class="px-5 py-2 bg-slate-900 text-white font-bold uppercase tracking-wider">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -183,11 +155,10 @@
                 @csrf
                 @method('PUT')
 
-                <p class="text-slate-500 text-[11px]">Setel kata sandi baru untuk <strong x-text="selectedUser.name"></strong>:</p>
-
                 <div class="space-y-1">
-                    <label class="font-semibold text-slate-700">Kata Sandi Baru (Min 6 Karakter) *</label>
-                    <input type="password" name="new_password" required minlength="6" placeholder="••••••••" class="w-full px-3 py-2 border border-slate-300">
+                    <label class="font-semibold text-slate-700">Kata Sandi Baru *</label>
+                    <input type="password" name="new_password" required minlength="6" placeholder="Minimal 6 karakter..." 
+                           class="w-full px-3 py-2 border border-slate-300">
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
@@ -200,4 +171,3 @@
 
 </div>
 @endsection
-
