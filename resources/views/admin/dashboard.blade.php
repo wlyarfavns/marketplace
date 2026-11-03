@@ -218,23 +218,23 @@
 
     </div>
 
-    <!-- Tombol Aksi Cepat Sesuai PRD Poin 4.2.1 -->
-    <div class="bg-slate-900 text-white p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <!-- Tombol Aksi Cepat Sesuai PRD Poin 4.2.1 (Tampilan Bersih & Elegan) -->
+    <div class="bg-white border border-slate-200 p-6 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-2xs">
         <div>
-            <h4 class="text-sm font-bold uppercase tracking-wider">Aksi Cepat Administrator</h4>
-            <p class="text-xs text-slate-400 mt-0.5">Akses modul utama dengan satu klik.</p>
+            <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900">Aksi Cepat Administrator</h4>
+            <p class="text-xs text-slate-500 mt-0.5">Akses modul utama dengan satu klik.</p>
         </div>
-        <div class="flex flex-wrap gap-3 text-xs">
-            <a href="{{ route('admin.products.create') }}" class="bg-white text-slate-900 font-bold px-4 py-2 hover:bg-slate-100 transition">
+        <div class="flex flex-wrap gap-2.5 text-xs">
+            <a href="{{ route('admin.products.create') }}" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2 transition shadow-2xs">
                 + Tambah Produk Baru
             </a>
-            <a href="{{ route('admin.orders.index') }}" class="border border-slate-700 px-4 py-2 hover:bg-slate-800 transition">
+            <a href="{{ route('admin.orders.index') }}" class="bg-white border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-800 font-semibold px-4 py-2 transition shadow-2xs">
                 Lihat Pesanan
             </a>
-            <a href="{{ route('admin.sellers.report') }}" class="border border-slate-700 px-4 py-2 hover:bg-slate-800 transition">
+            <a href="{{ route('admin.sellers.report') }}" class="bg-white border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-800 font-semibold px-4 py-2 transition shadow-2xs">
                 Laporan Mitra
             </a>
-            <a href="{{ route('admin.coupons.index') }}" class="border border-slate-700 px-4 py-2 hover:bg-slate-800 transition">
+            <a href="{{ route('admin.coupons.index') }}" class="bg-white border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-800 font-semibold px-4 py-2 transition shadow-2xs">
                 Buat Kupon
             </a>
         </div>
