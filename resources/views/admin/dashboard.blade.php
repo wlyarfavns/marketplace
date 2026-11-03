@@ -7,56 +7,81 @@
     
     <!-- 1. KPI Utama (4 Kartu) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="p-6 bg-white border border-slate-200 rounded-none space-y-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pesanan</span>
+        <a href="{{ route('admin.orders.index') }}" 
+           class="block p-6 bg-white border border-slate-200 hover:border-black hover:shadow-md transition-all duration-200 space-y-2 group cursor-pointer">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-black transition">Total Pesanan</span>
+                <i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-black group-hover:translate-x-0.5 transition"></i>
+            </div>
             <div class="text-3xl font-bold text-slate-900">{{ number_format($totalOrders) }}</div>
-            <p class="text-xs text-slate-500">Semua pesanan tercatat</p>
-        </div>
+            <p class="text-xs text-slate-500 group-hover:text-slate-800 transition">Semua pesanan tercatat &rarr;</p>
+        </a>
 
-        <div class="p-6 bg-white border border-slate-200 rounded-none space-y-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pendapatan Terverifikasi</span>
+        <a href="{{ route('admin.orders.index', ['payment_status' => 'verified']) }}" 
+           class="block p-6 bg-white border border-slate-200 hover:border-emerald-600 hover:shadow-md transition-all duration-200 space-y-2 group cursor-pointer">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-emerald-700 transition">Total Pendapatan Terverifikasi</span>
+                <i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-emerald-700 group-hover:translate-x-0.5 transition"></i>
+            </div>
             <div class="text-2xl font-bold text-emerald-700 truncate">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
-            <p class="text-xs text-slate-500">Pembayaran terverifikasi</p>
-        </div>
+            <p class="text-xs text-slate-500 group-hover:text-slate-800 transition">Lihat pesanan terverifikasi &rarr;</p>
+        </a>
 
-        <div class="p-6 bg-white border border-slate-200 rounded-none space-y-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Pelanggan Terdaftar</span>
+        <a href="{{ route('admin.users.index') }}" 
+           class="block p-6 bg-white border border-slate-200 hover:border-black hover:shadow-md transition-all duration-200 space-y-2 group cursor-pointer">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-black transition">Total Pelanggan Terdaftar</span>
+                <i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-black group-hover:translate-x-0.5 transition"></i>
+            </div>
             <div class="text-3xl font-bold text-slate-900">{{ number_format($totalCustomers) }}</div>
-            <p class="text-xs text-slate-500">Member, Distributor & Umum</p>
-        </div>
+            <p class="text-xs text-slate-500 group-hover:text-slate-800 transition">Kelola Member, Distributor & Umum &rarr;</p>
+        </a>
 
-        <div class="p-6 bg-white border border-slate-200 rounded-none space-y-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Produk Aktif di Katalog</span>
+        <a href="{{ route('admin.products.index') }}" 
+           class="block p-6 bg-white border border-slate-200 hover:border-black hover:shadow-md transition-all duration-200 space-y-2 group cursor-pointer">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-black transition">Produk Aktif di Katalog</span>
+                <i class="fa-solid fa-arrow-right text-xs text-slate-300 group-hover:text-black group-hover:translate-x-0.5 transition"></i>
+            </div>
             <div class="text-3xl font-bold text-slate-900">{{ number_format($activeProducts) }}</div>
-            <p class="text-xs text-slate-500">Ready Stock & Pre-Order</p>
-        </div>
+            <p class="text-xs text-slate-500 group-hover:text-slate-800 transition">Kelola Ready Stock & Pre-Order &rarr;</p>
+        </a>
     </div>
 
     <!-- 2. Status Operasional Pesanan -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div class="p-5 bg-amber-50 border border-amber-200 flex justify-between items-center">
-            <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700">Pesanan Pending</span>
-                <p class="text-xs text-amber-600 mt-0.5">Menunggu konfirmasi / transfer</p>
+        <a href="{{ route('admin.orders.index', ['order_status' => 'pending']) }}" 
+           class="block p-5 bg-amber-50 border border-amber-200 hover:border-amber-400 hover:shadow-md transition-all duration-200 group cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700">Pesanan Pending</span>
+                    <p class="text-xs text-amber-600 mt-0.5">Menunggu konfirmasi / transfer &rarr;</p>
+                </div>
+                <span class="text-3xl font-bold text-amber-800">{{ $pendingOrders }}</span>
             </div>
-            <span class="text-3xl font-bold text-amber-800">{{ $pendingOrders }}</span>
-        </div>
+        </a>
 
-        <div class="p-5 bg-blue-50 border border-blue-200 flex justify-between items-center">
-            <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700">Sedang Diproses</span>
-                <p class="text-xs text-blue-600 mt-0.5">Siap packing & ekspedisi</p>
+        <a href="{{ route('admin.orders.index', ['order_status' => 'processing']) }}" 
+           class="block p-5 bg-blue-50 border border-blue-200 hover:border-blue-400 hover:shadow-md transition-all duration-200 group cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700">Sedang Diproses</span>
+                    <p class="text-xs text-blue-600 mt-0.5">Siap packing & ekspedisi &rarr;</p>
+                </div>
+                <span class="text-3xl font-bold text-blue-800">{{ $processingOrders }}</span>
             </div>
-            <span class="text-3xl font-bold text-blue-800">{{ $processingOrders }}</span>
-        </div>
+        </a>
 
-        <div class="p-5 bg-emerald-50 border border-emerald-200 flex justify-between items-center">
-            <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Pesanan Selesai</span>
-                <p class="text-xs text-emerald-600 mt-0.5">Barang diterima pelanggan</p>
+        <a href="{{ route('admin.orders.index', ['order_status' => 'completed']) }}" 
+           class="block p-5 bg-emerald-50 border border-emerald-200 hover:border-emerald-400 hover:shadow-md transition-all duration-200 group cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Pesanan Selesai</span>
+                    <p class="text-xs text-emerald-600 mt-0.5">Barang diterima pelanggan &rarr;</p>
+                </div>
+                <span class="text-3xl font-bold text-emerald-800">{{ $completedOrders }}</span>
             </div>
-            <span class="text-3xl font-bold text-emerald-800">{{ $completedOrders }}</span>
-        </div>
+        </a>
     </div>
 
     <!-- 3. Kartu Khusus Statistik Down Payment (DP) Sesuai PRD Poin 4.2.1 -->
@@ -73,35 +98,41 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-xs">
-            <div class="p-4 bg-slate-50 border border-slate-200 space-y-1">
-                <span class="text-slate-400 font-semibold block text-[10px] uppercase">Pesanan DP Masuk</span>
+            <a href="{{ route('admin.orders.index', ['payment_method_type' => 'dp']) }}" 
+               class="block p-4 bg-slate-50 border border-slate-200 hover:border-slate-400 hover:shadow-xs transition space-y-1 group cursor-pointer">
+                <span class="text-slate-400 group-hover:text-slate-700 font-semibold block text-[10px] uppercase">Pesanan DP Masuk</span>
                 <p class="text-xl font-bold text-slate-900">{{ $totalDpOrders }}</p>
-            </div>
+            </a>
 
-            <div class="p-4 bg-slate-50 border border-slate-200 space-y-1">
-                <span class="text-slate-400 font-semibold block text-[10px] uppercase">DP Terbayar</span>
+            <a href="{{ route('admin.orders.index', ['payment_method_type' => 'dp', 'payment_status' => 'verified']) }}" 
+               class="block p-4 bg-slate-50 border border-slate-200 hover:border-blue-400 hover:shadow-xs transition space-y-1 group cursor-pointer">
+                <span class="text-slate-400 group-hover:text-blue-700 font-semibold block text-[10px] uppercase">DP Terbayar</span>
                 <p class="text-xl font-bold text-blue-700">{{ $dpPaidOrders }}</p>
-            </div>
+            </a>
 
-            <div class="p-4 bg-slate-50 border border-slate-200 space-y-1">
-                <span class="text-slate-400 font-semibold block text-[10px] uppercase">DP Pending</span>
+            <a href="{{ route('admin.orders.index', ['payment_method_type' => 'dp', 'payment_status' => 'waiting_verification']) }}" 
+               class="block p-4 bg-slate-50 border border-slate-200 hover:border-amber-400 hover:shadow-xs transition space-y-1 group cursor-pointer">
+                <span class="text-slate-400 group-hover:text-amber-700 font-semibold block text-[10px] uppercase">DP Pending</span>
                 <p class="text-xl font-bold text-amber-700">{{ $dpPendingOrders }}</p>
-            </div>
+            </a>
 
-            <div class="p-4 bg-slate-50 border border-slate-200 space-y-1">
-                <span class="text-slate-400 font-semibold block text-[10px] uppercase">Lunas Penuh</span>
+            <a href="{{ route('admin.orders.index', ['payment_status' => 'verified']) }}" 
+               class="block p-4 bg-slate-50 border border-slate-200 hover:border-emerald-400 hover:shadow-xs transition space-y-1 group cursor-pointer">
+                <span class="text-slate-400 group-hover:text-emerald-700 font-semibold block text-[10px] uppercase">Lunas Penuh</span>
                 <p class="text-xl font-bold text-emerald-700">{{ $fullyPaidOrders }}</p>
-            </div>
+            </a>
 
-            <div class="p-4 bg-slate-50 border border-slate-200 space-y-1 md:col-span-1">
-                <span class="text-slate-400 font-semibold block text-[10px] uppercase">Omzet Masuk (DP)</span>
+            <a href="{{ route('admin.orders.index', ['payment_method_type' => 'dp']) }}" 
+               class="block p-4 bg-slate-50 border border-slate-200 hover:border-slate-400 hover:shadow-xs transition space-y-1 md:col-span-1 group cursor-pointer">
+                <span class="text-slate-400 group-hover:text-slate-700 font-semibold block text-[10px] uppercase">Omzet Masuk (DP)</span>
                 <p class="text-sm font-bold text-slate-900 truncate">Rp {{ number_format($revenueDp, 0, ',', '.') }}</p>
-            </div>
+            </a>
 
-            <div class="p-4 bg-slate-50 border border-slate-200 space-y-1 md:col-span-1">
-                <span class="text-slate-400 font-semibold block text-[10px] uppercase">Piutang Sisa Tagihan</span>
+            <a href="{{ route('admin.orders.index', ['payment_method_type' => 'dp']) }}" 
+               class="block p-4 bg-slate-50 border border-slate-200 hover:border-slate-400 hover:shadow-xs transition space-y-1 md:col-span-1 group cursor-pointer">
+                <span class="text-slate-400 group-hover:text-slate-700 font-semibold block text-[10px] uppercase">Piutang Sisa Tagihan</span>
                 <p class="text-sm font-bold text-slate-900 truncate">Rp {{ number_format($remainingReceivable, 0, ',', '.') }}</p>
-            </div>
+            </a>
         </div>
     </div>
 
