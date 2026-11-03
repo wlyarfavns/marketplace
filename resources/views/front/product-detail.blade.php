@@ -62,9 +62,14 @@
             },
             setImage(url) {
                 this.selectedImage = url;
+                const filename = url.split('/').pop().split('?')[0];
                 const found = this.colors.find(c => {
                     if (c.image_url && (c.image_url === url || url.endsWith(c.image_url))) return true;
-                    if (c.color_image_path && url.includes(c.color_image_path)) return true;
+                    if (c.color_image_path) {
+                        const cFile = c.color_image_path.split('/').pop().split('?')[0];
+                        if (cFile && cFile === filename) return true;
+                        if (url.includes(c.color_image_path)) return true;
+                    }
                     return false;
                 });
                 if (found) {

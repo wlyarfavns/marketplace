@@ -36,13 +36,30 @@ class PasarKitaTest extends TestCase
 
     public function test_product_detail_contains_colorway_images(): void
     {
-        $asics = Product::where('slug', 'asics-gel-kayano-14-metallic-silver-black')->first();
-        if ($asics) {
-            $response = $this->get('/produk/'.$asics->slug);
-            $response->assertStatus(200);
-            $response->assertSee('asics-gel-kayano-white.jpg');
-            $response->assertSee('Metallic Silver & Black');
-            $response->assertSee('Pure White & Smoke Grey');
+        $multicolorProducts = [
+            'asics-gel-kayano-14-metallic-silver-black' => ['asics-gel-kayano-white.jpg', 'Metallic Silver & Black', 'Pure White & Smoke Grey'],
+            'nike-dunk-low-retro-panda' => ['nike-dunk-white.jpg', 'White & Black (Panda)', 'Triple White'],
+            'nike-metcon-9-training-gym' => ['nike-metcon-white.jpg', 'Black & White Anthracite', 'Triple White Metallic'],
+            'nike-air-zoom-pegasus-40-runner' => ['nike-pegasus-white.jpg', 'Pure Platinum Black', 'Triple White'],
+            'nike-calm-slide-triple-black' => ['nike-calm-white.jpg', 'Triple Black', 'Pure Sail White'],
+            'adidas-samba-og-cloud-white-core-black' => ['adidas-samba-black.jpg', 'Cloud White & Core Black', 'Core Black & White'],
+            'adidas-adilette-22-comfort-slides' => ['adidas-adilette-black.jpg', 'Stardust White Charcoal', 'Carbon Black'],
+            'new-balance-550-white-sea-salt-black' => ['nb-550-grey.jpg', 'White & Core Black', 'Sea Salt & Monochrome Grey'],
+            'puma-palermo-classic-black-gum-white' => ['puma-palermo-white.jpg', 'Core Black & White', 'Puma White & Black'],
+            'converse-chuck-70-vintage-high-black-egret' => ['converse-chuck-white.jpg', 'Black Canvas & Egret', 'Optic White Canvas'],
+            'vans-old-skool-classic-black-white' => ['vans-oldskool-white.jpg', 'Core Black & White Sidestripe', 'Triple White Canvas'],
+        ];
+
+        foreach ($multicolorProducts as $slug => [$imageFilename, $color1, $color2]) {
+            $product = Product::where('slug', $slug)->first();
+            if ($product) {
+                $response = $this->get('/produk/'.$product->slug);
+                $response->assertStatus(200);
+                $response->assertSee($imageFilename);
+                $response->assertSee($color1);
+                $response->assertSee($color2);
+                $this->assertFileExists(public_path('images/shoes/'.$imageFilename));
+            }
         }
     }
 
