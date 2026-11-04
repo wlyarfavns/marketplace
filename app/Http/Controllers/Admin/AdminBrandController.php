@@ -11,7 +11,7 @@ class AdminBrandController extends Controller
 {
     public function index()
     {
-        $brands = Brand::withCount('products')->orderBy('homepage_order', 'asc')->paginate(15);
+        $brands = Brand::withCount('products')->orderBy('homepage_order', 'asc')->paginate(8);
 
         return view('admin.brands.index', compact('brands'));
     }

@@ -18,9 +18,11 @@ class Feature extends Model
     protected $fillable = [
         'title',
         'description',
-        'icon',
+        'icon_path',
         'sort_order',
         'is_active',
+        // Legacy alias
+        'icon',
     ];
 
     /**

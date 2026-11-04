@@ -151,10 +151,10 @@
         <div class="p-4 border-t border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-full bg-black text-white text-xs flex items-center justify-center font-bold">
-                    {{ substr(Auth::user()->name, 0, 1) }}
+                    {{ substr(Auth::user()?->name ?? 'A', 0, 1) }}
                 </div>
                 <div class="text-xs">
-                    <p class="font-semibold text-slate-900 truncate w-32">{{ Auth::user()->name }}</p>
+                    <p class="font-semibold text-slate-900 truncate w-32">{{ Auth::user()?->name ?? 'Admin FOOTWORK' }}</p>
                     <p class="text-slate-400 text-[10px]">Super Administrator</p>
                 </div>
             </div>

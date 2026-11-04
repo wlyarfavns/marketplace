@@ -11,7 +11,7 @@
             <p class="text-xs text-slate-500 mt-0.5">Filter transaksi, verifikasi bukti transfer, cetak faktur PDF, dan export data.</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.orders.export-excel') }}" class="bg-emerald-700 text-white text-xs uppercase tracking-wider font-semibold px-4 py-2.5 hover:bg-emerald-800 transition flex items-center gap-2">
+            <a href="{{ route('admin.orders.export-excel', request()->query()) }}" class="bg-emerald-700 text-white text-xs uppercase tracking-wider font-semibold px-4 py-2.5 hover:bg-emerald-800 transition flex items-center gap-2">
                 <i class="fa-solid fa-file-excel"></i> Export Laporan (Excel)
             </a>
         </div>

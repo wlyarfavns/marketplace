@@ -11,7 +11,7 @@ class AdminCategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::withCount('products')->latest()->paginate(15);
+        $categories = Category::withCount('products')->latest()->paginate(8);
 
         return view('admin.categories.index', compact('categories'));
     }

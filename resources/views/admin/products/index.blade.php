@@ -104,6 +104,9 @@
                         </td>
                         <td class="p-4 text-center">
                             <div class="flex items-center justify-center gap-2">
+                                <a href="{{ route('admin.products.edit', $p->id) }}" class="p-1.5 text-slate-400 hover:text-black" title="Edit Produk">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
                                 <a href="{{ route('product.detail', $p->slug) }}" target="_blank" class="p-1.5 text-slate-400 hover:text-black" title="Lihat di Toko">
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>

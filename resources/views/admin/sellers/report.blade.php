@@ -11,7 +11,7 @@
             <p class="text-xs text-slate-500 mt-0.5">Rekap real-time penjualan per ID Seller dan Brand untuk evaluasi komisi & reward.</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.sellers.report.export') }}" class="bg-emerald-700 text-white text-xs uppercase tracking-wider font-semibold px-4 py-2.5 hover:bg-emerald-800 transition flex items-center gap-2">
+            <a href="{{ route('admin.sellers.report.export', request()->query()) }}" class="bg-emerald-700 text-white text-xs uppercase tracking-wider font-semibold px-4 py-2.5 hover:bg-emerald-800 transition flex items-center gap-2">
                 <i class="fa-solid fa-file-excel"></i> Export Laporan Mitra (Excel)
             </a>
             <a href="{{ route('admin.sellers.index') }}" class="border border-slate-300 text-slate-700 text-xs uppercase font-semibold px-4 py-2.5 hover:bg-slate-50 transition">
@@ -122,6 +122,10 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <div>
+        {{ $paginatedSellers->links() }}
     </div>
 
 </div>

@@ -20,21 +20,27 @@ class Coupon extends Model
      */
     protected $fillable = [
         'code',
-        'name',
-        'description',
         'discount_type',
         'discount_value',
         'max_discount',
+        'target_audience',
         'min_purchase',
+        'min_quantity',
+        'quota_total',
+        'quota_per_user',
+        'restriction_type',
+        'show_on_checkout',
+        'starts_at',
+        'expires_at',
+        'is_active',
+        // Legacy aliases
+        'name',
+        'description',
         'usage_limit',
         'used_count',
         'per_user_limit',
         'applies_to',
         'customer_type',
-        'show_on_checkout',
-        'starts_at',
-        'expires_at',
-        'is_active',
     ];
 
     /**
@@ -48,6 +54,9 @@ class Coupon extends Model
             'discount_value' => 'decimal:2',
             'max_discount' => 'decimal:2',
             'min_purchase' => 'decimal:2',
+            'min_quantity' => 'integer',
+            'quota_total' => 'integer',
+            'quota_per_user' => 'integer',
             'usage_limit' => 'integer',
             'used_count' => 'integer',
             'per_user_limit' => 'integer',

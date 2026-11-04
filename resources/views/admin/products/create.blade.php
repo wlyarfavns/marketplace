@@ -122,10 +122,13 @@
             </div>
         </div>
 
-        <!-- 2. Repeater Varian Warna -->
+        <!-- 2. Repeater Varian Warna & Dynamic Colorway Image -->
         <div class="bg-white border border-slate-200 p-6 space-y-4 text-xs">
             <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-                <h3 class="text-xs uppercase font-bold tracking-wider text-slate-900">2. Varian Warna (Nama & Kode Hex)</h3>
+                <div>
+                    <h3 class="text-xs uppercase font-bold tracking-wider text-slate-900">2. Varian Warna & Foto Colorway Dinamis</h3>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Tentukan nama warna, warna hex, dan jalur/file gambar sepatu yang otomatis berganti saat warna dipilih.</p>
+                </div>
                 <button type="button" @click="addColor()" class="text-xs bg-slate-100 hover:bg-black hover:text-white px-3 py-1 font-semibold uppercase">
                     + Tambah Warna
                 </button>
@@ -133,13 +136,20 @@
 
             <div class="space-y-3">
                 <template x-for="(col, index) in colors" :key="index">
-                    <div class="flex items-center gap-3">
-                        <input type="text" :name="'colors['+index+'][name]'" x-model="col.name" placeholder="Nama Warna (Contoh: Off White)" required class="flex-1 px-3 py-2 border border-slate-300">
-                        <input type="color" :name="'colors['+index+'][hex]'" x-model="col.hex" class="w-10 h-9 p-0.5 border border-slate-300 cursor-pointer">
-                        <input type="text" :name="'colors['+index+'][hex_text]'" x-model="col.hex" placeholder="#FFFFFF" class="w-24 px-3 py-2 border border-slate-300 font-mono">
-                        <button type="button" @click="removeColor(index)" class="text-red-500 hover:text-red-700 px-2 py-1">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                    <div class="p-3 bg-slate-50 border border-slate-200 space-y-2">
+                        <div class="flex items-center gap-3">
+                            <input type="text" :name="'colors['+index+'][name]'" x-model="col.name" placeholder="Nama Warna (Contoh: Triple White)" required class="flex-1 px-3 py-2 border border-slate-300 font-semibold">
+                            <input type="color" :name="'colors['+index+'][hex]'" x-model="col.hex" class="w-10 h-9 p-0.5 border border-slate-300 cursor-pointer">
+                            <input type="text" :name="'colors['+index+'][hex_text]'" x-model="col.hex" placeholder="#FFFFFF" class="w-24 px-3 py-2 border border-slate-300 font-mono">
+                            <button type="button" @click="removeColor(index)" class="text-red-500 hover:text-red-700 px-2 py-1" x-show="colors.length > 1">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-3 pt-1 border-t border-slate-200 text-[11px]">
+                            <span class="font-semibold text-slate-600 shrink-0">Foto Khusus Warna Ini:</span>
+                            <input type="text" :name="'colors['+index+'][color_image_path]'" x-model="col.color_image_path" placeholder="images/shoes/nike-dunk-white.jpg" class="flex-1 px-2.5 py-1.5 border border-slate-300 font-mono text-[10px]">
+                            <input type="file" :name="'colors['+index+'][image_file]'" accept="image/*" class="w-56 text-[10px]">
+                        </div>
                     </div>
                 </template>
             </div>
@@ -287,8 +297,8 @@
         return {
             basePrice: 350000,
             colors: [
-                { name: 'Pure White', hex: '#FFFFFF' },
-                { name: 'Onyx Black', hex: '#1A1A1A' }
+                { name: 'Pure White', hex: '#FFFFFF', color_image_path: '' },
+                { name: 'Onyx Black', hex: '#1A1A1A', color_image_path: '' }
             ],
             models: [
                 { name: 'Standard Cut', desc: 'Potongan klasik butik' },
@@ -299,7 +309,7 @@
                 { label: 'L-XL' }
             ],
             addColor() {
-                this.colors.push({ name: '', hex: '#000000' });
+                this.colors.push({ name: '', hex: '#000000', color_image_path: '' });
             },
             removeColor(idx) {
                 if (this.colors.length > 1) this.colors.splice(idx, 1);

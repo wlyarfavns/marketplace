@@ -16,7 +16,7 @@ class AdminContentController extends Controller
     // 1. Banner Management
     public function banners()
     {
-        $banners = Banner::orderBy('sort_order', 'asc')->get();
+        $banners = Banner::orderBy('sort_order', 'asc')->paginate(6);
 
         return view('admin.content.banners', compact('banners'));
     }
@@ -55,7 +55,7 @@ class AdminContentController extends Controller
     // 2. Keunggulan / Features
     public function features()
     {
-        $features = Feature::orderBy('sort_order', 'asc')->get();
+        $features = Feature::orderBy('sort_order', 'asc')->paginate(6);
 
         return view('admin.content.features', compact('features'));
     }
@@ -83,7 +83,7 @@ class AdminContentController extends Controller
     // 3. Social Media
     public function socials()
     {
-        $socials = SocialMedia::orderBy('sort_order', 'asc')->get();
+        $socials = SocialMedia::orderBy('sort_order', 'asc')->paginate(6);
 
         return view('admin.content.socials', compact('socials'));
     }
@@ -113,7 +113,7 @@ class AdminContentController extends Controller
     // 4. Customer Service (Floating WA)
     public function customerServices()
     {
-        $services = CustomerService::latest()->get();
+        $services = CustomerService::latest()->paginate(6);
 
         return view('admin.content.customer-services', compact('services'));
     }
@@ -160,7 +160,7 @@ class AdminContentController extends Controller
     // 5. Admin Handle
     public function handles()
     {
-        $handles = AdminHandle::latest()->get();
+        $handles = AdminHandle::latest()->paginate(6);
 
         return view('admin.content.handles', compact('handles'));
     }
@@ -187,7 +187,7 @@ class AdminContentController extends Controller
     // 6. Bank Accounts
     public function banks()
     {
-        $banks = BankAccount::latest()->get();
+        $banks = BankAccount::latest()->paginate(6);
 
         return view('admin.content.banks', compact('banks'));
     }

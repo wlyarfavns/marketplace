@@ -39,7 +39,7 @@ class AdminProductController extends Controller
             $query->where('product_type', $request->product_type);
         }
 
-        $products = $query->latest()->paginate(15)->withQueryString();
+        $products = $query->latest()->paginate(8)->withQueryString();
         $brands = Brand::active()->get();
 
         return view('admin.products.index', compact('products', 'brands'));
@@ -69,6 +69,8 @@ class AdminProductController extends Controller
             'colors' => 'nullable|array',
             'colors.*.name' => 'required_with:colors|string',
             'colors.*.hex' => 'required_with:colors|string',
+            'colors.*.color_image_path' => 'nullable|string',
+            'colors.*.image_file' => 'nullable|image|max:5120',
             // Varian Model
             'models' => 'nullable|array',
             'models.*.name' => 'required_with:models|string',
@@ -123,10 +125,15 @@ class AdminProductController extends Controller
             if (! empty($validated['colors'])) {
                 foreach ($validated['colors'] as $idx => $c) {
                     if (! empty($c['name'])) {
+                        $colorImagePath = $c['color_image_path'] ?? null;
+                        if ($request->hasFile("colors.{$idx}.image_file")) {
+                            $colorImagePath = $request->file("colors.{$idx}.image_file")->store('shoes', 'public');
+                        }
                         ProductColor::create([
                             'product_id' => $product->id,
                             'color_name' => $c['name'],
                             'hex_code' => $c['hex'] ?? '#000000',
+                            'color_image_path' => $colorImagePath,
                             'sort_order' => $idx + 1,
                         ]);
                     }
@@ -239,6 +246,230 @@ class AdminProductController extends Controller
         $categories = Category::active()->get();
 
         return view('admin.products.edit', compact('product', 'brands', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'sku' => 'required|string|unique:products,sku,'.$product->id,
+            'product_type' => 'required|in:ready_stock,po',
+            'weight_grams' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'product_note' => 'nullable|string',
+            'status' => 'required|in:active,inactive,draft',
+            'categories' => 'required|array',
+            'base_price' => 'required|numeric|min:0',
+            // Colors
+            'colors' => 'nullable|array',
+            'colors.*.name' => 'nullable|string',
+            'colors.*.hex' => 'nullable|string',
+            'colors.*.color_image_path' => 'nullable|string',
+            // Models
+            'models' => 'nullable|array',
+            'models.*.name' => 'nullable|string',
+            'models.*.description' => 'nullable|string',
+            // Sizes
+            'sizes' => 'nullable|array',
+            'sizes.*.label' => 'nullable|string',
+            // Matrix
+            'matrix_prices' => 'nullable|array',
+            'matrix_stocks' => 'nullable|array',
+            // Bonus & Rule
+            'bonus_name' => 'nullable|string',
+            'bonus_qty' => 'nullable|integer|min:1',
+            'bonus_desc' => 'nullable|string',
+            'rule_type' => 'nullable|in:add,cut',
+            'rule_amount' => 'nullable|numeric|min:0',
+            'rule_desc' => 'nullable|string',
+            'delete_images' => 'nullable|array',
+            'primary_image_id' => 'nullable|integer',
+        ]);
+
+        DB::transaction(function () use ($request, $validated, $product) {
+            $product->update([
+                'name' => $validated['name'],
+                'brand_id' => $validated['brand_id'],
+                'sku' => strtoupper($validated['sku']),
+                'product_type' => $validated['product_type'],
+                'weight_grams' => $validated['weight_grams'],
+                'description' => $validated['description'] ?? null,
+                'product_note' => $validated['product_note'] ?? null,
+                'status' => $validated['status'],
+                'visible_to_umum' => $request->boolean('visible_to_umum', true),
+                'visible_to_member' => $request->boolean('visible_to_member', true),
+                'visible_to_distributor' => $request->boolean('visible_to_distributor', true),
+            ]);
+
+            $product->categories()->sync($validated['categories']);
+
+            // 1. Hapus gambar yang ditandai
+            if (! empty($request->input('delete_images'))) {
+                $imagesToDelete = ProductImage::where('product_id', $product->id)
+                    ->whereIn('id', $request->input('delete_images'))
+                    ->get();
+
+                foreach ($imagesToDelete as $delImg) {
+                    $delImg->delete();
+                }
+            }
+
+            // 2. Upload Gambar Baru
+            if ($request->hasFile('images')) {
+                $currentMaxSort = ProductImage::where('product_id', $product->id)->max('sort_order') ?? 0;
+                foreach ($request->file('images') as $index => $imageFile) {
+                    $path = $imageFile->store('products', 'public');
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_path' => $path,
+                        'is_primary' => false,
+                        'sort_order' => $currentMaxSort + $index + 1,
+                    ]);
+                }
+            }
+
+            // 3. Atur Gambar Utama
+            if ($request->filled('primary_image_id')) {
+                ProductImage::where('product_id', $product->id)->update(['is_primary' => false]);
+                ProductImage::where('product_id', $product->id)
+                    ->where('id', $request->primary_image_id)
+                    ->update(['is_primary' => true]);
+            } else {
+                $hasPrimary = ProductImage::where('product_id', $product->id)->where('is_primary', true)->exists();
+                if (! $hasPrimary) {
+                    ProductImage::where('product_id', $product->id)->orderBy('sort_order')->limit(1)->update(['is_primary' => true]);
+                }
+            }
+
+            // 4. Update Warna (Warna, Hex & Foto Colorway)
+            if (! empty($validated['colors'])) {
+                // Ambil ID warna yang masih ada
+                $retainedColorNames = [];
+                ProductColor::where('product_id', $product->id)->delete();
+
+                foreach ($validated['colors'] as $idx => $c) {
+                    if (! empty($c['name'])) {
+                        $colorImagePath = $c['color_image_path'] ?? null;
+                        if ($request->hasFile("colors.{$idx}.image_file")) {
+                            $colorImagePath = $request->file("colors.{$idx}.image_file")->store('shoes', 'public');
+                        }
+
+                        ProductColor::create([
+                            'product_id' => $product->id,
+                            'color_name' => $c['name'],
+                            'hex_code' => $c['hex'] ?? '#000000',
+                            'color_image_path' => $colorImagePath,
+                            'sort_order' => $idx + 1,
+                        ]);
+                    }
+                }
+            }
+
+            // 5. Update Model & Ukuran & Matriks Harga
+            if (! empty($validated['models']) || ! empty($validated['sizes'])) {
+                ProductVariantPrice::where('product_id', $product->id)->delete();
+                ProductModel::where('product_id', $product->id)->delete();
+                ProductSize::where('product_id', $product->id)->delete();
+
+                $savedModels = [];
+                if (! empty($validated['models'])) {
+                    foreach ($validated['models'] as $idx => $m) {
+                        if (! empty($m['name'])) {
+                            $savedModels[] = ProductModel::create([
+                                'product_id' => $product->id,
+                                'model_name' => $m['name'],
+                                'description' => $m['description'] ?? null,
+                                'sort_order' => $idx + 1,
+                            ]);
+                        }
+                    }
+                }
+                if (empty($savedModels)) {
+                    $savedModels[] = ProductModel::create([
+                        'product_id' => $product->id,
+                        'model_name' => 'Standard',
+                        'sort_order' => 1,
+                    ]);
+                }
+
+                $savedSizes = [];
+                if (! empty($validated['sizes'])) {
+                    foreach ($validated['sizes'] as $idx => $s) {
+                        if (! empty($s['label'])) {
+                            $savedSizes[] = ProductSize::create([
+                                'product_id' => $product->id,
+                                'size_label' => $s['label'],
+                                'is_available' => true,
+                                'sort_order' => $idx + 1,
+                            ]);
+                        }
+                    }
+                }
+                if (empty($savedSizes)) {
+                    $savedSizes[] = ProductSize::create([
+                        'product_id' => $product->id,
+                        'size_label' => 'All Size',
+                        'is_available' => true,
+                        'sort_order' => 1,
+                    ]);
+                }
+
+                $allPrices = [];
+                foreach ($savedModels as $mod) {
+                    foreach ($savedSizes as $siz) {
+                        $priceKey = "{$mod->model_name}_{$siz->size_label}";
+                        $customPrice = $request->input("matrix_prices.{$priceKey}", $validated['base_price']);
+                        $customStock = $request->input("matrix_stocks.{$priceKey}", 20);
+
+                        $allPrices[] = (float) $customPrice;
+
+                        ProductVariantPrice::create([
+                            'product_id' => $product->id,
+                            'product_model_id' => $mod->id,
+                            'product_size_id' => $siz->id,
+                            'price' => $customPrice,
+                            'stock' => $customStock,
+                        ]);
+                    }
+                }
+
+                if (! empty($allPrices)) {
+                    $product->update([
+                        'min_price' => min($allPrices),
+                        'max_price' => max($allPrices),
+                    ]);
+                }
+            }
+
+            // 6. Bonus Barang
+            ProductBonus::where('product_id', $product->id)->delete();
+            if (! empty($validated['bonus_name'])) {
+                ProductBonus::create([
+                    'product_id' => $product->id,
+                    'free_item_name' => $validated['bonus_name'],
+                    'free_item_description' => $request->input('bonus_desc'),
+                    'min_quantity' => $validated['bonus_qty'] ?? 1,
+                    'is_active' => true,
+                ]);
+            }
+
+            // 7. Aturan Harga
+            ProductPriceRule::where('product_id', $product->id)->delete();
+            if (! empty($validated['rule_type']) && ! empty($validated['rule_amount'])) {
+                ProductPriceRule::create([
+                    'product_id' => $product->id,
+                    'rule_type' => $validated['rule_type'],
+                    'amount' => $validated['rule_amount'],
+                    'description' => $request->input('rule_desc'),
+                    'is_active' => true,
+                ]);
+            }
+        });
+
+        return redirect()->route('admin.products.index')->with('success', "Produk '{$product->name}' berhasil diperbarui!");
     }
 
     public function destroy($id)

@@ -18,8 +18,11 @@ class ProductSize extends Model
      */
     protected $fillable = [
         'product_id',
-        'name',
+        'size_label',
+        'is_available',
         'sort_order',
+        // Legacy alias
+        'name',
     ];
 
     /**
@@ -30,6 +33,7 @@ class ProductSize extends Model
     protected function casts(): array
     {
         return [
+            'is_available' => 'boolean',
             'sort_order' => 'integer',
         ];
     }

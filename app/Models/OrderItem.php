@@ -18,12 +18,19 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'product_id',
+        'product_name_snapshot',
+        'model_name',
+        'color_name',
+        'size_name',
+        'unit_price',
+        'rule_adjustment',
+        'quantity',
+        'subtotal',
+        'bonus_item_snapshot',
+        // Legacy aliases
         'product_name',
         'variant_label',
         'color',
-        'quantity',
-        'unit_price',
-        'subtotal',
         'bonus_info',
         'notes',
     ];
@@ -38,8 +45,16 @@ class OrderItem extends Model
         return [
             'quantity' => 'integer',
             'unit_price' => 'decimal:2',
+            'rule_adjustment' => 'decimal:2',
             'subtotal' => 'decimal:2',
         ];
+    }
+
+    // ── Accessors ────────────────────────────────────────────────────
+
+    public function getProductNameAttribute(): ?string
+    {
+        return $this->product_name_snapshot;
     }
 
     // ── Relationships ────────────────────────────────────────────────

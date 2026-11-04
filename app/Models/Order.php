@@ -20,35 +20,45 @@ class Order extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'order_number',
         'user_id',
         'seller_id',
         'coupon_id',
-        'order_number',
-        'customer_name',
-        'customer_email',
-        'customer_phone',
-        'shipping_name',
-        'shipping_phone',
+        'recipient_first_name',
+        'recipient_last_name',
+        'whatsapp',
+        'address',
+        'city',
+        'province',
+        'postal_code',
+        'courier_name',
+        'shipping_cost',
+        'subtotal',
+        'discount',
+        'grand_total',
+        'payment_method_type',
+        'dp_amount',
+        'remaining_amount',
+        'order_status',
+        'payment_status',
+        'dp_status',
+        'customer_notes',
+        'different_shipping_address',
+        'shipping_first_name',
+        'shipping_last_name',
         'shipping_address',
         'shipping_city',
         'shipping_province',
         'shipping_postal_code',
-        'different_shipping_address',
+        // Legacy aliases
+        'customer_name',
+        'customer_phone',
+        'shipping_name',
+        'shipping_phone',
         'courier',
-        'shipping_service',
-        'shipping_cost',
-        'shipping_etd',
-        'subtotal',
-        'discount',
-        'grand_total',
-        'payment_method',
         'payment_type',
-        'dp_amount',
-        'remaining_amount',
-        'order_notes',
-        'admin_notes',
+        'payment_method',
         'status',
-        'payment_status',
     ];
 
     /**
@@ -125,12 +135,22 @@ class Order extends Model
 
     // ── Accessors ────────────────────────────────────────────────────
 
+    public function getCustomerNameAttribute(): string
+    {
+        return trim(($this->recipient_first_name ?? '').' '.($this->recipient_last_name ?? ''));
+    }
+
+    public function getStatusAttribute(): ?string
+    {
+        return $this->order_status;
+    }
+
     /**
      * Get a styled status badge (HTML class mapping).
      */
     public function getStatusBadgeAttribute(): string
     {
-        return match ($this->status) {
+        return match ($this->order_status ?? $this->status) {
             'pending' => 'bg-yellow-100 text-yellow-800',
             'confirmed' => 'bg-blue-100 text-blue-800',
             'processing' => 'bg-indigo-100 text-indigo-800',

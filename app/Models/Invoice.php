@@ -19,10 +19,12 @@ class Invoice extends Model
     protected $fillable = [
         'order_id',
         'invoice_number',
+        'pdf_path',
+        'created_by',
+        // Legacy aliases
         'issued_at',
         'due_at',
         'notes',
-        'created_by',
     ];
 
     /**

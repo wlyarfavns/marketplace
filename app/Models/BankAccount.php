@@ -18,10 +18,12 @@ class BankAccount extends Model
     protected $fillable = [
         'bank_name',
         'account_number',
+        'account_holder_name',
+        'is_active',
+        // Legacy aliases
         'account_holder',
         'logo_path',
         'sort_order',
-        'is_active',
     ];
 
     /**
@@ -35,6 +37,13 @@ class BankAccount extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    // ── Accessors ────────────────────────────────────────────────────
+
+    public function getAccountHolderAttribute(): ?string
+    {
+        return $this->account_holder_name;
     }
 
     // ── Scopes ───────────────────────────────────────────────────────

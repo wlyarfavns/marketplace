@@ -26,8 +26,12 @@ class ProductModel extends Model
      */
     protected $fillable = [
         'product_id',
-        'name',
+        'model_name',
+        'description',
+        'model_image_path',
         'sort_order',
+        // Legacy alias
+        'name',
     ];
 
     /**

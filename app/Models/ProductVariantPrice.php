@@ -19,10 +19,12 @@ class ProductVariantPrice extends Model
         'product_id',
         'product_model_id',
         'product_size_id',
+        'price',
+        'stock',
+        // Legacy aliases
         'price_umum',
         'price_member',
         'price_distributor',
-        'stock',
         'sku_variant',
     ];
 
@@ -34,6 +36,7 @@ class ProductVariantPrice extends Model
     protected function casts(): array
     {
         return [
+            'price' => 'decimal:2',
             'price_umum' => 'decimal:2',
             'price_member' => 'decimal:2',
             'price_distributor' => 'decimal:2',

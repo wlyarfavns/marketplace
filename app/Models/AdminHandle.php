@@ -16,11 +16,13 @@ class AdminHandle extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'code',
         'name',
+        'is_active',
+        // Legacy aliases
         'role',
         'phone',
         'email',
-        'is_active',
     ];
 
     /**

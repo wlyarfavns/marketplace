@@ -26,7 +26,7 @@ class AdminUserController extends Controller
             $query->where('role', $request->role);
         }
 
-        $users = $query->latest()->paginate(15)->withQueryString();
+        $users = $query->latest()->paginate(8)->withQueryString();
 
         return view('admin.users.index', compact('users'));
     }

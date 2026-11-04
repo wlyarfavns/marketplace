@@ -17,13 +17,17 @@ class ProductBonus extends Model
      */
     protected $fillable = [
         'product_id',
+        'free_item_name',
+        'free_item_description',
+        'min_quantity',
+        'condition_variant',
+        'is_active',
+        // Legacy aliases
         'title',
         'description',
         'condition_type',
-        'condition_variant',
         'condition_min_qty',
         'bonus_item',
-        'is_active',
     ];
 
     /**
@@ -35,6 +39,7 @@ class ProductBonus extends Model
     {
         return [
             'condition_variant' => 'array',
+            'min_quantity' => 'integer',
             'condition_min_qty' => 'integer',
             'is_active' => 'boolean',
         ];

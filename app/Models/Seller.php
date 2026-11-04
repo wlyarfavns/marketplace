@@ -18,12 +18,14 @@ class Seller extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'seller_code',
         'brand_id',
-        'code',
         'name',
         'phone',
-        'city',
         'is_active',
+        // Legacy aliases
+        'code',
+        'city',
     ];
 
     /**

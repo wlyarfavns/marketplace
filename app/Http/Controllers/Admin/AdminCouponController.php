@@ -10,7 +10,7 @@ class AdminCouponController extends Controller
 {
     public function index()
     {
-        $coupons = Coupon::withCount('orders')->latest()->paginate(15);
+        $coupons = Coupon::withCount('orders')->latest()->paginate(8);
 
         return view('admin.coupons.index', compact('coupons'));
     }

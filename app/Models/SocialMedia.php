@@ -24,11 +24,14 @@ class SocialMedia extends Model
      */
     protected $fillable = [
         'platform',
-        'label',
+        'icon_class',
+        'brand_color',
         'url',
-        'icon',
         'sort_order',
         'is_active',
+        // Legacy aliases
+        'label',
+        'icon',
     ];
 
     /**

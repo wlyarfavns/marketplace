@@ -18,14 +18,17 @@ class ProductPriceRule extends Model
     protected $fillable = [
         'product_id',
         'rule_type',
+        'amount',
+        'description',
         'condition_variant',
+        'is_active',
+        // Legacy aliases
         'min_qty',
         'max_qty',
         'discount_type',
         'discount_value',
         'special_price',
         'customer_type',
-        'is_active',
     ];
 
     /**
@@ -36,6 +39,7 @@ class ProductPriceRule extends Model
     protected function casts(): array
     {
         return [
+            'amount' => 'decimal:2',
             'condition_variant' => 'array',
             'min_qty' => 'integer',
             'max_qty' => 'integer',

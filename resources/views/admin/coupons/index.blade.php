@@ -88,6 +88,10 @@
         </table>
     </div>
 
+    <div>
+        {{ $coupons->links() }}
+    </div>
+
     <!-- Modal Buat Kupon -->
     <div x-show="addModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
         <div class="bg-white max-w-lg w-full p-6 border border-slate-200 space-y-4">

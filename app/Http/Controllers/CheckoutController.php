@@ -157,7 +157,7 @@ class CheckoutController extends Controller
                 'seller_id' => $sellerId,
                 'coupon_id' => $couponId,
                 'recipient_first_name' => $validated['recipient_first_name'],
-                'recipient_last_name' => $validated['recipient_last_name'] ?? null,
+                'recipient_last_name' => $validated['recipient_last_name'] ?? '',
                 'whatsapp' => $validated['whatsapp'],
                 'address' => $validated['address'],
                 'city' => $validated['city'],

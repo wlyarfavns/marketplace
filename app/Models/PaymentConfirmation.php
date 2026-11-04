@@ -18,16 +18,20 @@ class PaymentConfirmation extends Model
     protected $fillable = [
         'order_id',
         'bank_account_id',
+        'proof_file_path',
+        'payment_stage',
+        'amount',
+        'verification_status',
+        'verified_by',
+        'verified_at',
+        'notes',
+        // Legacy aliases
         'payment_type',
         'sender_name',
         'sender_bank',
-        'amount',
         'transfer_date',
         'proof_image_path',
-        'notes',
         'status',
-        'verified_by',
-        'verified_at',
         'rejection_reason',
     ];
 
@@ -43,6 +47,18 @@ class PaymentConfirmation extends Model
             'transfer_date' => 'date',
             'verified_at' => 'datetime',
         ];
+    }
+
+    // ── Accessors ────────────────────────────────────────────────────
+
+    public function getProofImagePathAttribute(): ?string
+    {
+        return $this->proof_file_path;
+    }
+
+    public function getStatusAttribute(): ?string
+    {
+        return $this->verification_status;
     }
 
     // ── Relationships ────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-@if ($paginator->hasPages())
+@if ($paginator->total() > 0)
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 text-xs">
         
         {{-- Results Counter Text --}}
@@ -39,31 +39,38 @@
             @endif
 
             {{-- Pagination Elements --}}
-            @foreach ($elements as $element)
-                {{-- "Three Dots" Separator --}}
-                @if (is_string($element))
-                    <span aria-disabled="true" class="w-8 h-9 flex items-center justify-center text-neutral-400 font-semibold select-none">
-                        {{ $element }}
-                    </span>
-                @endif
+            @if ($paginator->hasPages())
+                @foreach ($elements as $element)
+                    {{-- "Three Dots" Separator --}}
+                    @if (is_string($element))
+                        <span aria-disabled="true" class="w-8 h-9 flex items-center justify-center text-neutral-400 font-semibold select-none">
+                            {{ $element }}
+                        </span>
+                    @endif
 
-                {{-- Array Of Links --}}
-                @if (is_array($element))
-                    @foreach ($element as $page => $url)
-                        @if ($page == $paginator->currentPage())
-                            <span aria-current="page" 
-                                  class="min-w-9 h-9 px-3 rounded-lg border border-neutral-300 bg-neutral-100 text-neutral-900 font-bold flex items-center justify-center shadow-2xs select-none">
-                                {{ $page }}
-                            </span>
-                        @else
-                            <a href="{{ $url }}" aria-label="{{ __('Go to page :page', ['page' => $page]) }}" 
-                               class="min-w-9 h-9 px-3 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-neutral-300 text-neutral-600 hover:text-neutral-950 font-medium flex items-center justify-center transition-all shadow-2xs">
-                                {{ $page }}
-                            </a>
-                        @endif
-                    @endforeach
-                @endif
-            @endforeach
+                    {{-- Array Of Links --}}
+                    @if (is_array($element))
+                        @foreach ($element as $page => $url)
+                            @if ($page == $paginator->currentPage())
+                                <span aria-current="page" 
+                                      class="min-w-9 h-9 px-3 rounded-lg border border-neutral-300 bg-neutral-100 text-neutral-900 font-bold flex items-center justify-center shadow-2xs select-none">
+                                    {{ $page }}
+                                </span>
+                            @else
+                                <a href="{{ $url }}" aria-label="{{ __('Go to page :page', ['page' => $page]) }}" 
+                                   class="min-w-9 h-9 px-3 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-neutral-300 text-neutral-600 hover:text-neutral-950 font-medium flex items-center justify-center transition-all shadow-2xs">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+                    @endif
+                @endforeach
+            @else
+                <span aria-current="page" 
+                      class="min-w-9 h-9 px-3 rounded-lg border border-neutral-300 bg-neutral-100 text-neutral-900 font-bold flex items-center justify-center shadow-2xs select-none">
+                    1
+                </span>
+            @endif
 
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
