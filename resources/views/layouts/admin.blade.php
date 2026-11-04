@@ -48,7 +48,7 @@
             <!-- Admin Header -->
             <div class="h-16 px-6 border-b border-slate-100 flex items-center justify-between">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                    <span class="font-bold text-lg tracking-tight text-slate-900 uppercase">FOOTWORK <span class="text-xs font-normal text-slate-400">Admin</span></span>
+                    <span class="font-bold text-lg tracking-tight text-slate-900 uppercase">FOOTWORK</span>
                 </a>
                 <button @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-slate-800">
                     <i class="fa-solid fa-xmark"></i>
