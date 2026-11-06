@@ -11,6 +11,7 @@ use App\Models\Feature;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\SocialMedia;
+use App\Services\CouponService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -99,15 +100,9 @@ class FrontController extends Controller
             ])
             ->firstOrFail();
 
-        $relatedProducts = Product::active()
-            ->where('id', '!=', $product->id)
-            ->where('brand_id', $product->brand_id)
-            ->take(4)
-            ->get();
-
         $floatingWa = CustomerService::active()->floatingWhatsapp()->first();
 
-        return view('front.product-detail', compact('product', 'relatedProducts', 'floatingWa'));
+        return view('front.product-detail', compact('product', 'floatingWa'));
     }
 
     // AJAX Cek ID Seller
@@ -137,74 +132,29 @@ class FrontController extends Controller
     }
 
     // AJAX Validasi Kupon
-    public function checkCoupon(Request $request)
+    public function checkCoupon(Request $request, CouponService $couponService)
     {
-        $code = strtoupper(trim($request->input('code')));
-        $subtotal = (float) $request->input('subtotal', 0);
-        $totalQuantity = (int) $request->input('total_quantity', 1);
+        $result = $couponService->check(
+            (string) $request->input('code', ''),
+            (float) $request->input('subtotal', 0),
+            (int) $request->input('total_quantity', 1),
+            Auth::user()
+        );
 
-        $coupon = Coupon::where('code', $code)->where('is_active', true)->first();
-
-        if (! $coupon) {
-            return response()->json(['valid' => false, 'message' => 'Kode voucher kupon tidak ditemukan atau kadaluarsa.'], 404);
-        }
-
-        // Cek Tanggal Berlaku
-        if ($coupon->starts_at && now()->lt($coupon->starts_at)) {
-            return response()->json(['valid' => false, 'message' => 'Voucher belum mulai berlaku.'], 400);
-        }
-        if ($coupon->expires_at && now()->gt($coupon->expires_at)) {
-            return response()->json(['valid' => false, 'message' => 'Masa berlaku voucher telah habis.'], 400);
-        }
-
-        // Cek Kuota Total
-        if (! is_null($coupon->quota_total) && $coupon->quota_total <= 0) {
-            return response()->json(['valid' => false, 'message' => 'Kuota pemakaian voucher telah habis.'], 400);
-        }
-
-        // Cek Target Audiens
-        $user = Auth::user();
-        if ($coupon->target_audience === 'member_only' && ! $user) {
-            return response()->json(['valid' => false, 'message' => 'Voucher ini khusus untuk akun Pelanggan terdaftar.'], 400);
-        }
-        if ($coupon->target_audience === 'non_member_only' && $user) {
-            return response()->json(['valid' => false, 'message' => 'Voucher ini khusus untuk Pengunjung baru.'], 400);
-        }
-
-        // Cek Minimal Belanja
-        if ($coupon->min_purchase > 0 && $subtotal < $coupon->min_purchase) {
+        if (! $result['valid']) {
             return response()->json([
                 'valid' => false,
-                'message' => 'Minimal belanja untuk voucher ini adalah Rp '.number_format($coupon->min_purchase, 0, ',', '.'),
-            ], 400);
-        }
-
-        // Cek Minimal Kuantitas
-        if ($coupon->min_quantity > 0 && $totalQuantity < $coupon->min_quantity) {
-            return response()->json([
-                'valid' => false,
-                'message' => "Minimal pembelian {$coupon->min_quantity} item untuk kupon ini.",
-            ], 400);
-        }
-
-        // Hitung Diskon
-        $discount = 0;
-        if ($coupon->discount_type === 'percentage') {
-            $discount = ($coupon->discount_value / 100) * $subtotal;
-            if ($coupon->max_discount && $discount > $coupon->max_discount) {
-                $discount = $coupon->max_discount;
-            }
-        } else {
-            $discount = min($coupon->discount_value, $subtotal);
+                'message' => $result['message'],
+            ], $result['status']);
         }
 
         return response()->json([
             'valid' => true,
-            'coupon_id' => $coupon->id,
-            'code' => $coupon->code,
-            'discount_amount' => $discount,
-            'discount_formatted' => 'Rp '.number_format($discount, 0, ',', '.'),
-            'message' => 'Kupon berhasil diterapkan!',
+            'coupon_id' => $result['coupon_id'],
+            'code' => $result['code'],
+            'discount_amount' => $result['discount_amount'],
+            'discount_formatted' => $result['discount_formatted'],
+            'message' => $result['message'],
         ]);
     }
 }

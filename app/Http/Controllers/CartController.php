@@ -28,7 +28,7 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $product = Product::with(['brand', 'bonuses', 'priceRules'])->findOrFail($request->product_id);
+        $product = Product::with(['brand', 'bonuses', 'priceRules', 'images'])->findOrFail($request->product_id);
         $model = ProductModel::findOrFail($request->model_id);
         $color = ProductColor::findOrFail($request->color_id);
         $size = ProductSize::findOrFail($request->size_id);
@@ -94,7 +94,7 @@ class CartController extends Controller
                 'quantity' => (int) $request->quantity,
                 'subtotal' => $finalPrice * (int) $request->quantity,
                 'bonus_item' => $bonusItem,
-                'image' => $product->images()->first() ? $product->images()->first()->image_path : null,
+                'image' => $product->primary_image?->image_path ?? null,
             ];
         }
 

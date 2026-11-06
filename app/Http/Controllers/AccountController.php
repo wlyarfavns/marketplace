@@ -14,11 +14,20 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
-        // Statistik Belanja
-        $totalOrders = Order::where('user_id', $user->id)->count();
-        $activeOrders = Order::where('user_id', $user->id)->whereIn('order_status', ['pending', 'processing', 'shipped'])->count();
-        $completedOrders = Order::where('user_id', $user->id)->where('order_status', 'completed')->count();
-        $totalSpent = Order::where('user_id', $user->id)->where('payment_status', 'verified')->sum('grand_total');
+        // Statistik Belanja Konsolidasi
+        $stats = Order::where('user_id', $user->id)
+            ->selectRaw("
+                COUNT(*) as total_orders,
+                COUNT(CASE WHEN order_status IN ('pending', 'processing', 'shipped') THEN 1 END) as active_orders,
+                COUNT(CASE WHEN order_status = 'completed' THEN 1 END) as completed_orders,
+                COALESCE(SUM(CASE WHEN payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as total_spent
+            ")
+            ->first();
+
+        $totalOrders = (int) ($stats->total_orders ?? 0);
+        $activeOrders = (int) ($stats->active_orders ?? 0);
+        $completedOrders = (int) ($stats->completed_orders ?? 0);
+        $totalSpent = (float) ($stats->total_spent ?? 0);
 
         $recentOrders = Order::where('user_id', $user->id)
             ->with(['items'])

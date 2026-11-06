@@ -178,7 +178,12 @@
         for (let i = 0; i < 4; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        document.querySelector('[x-data]').__x.$data.couponCode = result;
+        const el = document.querySelector('[x-data*="couponCode"]');
+        if (el && window.Alpine) {
+            Alpine.$data(el).couponCode = result;
+        } else if (el && el.__x) {
+            el.__x.$data.couponCode = result;
+        }
     }
 </script>
 @endsection

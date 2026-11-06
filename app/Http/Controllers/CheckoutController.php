@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PaymentConfirmation;
 use App\Models\Seller;
+use App\Services\CouponService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -108,18 +109,10 @@ class CheckoutController extends Controller
         if (! empty($validated['coupon_code'])) {
             $coupon = Coupon::where('code', strtoupper(trim($validated['coupon_code'])))->where('is_active', true)->first();
             if ($coupon) {
-                $couponId = $coupon->id;
-                if ($coupon->discount_type === 'percentage') {
-                    $discountAmount = ($coupon->discount_value / 100) * $subtotal;
-                    if ($coupon->max_discount && $discountAmount > $coupon->max_discount) {
-                        $discountAmount = $coupon->max_discount;
-                    }
-                } else {
-                    $discountAmount = min($coupon->discount_value, $subtotal);
-                }
-                // Kurangi kuota kupon
-                if (! is_null($coupon->quota_total) && $coupon->quota_total > 0) {
-                    $coupon->decrement('quota_total');
+                $couponValidation = app(CouponService::class)->validate($coupon, $subtotal, $totalQuantity, Auth::user());
+                if ($couponValidation['valid']) {
+                    $couponId = $coupon->id;
+                    $discountAmount = app(CouponService::class)->calculateDiscount($coupon, $subtotal);
                 }
             }
         }
@@ -151,6 +144,14 @@ class CheckoutController extends Controller
             $subtotal, $discountAmount, $shippingCost, $grandTotal,
             $paymentType, $dpAmount, $remainingAmount, $cart
         ) {
+            // Kurangi kuota kupon secara aman dengan locking di dalam transaksi
+            if ($couponId) {
+                $lockedCoupon = Coupon::where('id', $couponId)->lockForUpdate()->first();
+                if ($lockedCoupon && ! is_null($lockedCoupon->quota_total) && $lockedCoupon->quota_total > 0) {
+                    $lockedCoupon->decrement('quota_total');
+                }
+            }
+
             $order = Order::create([
                 'order_number' => $orderNumber,
                 'user_id' => Auth::id(), // NULL untuk Guest Checkout

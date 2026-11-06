@@ -12,30 +12,38 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        // 1. KPI Utama
-        $totalOrders = Order::count();
-        $totalRevenue = Order::where('payment_status', 'verified')->sum('grand_total');
+        // 1. Konsolidasi Metrik Pesanan dalam 1 Kueri Agregat (Menggantikan 11 kueri terpisah)
+        $orderStats = Order::query()->selectRaw("
+            COUNT(*) as total_orders,
+            COALESCE(SUM(CASE WHEN payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as total_revenue,
+            COUNT(CASE WHEN order_status = 'pending' THEN 1 END) as pending_orders,
+            COUNT(CASE WHEN order_status = 'processing' THEN 1 END) as processing_orders,
+            COUNT(CASE WHEN order_status = 'completed' THEN 1 END) as completed_orders,
+            COUNT(CASE WHEN payment_method_type = 'dp' THEN 1 END) as total_dp_orders,
+            COUNT(CASE WHEN payment_method_type = 'dp' AND dp_status IN ('dp_paid', 'fully_paid') THEN 1 END) as dp_paid_orders,
+            COUNT(CASE WHEN payment_method_type = 'dp' AND dp_status = 'none' THEN 1 END) as dp_pending_orders,
+            COUNT(CASE WHEN dp_status = 'fully_paid' THEN 1 END) as fully_paid_orders,
+            COALESCE(SUM(CASE WHEN payment_method_type = 'dp' AND dp_status IN ('dp_paid', 'fully_paid') THEN dp_amount ELSE 0 END), 0) as revenue_dp,
+            COALESCE(SUM(CASE WHEN payment_method_type = 'dp' AND dp_status = 'dp_paid' THEN remaining_amount ELSE 0 END), 0) as remaining_receivable
+        ")->first();
+
+        $totalOrders = (int) ($orderStats->total_orders ?? 0);
+        $totalRevenue = (float) ($orderStats->total_revenue ?? 0);
         $totalCustomers = User::where('role', 'customer')->count();
         $activeProducts = Product::where('status', 'active')->count();
 
         // 2. Status Operasional
-        $pendingOrders = Order::where('order_status', 'pending')->count();
-        $processingOrders = Order::where('order_status', 'processing')->count();
-        $completedOrders = Order::where('order_status', 'completed')->count();
+        $pendingOrders = (int) ($orderStats->pending_orders ?? 0);
+        $processingOrders = (int) ($orderStats->processing_orders ?? 0);
+        $completedOrders = (int) ($orderStats->completed_orders ?? 0);
 
         // 3. Statistik Khusus Down Payment (DP)
-        $totalDpOrders = Order::where('payment_method_type', 'dp')->count();
-        $dpPaidOrders = Order::where('payment_method_type', 'dp')->whereIn('dp_status', ['dp_paid', 'fully_paid'])->count();
-        $dpPendingOrders = Order::where('payment_method_type', 'dp')->where('dp_status', 'none')->count();
-        $fullyPaidOrders = Order::where('dp_status', 'fully_paid')->count();
-
-        $revenueDp = Order::where('payment_method_type', 'dp')
-            ->whereIn('dp_status', ['dp_paid', 'fully_paid'])
-            ->sum('dp_amount');
-
-        $remainingReceivable = Order::where('payment_method_type', 'dp')
-            ->where('dp_status', 'dp_paid')
-            ->sum('remaining_amount');
+        $totalDpOrders = (int) ($orderStats->total_dp_orders ?? 0);
+        $dpPaidOrders = (int) ($orderStats->dp_paid_orders ?? 0);
+        $dpPendingOrders = (int) ($orderStats->dp_pending_orders ?? 0);
+        $fullyPaidOrders = (int) ($orderStats->fully_paid_orders ?? 0);
+        $revenueDp = (float) ($orderStats->revenue_dp ?? 0);
+        $remainingReceivable = (float) ($orderStats->remaining_receivable ?? 0);
 
         // 4. Daftar 5 Pesanan Terbaru
         $recentOrders = Order::with(['user', 'seller'])

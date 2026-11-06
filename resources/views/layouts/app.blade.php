@@ -17,6 +17,9 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
     
+    <!-- Storefront SPA Engine -->
+    <script defer src="{{ asset('js/front-spa.js') }}"></script>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -50,6 +53,11 @@
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col antialiased selection:bg-neutral-900 selection:text-white" x-data="cartDrawerState()">
 
+    <!-- Storefront SPA Top Progress Bar -->
+    <div id="front-spa-progress" style="position:fixed;top:0;left:0;right:0;height:2.5px;z-index:99999;pointer-events-none;opacity:0;transition:opacity 200ms ease;">
+        <div id="front-spa-progress-bar" style="height:100%;width:0%;background-color:#0A0A0A;transition:width 300ms cubic-bezier(0.4, 0, 0.2, 1);box-shadow:0 0 10px rgba(10,10,10,0.5);"></div>
+    </div>
+
     <!-- Admin Alert Bar jika Login sebagai Administrator -->
     @auth
         @if(Auth::user()->role === 'admin')
@@ -60,7 +68,7 @@
                         <span class="font-bold">Mode Administrator:</span>
                         <span class="text-neutral-400 hidden sm:inline">Anda sedang melihat tampilan etalase toko.</span>
                     </div>
-                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 bg-white text-neutral-950 text-[11px] font-extrabold px-3.5 py-1 rounded-md hover:bg-neutral-100 transition shadow-xs">
+                    <a href="{{ route('admin.dashboard') }}" data-no-spa class="inline-flex items-center gap-1.5 bg-white text-neutral-950 text-[11px] font-extrabold px-3.5 py-1 rounded-md hover:bg-neutral-100 transition shadow-xs">
                         <i class="fa-solid fa-gauge"></i>
                         <span>Buka Dashboard Panel Admin &rarr;</span>
                     </a>
@@ -77,11 +85,11 @@
                 <span class="hidden md:inline">•</span>
                 <span class="hidden md:inline"><i class="fa-solid fa-box text-black mr-1.5"></i> Double-Box Packing & Pengiriman Seluruh Indonesia</span>
             </div>
-            <div class="flex items-center gap-5 text-gray-700">
+            <div class="flex items-center gap-5 text-gray-700" id="front-user-bar">
                 @auth
                     <div class="flex items-center gap-2">
                         <span class="text-gray-500">Halo,</span>
-                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('account.dashboard') }}" class="font-bold text-black hover:underline flex items-center gap-1">
+                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('account.dashboard') }}" class="font-bold text-black hover:underline flex items-center gap-1" {{ Auth::user()->role === 'admin' ? 'data-no-spa' : '' }}>
                             <span>{{ Auth::user()->name }}</span>
                             <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 bg-black text-white rounded">
                                 {{ Auth::user()->role === 'admin' ? 'ADMIN' : 'PELANGGAN' }}
@@ -89,12 +97,12 @@
                         </a>
                     </div>
                     @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="text-xs bg-black text-white font-bold px-3 py-1 rounded-md hover:bg-neutral-800 transition shadow-2xs flex items-center gap-1">
+                        <a href="{{ route('admin.dashboard') }}" data-no-spa class="text-xs bg-black text-white font-bold px-3 py-1 rounded-md hover:bg-neutral-800 transition shadow-2xs flex items-center gap-1">
                             <i class="fa-solid fa-gauge text-[10px]"></i>
                             <span>Panel Admin</span>
                         </a>
                     @endif
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                    <form action="{{ route('logout') }}" method="POST" class="inline" data-no-spa>
                         @csrf
                         <button type="submit" class="text-gray-500 hover:text-black font-medium">Keluar</button>
                     </form>
@@ -121,19 +129,19 @@
             </a>
 
             <!-- Nav Links -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
-                <a href="{{ route('home') }}" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
-                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
-                <a href="{{ route('catalog', ['type' => 'po']) }}" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide" id="front-nav-links">
+                <a href="{{ route('home') }}" data-front-route="home" class="hover:text-black transition {{ request()->routeIs('home') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Beranda</a>
+                <a href="{{ route('catalog', ['type' => 'ready_stock']) }}" data-front-route="ready_stock" class="hover:text-black transition {{ request()->get('type') === 'ready_stock' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Ready Stock</a>
+                <a href="{{ route('catalog', ['type' => 'po']) }}" data-front-route="po" class="flex items-center gap-1.5 hover:text-black transition {{ request()->get('type') === 'po' ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">
                     <span>Pre-Order (PO)</span>
                 </a>
-                <a href="{{ route('catalog') }}" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
+                <a href="{{ route('catalog') }}" data-front-route="catalog" class="hover:text-black transition {{ request()->routeIs('catalog') && !request()->has('type') ? 'text-black border-b-2 border-neutral-950 pb-1 font-bold' : 'text-gray-600' }}">Semua Koleksi</a>
             </nav>
 
             <!-- Actions (Search, Cart Drawer Trigger, My Account) -->
             <div class="flex items-center gap-5">
-                <form action="{{ route('catalog') }}" method="GET" class="hidden lg:flex items-center relative">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari sepatu, Nike, Jordan, Samba..." 
+                <form id="front-header-search" action="{{ route('catalog') }}" method="GET" class="hidden lg:flex items-center relative">
+                    <input id="front-header-search-input" type="text" name="q" value="{{ request('q') }}" placeholder="Cari sepatu, Nike, Jordan, Samba..." 
                         class="text-xs bg-neutral-50/80 border border-neutral-200 rounded-full px-4 py-2 pr-9 w-64 focus:outline-none focus:border-neutral-950 focus:bg-white transition-all placeholder:text-neutral-400">
                     <button type="submit" class="absolute right-3 text-neutral-400 hover:text-black transition-colors">
                         <i class="fa-solid fa-magnifying-glass text-xs"></i>
@@ -143,7 +151,8 @@
                 <!-- Cart Button -->
                 <button @click="openDrawer()" class="relative p-2 text-gray-800 hover:text-black transition cursor-pointer" title="Keranjang Belanja">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
-                    <span x-show="cartCount > 0" 
+                    <span id="front-cart-count"
+                          x-show="cartCount > 0" 
                           x-cloak
                           class="absolute -top-0.5 -right-0.5 text-[11px] font-bold text-neutral-950 leading-none"
                           x-text="cartCount">
@@ -163,7 +172,7 @@
     </header>
 
     <!-- 3. Flash Messages -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 mt-4 w-full">
+    <div id="front-flash-container" class="max-w-7xl mx-auto px-4 sm:px-8 mt-4 w-full">
         @if(session('success'))
             <div class="bg-black text-white text-sm px-4 py-3 border-l-4 border-gray-400 flex justify-between items-center mb-4 shadow-sm">
                 <div class="flex items-center gap-3">
@@ -186,7 +195,7 @@
     </div>
 
     <!-- 4. Content Area -->
-    <main class="flex-grow">
+    <main id="front-main-content" class="flex-grow">
         @yield('content')
     </main>
 
@@ -375,6 +384,16 @@
                 cartCount: {{ count(session('cart', [])) }},
                 subtotal: {{ array_sum(array_column(session('cart', []), 'subtotal')) }},
                 items: {!! json_encode(array_values(session('cart', []))) !!},
+
+                init() {
+                    window.addEventListener('front:cart-sync', (e) => {
+                        if (e.detail) {
+                            if (e.detail.cart_count !== undefined) this.cartCount = e.detail.cart_count;
+                            if (e.detail.subtotal !== undefined) this.subtotal = e.detail.subtotal;
+                            if (e.detail.cart_items !== undefined) this.items = e.detail.cart_items;
+                        }
+                    });
+                },
 
                 openDrawer() {
                     this.isOpen = true;

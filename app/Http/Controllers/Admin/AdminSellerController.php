@@ -78,48 +78,56 @@ class AdminSellerController extends Controller
             $sellersQuery->where('id', $selectedSeller);
         }
         $allMatchingSellers = (clone $sellersQuery)->get();
+        $sellerIds = $allMatchingSellers->pluck('id');
 
-        $today = now()->toDateString();
-        $startOfMonth = now()->startOfMonth()->toDateString();
-        $startOfLastMonth = now()->subMonth()->startOfMonth()->toDateString();
-        $endOfLastMonth = now()->subMonth()->endOfMonth()->toDateString();
+        $startOfToday = now()->startOfDay()->toDateTimeString();
+        $startOfMonth = now()->startOfMonth()->toDateTimeString();
+        $startOfLastMonth = now()->subMonth()->startOfMonth()->toDateTimeString();
+        $endOfLastMonth = now()->subMonth()->endOfMonth()->toDateTimeString();
 
         $totalClosingToday = 0;
         $totalSalesMonth = 0;
         $totalSalesLastMonth = 0;
 
-        foreach ($allMatchingSellers as $s) {
-            $totalClosingToday += Order::where('seller_id', $s->id)->whereDate('created_at', $today)->count();
-            $totalSalesMonth += Order::where('seller_id', $s->id)->where('created_at', '>=', $startOfMonth)->where('payment_status', 'verified')->sum('grand_total');
-            $totalSalesLastMonth += Order::where('seller_id', $s->id)->whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->where('payment_status', 'verified')->sum('grand_total');
+        if ($sellerIds->isNotEmpty()) {
+            $summary = Order::whereIn('seller_id', $sellerIds)
+                ->selectRaw("
+                    COUNT(CASE WHEN created_at >= ? THEN 1 END) as total_closing_today,
+                    COALESCE(SUM(CASE WHEN created_at >= ? AND payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as total_sales_month,
+                    COALESCE(SUM(CASE WHEN created_at >= ? AND created_at <= ? AND payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as total_sales_last_month
+                ", [$startOfToday, $startOfMonth, $startOfLastMonth, $endOfLastMonth])
+                ->first();
+
+            $totalClosingToday = (int) ($summary->total_closing_today ?? 0);
+            $totalSalesMonth = (float) ($summary->total_sales_month ?? 0);
+            $totalSalesLastMonth = (float) ($summary->total_sales_last_month ?? 0);
         }
 
         $paginatedSellers = $sellersQuery->paginate(8)->withQueryString();
+        $paginatedSellerIds = $paginatedSellers->pluck('id');
+
+        $sellerMetrics = $paginatedSellerIds->isEmpty() ? collect() : Order::whereIn('seller_id', $paginatedSellerIds)
+            ->selectRaw("
+                seller_id,
+                COUNT(*) as total_orders,
+                COUNT(CASE WHEN created_at >= ? THEN 1 END) as today_closing,
+                COALESCE(SUM(CASE WHEN created_at >= ? AND payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as month_sales,
+                COALESCE(SUM(CASE WHEN created_at >= ? AND created_at <= ? AND payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as last_month_sales
+            ", [$startOfToday, $startOfMonth, $startOfLastMonth, $endOfLastMonth])
+            ->groupBy('seller_id')
+            ->get()
+            ->keyBy('seller_id');
+
         $reportData = [];
 
         foreach ($paginatedSellers as $s) {
-            $todayClosing = Order::where('seller_id', $s->id)
-                ->whereDate('created_at', $today)
-                ->count();
-
-            $monthSales = Order::where('seller_id', $s->id)
-                ->where('created_at', '>=', $startOfMonth)
-                ->where('payment_status', 'verified')
-                ->sum('grand_total');
-
-            $lastMonthSales = Order::where('seller_id', $s->id)
-                ->whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])
-                ->where('payment_status', 'verified')
-                ->sum('grand_total');
-
-            $totalOrdersCount = Order::where('seller_id', $s->id)->count();
-
+            $metric = $sellerMetrics->get($s->id);
             $reportData[] = [
                 'seller' => $s,
-                'closing_today' => $todayClosing,
-                'sales_month' => $monthSales,
-                'sales_last_month' => $lastMonthSales,
-                'total_orders' => $totalOrdersCount,
+                'closing_today' => (int) ($metric->today_closing ?? 0),
+                'sales_month' => (float) ($metric->month_sales ?? 0),
+                'sales_last_month' => (float) ($metric->last_month_sales ?? 0),
+                'total_orders' => (int) ($metric->total_orders ?? 0),
             ];
         }
 
@@ -147,10 +155,10 @@ class AdminSellerController extends Controller
         }
         $sellers = $sellersQuery->get();
 
-        $today = now()->toDateString();
-        $startOfMonth = now()->startOfMonth()->toDateString();
-        $startOfLastMonth = now()->subMonth()->startOfMonth()->toDateString();
-        $endOfLastMonth = now()->subMonth()->endOfMonth()->toDateString();
+        $startOfToday = now()->startOfDay()->toDateTimeString();
+        $startOfMonth = now()->startOfMonth()->toDateTimeString();
+        $startOfLastMonth = now()->subMonth()->startOfMonth()->toDateTimeString();
+        $endOfLastMonth = now()->subMonth()->endOfMonth()->toDateTimeString();
 
         $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
@@ -217,11 +225,25 @@ class AdminSellerController extends Controller
         $no = 1;
         $currencyFormat = '"Rp" #,##0;("Rp" #,##0);"-"';
 
+        $exportSellerIds = $sellers->pluck('id');
+        $exportMetrics = $exportSellerIds->isEmpty() ? collect() : Order::whereIn('seller_id', $exportSellerIds)
+            ->selectRaw("
+                seller_id,
+                COUNT(*) as total_orders,
+                COUNT(CASE WHEN created_at >= ? THEN 1 END) as today_closing,
+                COALESCE(SUM(CASE WHEN created_at >= ? AND payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as month_sales,
+                COALESCE(SUM(CASE WHEN created_at >= ? AND created_at <= ? AND payment_status = 'verified' THEN grand_total ELSE 0 END), 0) as last_month_sales
+            ", [$startOfToday, $startOfMonth, $startOfLastMonth, $endOfLastMonth])
+            ->groupBy('seller_id')
+            ->get()
+            ->keyBy('seller_id');
+
         foreach ($sellers as $s) {
-            $todayClosing = Order::where('seller_id', $s->id)->whereDate('created_at', $today)->count();
-            $totalOrdersCount = Order::where('seller_id', $s->id)->count();
-            $monthSales = (float) Order::where('seller_id', $s->id)->where('created_at', '>=', $startOfMonth)->where('payment_status', 'verified')->sum('grand_total');
-            $lastMonthSales = (float) Order::where('seller_id', $s->id)->whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->where('payment_status', 'verified')->sum('grand_total');
+            $metric = $exportMetrics->get($s->id);
+            $todayClosing = (int) ($metric->today_closing ?? 0);
+            $totalOrdersCount = (int) ($metric->total_orders ?? 0);
+            $monthSales = (float) ($metric->month_sales ?? 0);
+            $lastMonthSales = (float) ($metric->last_month_sales ?? 0);
 
             $sheet->getRowDimension($currentRow)->setRowHeight(22);
 

@@ -10,6 +10,7 @@ use App\Models\PaymentConfirmation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -93,30 +94,32 @@ class AdminOrderController extends Controller
 
         $status = $request->input('action') === 'verify' ? 'verified' : 'rejected';
 
-        $confirmation->update([
-            'verification_status' => $status,
-            'verified_by' => Auth::id(),
-            'verified_at' => now(),
-            'notes' => $request->input('notes'),
-        ]);
+        DB::transaction(function () use ($confirmation, $order, $status, $request) {
+            $confirmation->update([
+                'verification_status' => $status,
+                'verified_by' => Auth::id(),
+                'verified_at' => now(),
+                'notes' => $request->input('notes'),
+            ]);
 
-        if ($status === 'verified') {
-            if ($confirmation->payment_stage === 'dp') {
-                $order->update([
-                    'payment_status' => 'verified',
-                    'dp_status' => 'dp_paid',
-                    'order_status' => 'processing',
-                ]);
+            if ($status === 'verified') {
+                if ($confirmation->payment_stage === 'dp') {
+                    $order->update([
+                        'payment_status' => 'verified',
+                        'dp_status' => 'dp_paid',
+                        'order_status' => 'processing',
+                    ]);
+                } else {
+                    $order->update([
+                        'payment_status' => 'verified',
+                        'dp_status' => 'fully_paid',
+                        'order_status' => 'processing',
+                    ]);
+                }
             } else {
-                $order->update([
-                    'payment_status' => 'verified',
-                    'dp_status' => 'fully_paid',
-                    'order_status' => 'processing',
-                ]);
+                $order->update(['payment_status' => 'rejected']);
             }
-        } else {
-            $order->update(['payment_status' => 'rejected']);
-        }
+        });
 
         return redirect()->back()->with('success', "Verifikasi pembayaran berhasil diperbarui ke: {$status}.");
     }
@@ -144,7 +147,7 @@ class AdminOrderController extends Controller
     // Export Laporan Pesanan Resmi ke Microsoft Excel (.XLSX)
     public function exportExcel(Request $request)
     {
-        $query = Order::with(['seller', 'items']);
+        $query = Order::with('seller');
 
         if ($request->filled('q')) {
             $keyword = $request->q;

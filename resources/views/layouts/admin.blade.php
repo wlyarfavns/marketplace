@@ -17,6 +17,9 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
     
+    <!-- Admin SPA Engine -->
+    <script defer src="{{ asset('js/admin-spa.js') }}"></script>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -39,7 +42,12 @@
         body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E293B; }
     </style>
 </head>
-<body class="min-h-screen flex antialiased" x-data="{ sidebarOpen: false }">
+<body class="min-h-screen flex antialiased" x-data="{ sidebarOpen: false }" @close-sidebar.window="sidebarOpen = false">
+
+    <!-- Top Loading Progress Bar for SPA -->
+    <div id="admin-spa-progress" class="fixed top-0 left-0 right-0 h-[2.5px] z-[99999] pointer-events-none opacity-0 transition-opacity duration-200">
+        <div id="admin-spa-progress-bar" class="h-full bg-slate-900 w-0 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(15,23,42,0.5)]"></div>
+    </div>
 
     <!-- 1. Sidebar -->
     <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col justify-between transition-transform duration-200 transform lg:translate-x-0"
@@ -56,86 +64,86 @@
             </div>
 
             <!-- Navigation Links (16 Modules) -->
-            <nav class="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-8rem)] text-xs font-medium">
+            <nav id="admin-sidebar-nav" class="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-8rem)] text-xs font-medium">
                 <div class="text-[10px] uppercase font-bold text-slate-400 px-3 py-1.5 tracking-wider">Ringkasan & Penjualan</div>
                 
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.dashboard') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.dashboard') }}" data-spa-route="dashboard" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.dashboard') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-chart-pie w-4 text-center"></i>
                     <span>1. Dashboard & DP</span>
                 </a>
 
-                <a href="{{ route('admin.orders.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.orders.*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.orders.index') }}" data-spa-route="orders" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.orders.*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-receipt w-4 text-center"></i>
                     <span>2. Kelola Pesanan</span>
                 </a>
 
-                <a href="{{ route('admin.sellers.report') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.sellers.report*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.sellers.report') }}" data-spa-route="sellers.report" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.sellers.report*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-file-invoice-dollar w-4 text-center"></i>
                     <span>3. Laporan Penjualan Mitra</span>
                 </a>
 
                 <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 py-1.5 tracking-wider">Katalog Produk & Brand</div>
 
-                <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.products.*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.products.index') }}" data-spa-route="products" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.products.*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-shoe-prints w-4 text-center"></i>
                     <span>4. Produk & Matriks Harga</span>
                 </a>
 
-                <a href="{{ route('admin.brands.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.brands.*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.brands.index') }}" data-spa-route="brands" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.brands.*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-tags w-4 text-center"></i>
                     <span>5. Manajemen Brand Sepatu</span>
                 </a>
 
-                <a href="{{ route('admin.categories.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.categories.*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.categories.index') }}" data-spa-route="categories" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.categories.*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-layer-group w-4 text-center"></i>
                     <span>6. Kategori Sepatu</span>
                 </a>
 
                 <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 py-1.5 tracking-wider">Kemitraan & Pengguna</div>
 
-                <a href="{{ route('admin.sellers.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.sellers.index') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.sellers.index') }}" data-spa-route="sellers" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.sellers.index') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-handshake w-4 text-center"></i>
                     <span>7. Mitra Seller (ID Seller)</span>
                 </a>
 
-                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.users.*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.users.index') }}" data-spa-route="users" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.users.*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-users w-4 text-center"></i>
                     <span>8. Pengguna & Customer Tier</span>
                 </a>
 
-                <a href="{{ route('admin.coupons.index') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.coupons.*') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.coupons.index') }}" data-spa-route="coupons" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.coupons.*') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-ticket w-4 text-center"></i>
                     <span>9. Kupon Pemasaran</span>
                 </a>
 
                 <div class="text-[10px] uppercase font-bold text-slate-400 px-3 pt-4 py-1.5 tracking-wider">Konten & Pengaturan Toko</div>
 
-                <a href="{{ route('admin.content.banners') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.banners') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.content.banners') }}" data-spa-route="content.banners" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.banners') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-images w-4 text-center"></i>
                     <span>10. Banner Promo (21:7)</span>
                 </a>
 
-                <a href="{{ route('admin.content.features') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.features') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.content.features') }}" data-spa-route="content.features" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.features') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-star w-4 text-center"></i>
                     <span>11. Keunggulan Toko</span>
                 </a>
 
-                <a href="{{ route('admin.content.customer-services') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.customer-services') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.content.customer-services') }}" data-spa-route="content.customer-services" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.customer-services') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-brands fa-whatsapp w-4 text-center"></i>
                     <span>12. Customer Service & WA</span>
                 </a>
 
-                <a href="{{ route('admin.content.banks') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.banks') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.content.banks') }}" data-spa-route="content.banks" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.banks') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-building-columns w-4 text-center"></i>
                     <span>13. Rekening Bank Transfer</span>
                 </a>
 
-                <a href="{{ route('admin.content.socials') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.socials') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.content.socials') }}" data-spa-route="content.socials" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.socials') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-share-nodes w-4 text-center"></i>
                     <span>14. Media Sosial</span>
                 </a>
 
-                <a href="{{ route('admin.content.handles') }}" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.handles') ? 'bg-black text-white font-semibold' : '' }}">
+                <a href="{{ route('admin.content.handles') }}" data-spa-route="content.handles" class="flex items-center gap-3 px-3 py-2 rounded text-slate-600 hover:bg-slate-50 hover:text-slate-900 {{ request()->routeIs('admin.content.handles') ? 'bg-black text-white font-semibold' : '' }}">
                     <i class="fa-solid fa-id-badge w-4 text-center"></i>
                     <span>15. Admin Handle Order</span>
                 </a>
@@ -158,7 +166,7 @@
                     <p class="text-slate-400 text-[10px]">Super Administrator</p>
                 </div>
             </div>
-            <form action="{{ route('logout') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST" data-no-spa>
                 @csrf
                 <button type="submit" class="text-slate-400 hover:text-red-600 p-1.5" title="Keluar">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -176,7 +184,7 @@
                 <button @click="sidebarOpen = true" class="lg:hidden text-slate-600 hover:text-slate-900">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
-                <h1 class="text-sm font-semibold text-slate-800">@yield('page_title', 'Dashboard Back-Office')</h1>
+                <h1 id="admin-page-title" class="text-sm font-semibold text-slate-800">@yield('page_title', 'Dashboard Back-Office')</h1>
             </div>
             <div class="flex items-center gap-4">
                 <a href="{{ route('home') }}" target="_blank" class="text-xs border border-slate-200 px-3 py-1.5 rounded text-slate-600 hover:bg-slate-50 flex items-center gap-1.5">
@@ -186,7 +194,7 @@
         </header>
 
         <!-- Flash Alert -->
-        <div class="p-6 pb-0">
+        <div id="admin-flash-container" class="p-6 pb-0">
             @if(session('success'))
                 <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-4 py-3 rounded mb-4 flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -209,7 +217,7 @@
         </div>
 
         <!-- Main Body Content -->
-        <main class="p-6 flex-1">
+        <main id="admin-main-content" class="p-6 flex-1">
             @yield('content')
         </main>
     </div>

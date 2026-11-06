@@ -117,7 +117,7 @@ class Product extends Model
 
     public function scopePreOrder(Builder $query): Builder
     {
-        return $query->where('product_type', 'pre_order');
+        return $query->where('product_type', 'po');
     }
 
     /**
@@ -159,7 +159,7 @@ class Product extends Model
      */
     public function updatePriceRange(): void
     {
-        $prices = $this->variantPrices()->pluck('price_umum');
+        $prices = $this->variantPrices()->pluck('price');
 
         if ($prices->isNotEmpty()) {
             $this->update([
