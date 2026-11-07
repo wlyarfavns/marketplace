@@ -132,6 +132,9 @@
             // Admin area routes are handled natively or by AdminSPA
             if (pathname.startsWith('/admin')) return true;
 
+            // Google OAuth redirects must be handled natively by browser
+            if (pathname.startsWith('/auth/google')) return true;
+
             // Safe auth logout: logout should reset all session state
             if (pathname === '/logout' || pathname.includes('/logout')) return true;
 

@@ -13,7 +13,10 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +56,16 @@ Route::get('/verify-otp', [AuthController::class, 'showVerifyOtp'])->name('otp.v
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('otp.verify.post');
 Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password Reset (Lupa & Reset Kata Sandi)
+Route::get('/lupa-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->middleware('throttle:6,1')->name('password.email');
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+// Google OAuth Authentication
+Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Role 2: Admin Auth
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
