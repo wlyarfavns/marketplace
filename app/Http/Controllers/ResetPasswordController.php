@@ -71,3 +71,4 @@ class ResetPasswordController extends Controller
             ->withErrors(['email' => 'Token reset kata sandi tidak valid atau telah kedaluwarsa. Silakan ajukan permintaan baru.']);
     }
 }
+

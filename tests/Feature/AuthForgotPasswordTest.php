@@ -151,3 +151,4 @@ class AuthForgotPasswordTest extends TestCase
         $testUser->delete();
     }
 }
+

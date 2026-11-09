@@ -31,3 +31,4 @@ class ResetPasswordNotification extends ResetPassword
             ]);
     }
 }
+

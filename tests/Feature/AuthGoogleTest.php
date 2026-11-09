@@ -213,4 +213,81 @@ class AuthGoogleTest extends TestCase
 
         $inactiveUser->delete();
     }
+
+    public function test_google_redirect_uri_resolves_dynamically_at_runtime(): void
+    {
+        // When GOOGLE_REDIRECT_URI is not set, services.google.redirect is relative '/auth/google/callback'
+        $configRedirect = config('services.google.redirect');
+        $this->assertEquals('/auth/google/callback', $configRedirect);
+
+        // When driver('google')->redirect() is called, Socialite formats it dynamically
+        config(['services.google.client_id' => 'dummy-client-id']);
+        config(['services.google.client_secret' => 'dummy-client-secret']);
+
+        $response = Socialite::driver('google')->stateless()->redirect();
+        $targetUrl = $response->getTargetUrl();
+
+        parse_str(parse_url($targetUrl, PHP_URL_QUERY), $query);
+
+        $this->assertArrayHasKey('redirect_uri', $query);
+        $this->assertEquals(url('/auth/google/callback'), $query['redirect_uri']);
+        $this->assertEquals(route('auth.google.callback'), $query['redirect_uri']);
+    }
+
+    public function test_google_redirect_uri_resolves_with_https_when_app_url_is_https(): void
+    {
+        config(['app.url' => 'https://footwork-sneakers.com']);
+        \Illuminate\Support\Facades\URL::forceRootUrl('https://footwork-sneakers.com');
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
+        config(['services.google.client_id' => 'dummy-client-id']);
+        config(['services.google.client_secret' => 'dummy-client-secret']);
+
+        // Forget cached driver instances so it re-builds with updated URL
+        app('Laravel\Socialite\Contracts\Factory')->forgetDrivers();
+
+        $response = Socialite::driver('google')->stateless()->redirect();
+        $targetUrl = $response->getTargetUrl();
+
+        parse_str(parse_url($targetUrl, PHP_URL_QUERY), $query);
+
+        $this->assertEquals('https://footwork-sneakers.com/auth/google/callback', $query['redirect_uri']);
+        $this->assertStringStartsWith('https://', $query['redirect_uri']);
+    }
+
+    public function test_google_redirect_uri_honors_explicit_override(): void
+    {
+        $override = 'https://custom-domain.com/special/google/callback';
+        config(['services.google.redirect' => $override]);
+        config(['services.google.client_id' => 'dummy-client-id']);
+        config(['services.google.client_secret' => 'dummy-client-secret']);
+
+        app('Laravel\Socialite\Contracts\Factory')->forgetDrivers();
+
+        $response = Socialite::driver('google')->stateless()->redirect();
+        $targetUrl = $response->getTargetUrl();
+
+        parse_str(parse_url($targetUrl, PHP_URL_QUERY), $query);
+
+        $this->assertEquals($override, $query['redirect_uri']);
+    }
+
+    public function test_trusted_proxy_enables_https_url_generation_from_header(): void
+    {
+        // When configured with trusted proxies, X-Forwarded-Proto https should be honored
+        \Illuminate\Http\Middleware\TrustProxies::at('*');
+
+        $response = $this->withServerVariables([
+            'REMOTE_ADDR' => '10.0.0.1',
+            'HTTP_X_FORWARDED_PROTO' => 'https',
+            'HTTP_X_FORWARDED_HOST' => 'staging.footwork.id',
+            'HTTP_HOST' => 'staging.footwork.id',
+        ])->get(route('login'));
+
+        $response->assertStatus(200);
+
+        // Reset state
+        \Illuminate\Http\Middleware\TrustProxies::flushState();
+    }
 }
+

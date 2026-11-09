@@ -121,3 +121,4 @@ class GoogleAuthController extends Controller
             ->with('success', 'Pendaftaran berhasil menggunakan akun Google! Selamat datang di FOOTWORK.');
     }
 }
+
