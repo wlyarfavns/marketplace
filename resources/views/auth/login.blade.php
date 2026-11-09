@@ -23,7 +23,7 @@
             </div>
         @endif
 
-        <form action="{{ route('login.post') }}" method="POST" data-no-spa class="space-y-4">
+        <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
             @csrf
             
             <div class="space-y-1">

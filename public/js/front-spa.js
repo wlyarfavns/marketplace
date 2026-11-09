@@ -121,11 +121,22 @@
             if (targetElement) {
                 if (targetElement.hasAttribute('download')) return true;
                 if (targetElement.getAttribute('target') === '_blank') return true;
-                if (targetElement.hasAttribute('data-no-spa') || targetElement.closest('[data-no-spa]')) return true;
+
+                // If checking an <a> link, do not let parent form's data-no-spa block link SPA navigation
+                const linkEl = targetElement.tagName === 'A' ? targetElement : targetElement.closest('a');
+                if (linkEl) {
+                    if (linkEl.hasAttribute('data-no-spa') || linkEl.closest('a[data-no-spa]')) return true;
+                } else {
+                    if (targetElement.hasAttribute('data-no-spa') || targetElement.closest('[data-no-spa]')) return true;
+                }
             }
 
-            // Origin check: must be internal
-            if (url.origin !== window.location.origin) return true;
+            // Origin check: must be internal (support localhost <-> 127.0.0.1 interchangeably in dev)
+            const isLocal = (url.hostname === 'localhost' || url.hostname === '127.0.0.1') &&
+                            (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+                            (url.port === window.location.port);
+
+            if (url.origin !== window.location.origin && !isLocal) return true;
 
             const pathname = url.pathname.toLowerCase();
 
@@ -353,6 +364,13 @@
         async navigate(targetUrlString, options = {}) {
             const targetUrl = new URL(targetUrlString, window.location.origin);
 
+            // Normalize hostname if localhost <-> 127.0.0.1 in local development
+            if ((targetUrl.hostname === 'localhost' || targetUrl.hostname === '127.0.0.1') &&
+                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+                targetUrl.protocol = window.location.protocol;
+                targetUrl.host = window.location.host;
+            }
+
             // Check if excluded from SPA
             if (this.isExcluded(targetUrl)) {
                 window.location.href = targetUrl.href;
@@ -426,6 +444,13 @@
         async submitForm(form, submitterButton) {
             const formAction = form.getAttribute('action') || window.location.href;
             const actionUrl = new URL(formAction, window.location.origin);
+
+            // Normalize hostname if localhost <-> 127.0.0.1 in local development
+            if ((actionUrl.hostname === 'localhost' || actionUrl.hostname === '127.0.0.1') &&
+                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+                actionUrl.protocol = window.location.protocol;
+                actionUrl.host = window.location.host;
+            }
 
             if (this.isExcluded(actionUrl, form)) {
                 if (this._originalSubmit) {
