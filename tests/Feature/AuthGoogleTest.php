@@ -236,6 +236,7 @@ class AuthGoogleTest extends TestCase
 
     public function test_google_redirect_uri_resolves_with_https_when_app_url_is_https(): void
     {
+        config(['services.google.redirect' => '/auth/google/callback']);
         config(['app.url' => 'https://footwork-sneakers.com']);
         \Illuminate\Support\Facades\URL::forceRootUrl('https://footwork-sneakers.com');
         \Illuminate\Support\Facades\URL::forceScheme('https');

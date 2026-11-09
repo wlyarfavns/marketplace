@@ -39,12 +39,30 @@ class GoogleAuthController extends Controller
         }
 
         try {
-            $googleUser = Socialite::driver('google')->user();
+            try {
+                $googleUser = Socialite::driver('google')->user();
+            } catch (\Laravel\Socialite\Two\InvalidStateException $e) {
+                // Fallback to stateless if browser session state was desynced/lost
+                $googleUser = Socialite::driver('google')->stateless()->user();
+            }
         } catch (\Throwable $e) {
             report($e);
 
+            $errorMessage = 'Gagal menyinkronkan data dengan Google. Silakan coba kembali.';
+
+            if (config('app.debug')) {
+                $msg = $e->getMessage();
+                if (str_contains($msg, 'invalid_client') || str_contains($msg, 'client secret')) {
+                    $errorMessage = 'Google OAuth Error: GOOGLE_CLIENT_SECRET pada file .env belum diisi atau tidak valid (masih bernilai placeholder). Silakan periksa Client Secret di Google Cloud Console.';
+                } elseif (str_contains($msg, 'redirect_uri_mismatch')) {
+                    $errorMessage = 'Google OAuth Error: Redirect URI tidak cocok. Pastikan callback URL http://localhost:8000/auth/google/callback terdaftar di Authorized redirect URIs Google Cloud Console.';
+                } else {
+                    $errorMessage = 'Gagal menyinkronkan data dengan Google: '.$msg;
+                }
+            }
+
             return redirect()->route('login')
-                ->with('error', 'Gagal menyinkronkan data dengan Google. Silakan coba kembali.');
+                ->with('error', $errorMessage);
         }
 
         $email = $googleUser->getEmail();
