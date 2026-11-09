@@ -57,9 +57,12 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('otp.veri
 Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Password Reset (Lupa & Reset Kata Sandi)
+// Password Reset (Lupa & Reset Kata Sandi dengan OTP)
 Route::get('/lupa-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->middleware('throttle:6,1')->name('password.email');
+Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetOtp'])->middleware('throttle:6,1')->name('password.email');
+Route::get('/lupa-password/verifikasi', [ForgotPasswordController::class, 'showVerifyOtpForm'])->name('password.otp.verify');
+Route::post('/lupa-password/verifikasi', [ForgotPasswordController::class, 'verifyOtp'])->middleware('throttle:6,1')->name('password.otp.verify.post');
+Route::post('/lupa-password/kirim-ulang', [ForgotPasswordController::class, 'resendOtp'])->middleware('throttle:4,1')->name('password.otp.resend');
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 

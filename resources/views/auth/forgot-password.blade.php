@@ -10,7 +10,7 @@
             <span class="text-xs uppercase tracking-widest text-neutral-400 font-bold">Pemulihan Akun</span>
             <h1 class="text-2xl font-extrabold text-neutral-950 tracking-tight">Lupa Kata Sandi?</h1>
             <p class="text-xs text-neutral-500 font-normal leading-relaxed">
-                Masukkan alamat email yang terdaftar. Kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.
+                Masukkan alamat email yang terdaftar. Kami akan mengirimkan 6 digit kode OTP verifikasi untuk mengatur ulang kata sandi Anda.
             </p>
         </div>
 
@@ -49,7 +49,7 @@
             </div>
 
             <button type="submit" class="w-full py-3.5 bg-neutral-950 hover:bg-neutral-800 text-white text-xs uppercase tracking-widest font-bold rounded-xl active:scale-[0.98] transition shadow-xs hover:shadow-md cursor-pointer">
-                Kirim Tautan Reset Sandi
+                Kirim Kode OTP Reset Sandi
             </button>
         </form>
 
