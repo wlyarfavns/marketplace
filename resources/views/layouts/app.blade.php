@@ -354,6 +354,7 @@
                     <li><a href="{{ route('checkout.index') }}" class="hover:text-black hover:underline transition">Checkout Cepat (Guest)</a></li>
                     <li><a href="{{ route('account.dashboard') }}" class="hover:text-black hover:underline transition">Halaman Akun Saya</a></li>
                     <li><a href="{{ route('account.orders') }}" class="hover:text-black hover:underline transition">Lacak Riwayat Pesanan</a></li>
+                    <li><a href="{{ route('account.transactions') }}" class="hover:text-black hover:underline transition">Riwayat Transaksi Pembayaran</a></li>
                     <li><a href="{{ route('admin.login') }}" class="hover:text-black hover:underline transition">Portal Administrator</a></li>
                 </ul>
             </div>

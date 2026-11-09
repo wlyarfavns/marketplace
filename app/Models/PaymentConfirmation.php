@@ -61,6 +61,29 @@ class PaymentConfirmation extends Model
         return $this->verification_status;
     }
 
+    public function getTransactionNumberAttribute(): string
+    {
+        return 'TRX-' . str_pad((string) $this->id, 6, '0', STR_PAD_LEFT);
+    }
+
+    public function getStatusBadgeAttribute(): string
+    {
+        return match ($this->verification_status ?? $this->status) {
+            'verified' => 'bg-neutral-900 text-white border-neutral-900',
+            'rejected' => 'bg-red-50 text-red-700 border-red-200',
+            default => 'bg-amber-50 text-amber-800 border-amber-200',
+        };
+    }
+
+    public function getStageLabelAttribute(): string
+    {
+        return match ($this->payment_stage ?? $this->payment_type) {
+            'dp' => 'Uang Muka (DP)',
+            'remaining' => 'Pelunasan Sisa',
+            default => 'Bayar Penuh (100%)',
+        };
+    }
+
     // ── Relationships ────────────────────────────────────────────────
 
     public function order(): BelongsTo

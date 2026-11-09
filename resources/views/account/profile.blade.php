@@ -13,6 +13,8 @@
     </div>
 </div>
 
+@include('account.partials.nav')
+
 <div class="max-w-4xl mx-auto px-4 sm:px-8 py-12 space-y-12">
     
     <!-- Form Profil & Buku Alamat Default -->

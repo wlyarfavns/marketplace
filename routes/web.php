@@ -79,6 +79,8 @@ Route::middleware(['auth'])->prefix('akun')->name('account.')->group(function ()
     Route::get('/dashboard', [AccountController::class, 'dashboard'])->name('dashboard');
     Route::get('/pesanan', [AccountController::class, 'orders'])->name('orders');
     Route::get('/pesanan/{orderNumber}', [AccountController::class, 'orderDetail'])->name('order.detail');
+    Route::get('/transaksi', [AccountController::class, 'transactions'])->name('transactions');
+    Route::get('/transaksi/{id}', [AccountController::class, 'transactionDetail'])->name('transaction.detail');
     Route::get('/profil', [AccountController::class, 'profile'])->name('profile');
     Route::put('/profil', [AccountController::class, 'updateProfile'])->name('profile.update');
     Route::put('/password', [AccountController::class, 'updatePassword'])->name('password.update');

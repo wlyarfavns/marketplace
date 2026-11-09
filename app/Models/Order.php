@@ -151,14 +151,49 @@ class Order extends Model
     public function getStatusBadgeAttribute(): string
     {
         return match ($this->order_status ?? $this->status) {
-            'pending' => 'bg-yellow-100 text-yellow-800',
-            'confirmed' => 'bg-blue-100 text-blue-800',
-            'processing' => 'bg-indigo-100 text-indigo-800',
-            'shipped' => 'bg-purple-100 text-purple-800',
-            'delivered' => 'bg-green-100 text-green-800',
-            'completed' => 'bg-green-200 text-green-900',
-            'cancelled' => 'bg-red-100 text-red-800',
-            default => 'bg-gray-100 text-gray-800',
+            'pending' => 'bg-amber-50 text-amber-800 border-amber-200',
+            'confirmed', 'processing' => 'bg-neutral-100 text-neutral-800 border-neutral-300',
+            'shipped' => 'bg-blue-50 text-blue-800 border-blue-200',
+            'delivered', 'completed' => 'bg-neutral-900 text-white border-neutral-900',
+            'cancelled' => 'bg-red-50 text-red-700 border-red-200',
+            default => 'bg-neutral-100 text-neutral-800 border-neutral-200',
+        };
+    }
+
+    public function getOrderStatusLabelAttribute(): string
+    {
+        return match ($this->order_status ?? $this->status) {
+            'pending' => 'Menunggu Pembayaran',
+            'processing' => 'Sedang Diproses',
+            'shipped' => 'Dalam Pengiriman',
+            'delivered' => 'Pesanan Terkirim',
+            'completed' => 'Selesai',
+            'cancelled' => 'Dibatalkan',
+            default => ucfirst((string) ($this->order_status ?? 'Menunggu')),
+        };
+    }
+
+    public function getPaymentStatusLabelAttribute(): string
+    {
+        return match ($this->payment_status) {
+            'verified' => 'Terverifikasi (Lunas)',
+            'waiting_verification' => 'Sedang Diverifikasi',
+            'dp_paid' => 'DP Terbayar',
+            'rejected' => 'Bukti Ditolak',
+            'expired' => 'Kedaluwarsa',
+            'cancelled' => 'Dibatalkan',
+            default => 'Belum Lunas',
+        };
+    }
+
+    public function getPaymentStatusBadgeAttribute(): string
+    {
+        return match ($this->payment_status) {
+            'verified' => 'bg-neutral-900 text-white border-neutral-900',
+            'waiting_verification' => 'bg-amber-50 text-amber-800 border-amber-200',
+            'dp_paid' => 'bg-blue-50 text-blue-800 border-blue-200',
+            'rejected' => 'bg-red-50 text-red-700 border-red-200',
+            default => 'bg-neutral-100 text-neutral-700 border-neutral-200',
         };
     }
 }
