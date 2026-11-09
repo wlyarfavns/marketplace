@@ -98,10 +98,11 @@ class ResetPasswordController extends Controller
                 ->withErrors(['email' => 'Token reset kata sandi tidak valid atau telah kedaluwarsa. Silakan ajukan permintaan baru.']);
         }
 
-        // Update user password securely
+        // Update user password and ensure email is marked verified securely
         $user->forceFill([
             'password' => Hash::make($request->password),
             'remember_token' => Str::random(60),
+            'email_verified_at' => $user->email_verified_at ?? now(),
         ])->save();
 
         event(new PasswordReset($user));
@@ -117,7 +118,21 @@ class ResetPasswordController extends Controller
             'password_reset_otp_sent_at',
         ]);
 
-        return redirect()->route('login')
-            ->with('success', 'Kata sandi berhasil diatur ulang! Silakan masuk dengan kata sandi baru Anda.');
+        if ($user->status !== 'active') {
+            return redirect()->route('login')
+                ->with('error', 'Kata sandi berhasil diubah, namun akun Anda sedang tidak aktif. Silakan hubungi administrator.');
+        }
+
+        // Auto-login the user immediately upon password reset completion
+        Auth::login($user, true);
+        $request->session()->regenerate();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard')
+                ->with('success', 'Kata sandi berhasil diatur ulang! Anda telah otomatis masuk ke Panel Administrator.');
+        }
+
+        return redirect()->route('home')
+            ->with('success', 'Kata sandi berhasil diatur ulang! Selamat datang kembali, '.$user->name.'. Anda telah otomatis masuk ke akun Anda.');
     }
 }

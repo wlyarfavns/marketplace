@@ -29,18 +29,28 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $email = $credentials['email'];
+        $email = strtolower(trim($credentials['email']));
+        $password = $credentials['password'];
+
         $altEmail = str_ends_with($email, '@pasarkita.com')
             ? str_replace('@pasarkita.com', '@footwork.id', $email)
             : (str_ends_with($email, '@footwork.id') ? str_replace('@footwork.id', '@pasarkita.com', $email) : null);
 
-        $attemptSuccess = Auth::attempt($credentials, $request->boolean('remember')) ||
-            ($altEmail && Auth::attempt(['email' => $altEmail, 'password' => $credentials['password']], $request->boolean('remember')));
+        $attemptSuccess = Auth::attempt(['email' => $email, 'password' => $password], $request->boolean('remember')) ||
+            ($altEmail && Auth::attempt(['email' => $altEmail, 'password' => $password], $request->boolean('remember')));
 
         if ($attemptSuccess) {
-            $request->session()->regenerate();
-
             $user = Auth::user();
+
+            if ($user->status !== 'active') {
+                Auth::logout();
+
+                return back()->withErrors([
+                    'email' => 'Akun Anda sedang dinonaktifkan. Silakan hubungi administrator.',
+                ])->onlyInput('email');
+            }
+
+            $request->session()->regenerate();
 
             if ($user->role !== 'admin' && ! $user->email_verified_at) {
                 Auth::logout();

@@ -9,7 +9,7 @@
             <p class="text-xs text-neutral-500 font-normal">Buka akses katalog Pre-Order sepatu branded, kupon khusus member, dan fitur pelacakan pesanan.</p>
         </div>
 
-        <form action="{{ route('register.post') }}" method="POST" class="space-y-4">
+        <form action="{{ route('register.post') }}" method="POST" data-no-spa class="space-y-4">
             @csrf
             
             <div class="space-y-1">

@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        <form action="{{ route('otp.verify.post') }}" method="POST" class="space-y-5">
+        <form action="{{ route('otp.verify.post') }}" method="POST" data-no-spa class="space-y-5">
             @csrf
 
             <div class="space-y-2">
@@ -61,7 +61,7 @@
                 Tidak menerima kode verifikasi?
             </p>
             
-            <form action="{{ route('otp.resend') }}" method="POST">
+            <form action="{{ route('otp.resend') }}" method="POST" data-no-spa>
                 @csrf
                 <button type="submit" 
                         :disabled="countdown > 0"

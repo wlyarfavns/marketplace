@@ -23,12 +23,12 @@
             </div>
         @endif
 
-        <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
+        <form action="{{ route('login.post') }}" method="POST" data-no-spa class="space-y-4">
             @csrf
             
             <div class="space-y-1">
                 <label class="text-xs font-bold text-neutral-900">Alamat Email *</label>
-                <input type="email" name="email" required value="{{ old('email') }}" placeholder="nama@email.com"
+                <input type="email" name="email" required value="{{ old('email', session('reset_email_prefill')) }}" placeholder="nama@email.com"
                        class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:border-neutral-950">
                 @error('email')
                     <p class="text-[11px] text-red-500 mt-0.5">{{ $message }}</p>

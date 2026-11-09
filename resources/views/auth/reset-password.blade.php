@@ -25,7 +25,7 @@
             </div>
         @endif
 
-        <form action="{{ route('password.update') }}" method="POST" class="space-y-4">
+        <form action="{{ route('password.update') }}" method="POST" data-no-spa class="space-y-4">
             @csrf
             
             <input type="hidden" name="token" value="{{ $token }}">
@@ -38,7 +38,8 @@
                            required 
                            value="{{ old('email', $email) }}" 
                            placeholder="nama@email.com"
-                           class="w-full text-xs px-3.5 py-2.5 pl-9 rounded-xl border border-neutral-200 focus:outline-none focus:border-neutral-950 bg-neutral-50/50">
+                           readonly
+                           class="w-full text-xs px-3.5 py-2.5 pl-9 rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-600 font-medium cursor-not-allowed select-none">
                     <i class="fa-regular fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-xs"></i>
                 </div>
             </div>
