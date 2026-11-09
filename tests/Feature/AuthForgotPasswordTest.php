@@ -205,9 +205,9 @@ class AuthForgotPasswordTest extends TestCase
             'password_confirmation' => $newPassword,
         ]);
 
-        $resetResponse->assertRedirect(route('home'));
+        $resetResponse->assertRedirect(route('login'));
         $resetResponse->assertSessionHas('success');
-        $this->assertAuthenticatedAs($testUser);
+        $this->assertGuest();
 
         // 4. Verify password changed in DB
         $testUser->refresh();
@@ -217,10 +217,7 @@ class AuthForgotPasswordTest extends TestCase
         // 5. Verify token was deleted (single-use)
         $this->assertNull(DB::table('password_reset_tokens')->where('email', $testUser->email)->first());
 
-        // 6. Test logging out and manual login with new password (including case-insensitivity test)
-        $this->post(route('logout'));
-        $this->assertGuest();
-
+        // 6. Test manual login with new password (including case-insensitivity test)
         $loginResponse = $this->post(route('login.post'), [
             'email' => strtoupper($testUser->email),
             'password' => $newPassword,

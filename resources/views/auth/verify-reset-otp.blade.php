@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        <form action="{{ route('password.otp.verify.post') }}" method="POST" data-no-spa class="space-y-5">
+        <form action="{{ route('password.otp.verify.post') }}" method="POST" class="space-y-5">
             @csrf
 
             <div class="space-y-2">
@@ -61,7 +61,7 @@
                 Tidak menerima kode OTP di email?
             </p>
             
-            <form action="{{ route('password.otp.resend') }}" method="POST" data-no-spa>
+            <form action="{{ route('password.otp.resend') }}" method="POST">
                 @csrf
                 <button type="submit" 
                         :disabled="countdown > 0"

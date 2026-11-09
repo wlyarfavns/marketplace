@@ -132,21 +132,11 @@
             // Admin area routes are handled natively or by AdminSPA
             if (pathname.startsWith('/admin')) return true;
 
-            // Auth lifecycle routes must be handled natively to guarantee session & cookie persistence
-            if (
-                pathname === '/login' ||
-                pathname.startsWith('/login') ||
-                pathname === '/register' ||
-                pathname.startsWith('/register') ||
-                pathname.startsWith('/reset-password') ||
-                pathname.startsWith('/lupa-password') ||
-                pathname.startsWith('/verify-otp') ||
-                pathname.startsWith('/auth/google') ||
-                pathname === '/logout' ||
-                pathname.includes('/logout')
-            ) {
-                return true;
-            }
+            // Google OAuth redirects must be handled natively by browser
+            if (pathname.startsWith('/auth/google')) return true;
+
+            // Safe auth logout: logout should reset all session state
+            if (pathname === '/logout' || pathname.includes('/logout')) return true;
 
             // File downloads & raw assets
             if (
@@ -306,6 +296,15 @@
                 document.title = newTitle;
             }
 
+            // 1b. Update meta CSRF token if changed
+            const newCsrf = doc.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            if (newCsrf) {
+                const currentCsrfMeta = document.querySelector('meta[name="csrf-token"]');
+                if (currentCsrfMeta) {
+                    currentCsrfMeta.setAttribute('content', newCsrf);
+                }
+            }
+
             // 2. Update flash alert container
             const newFlash = doc.querySelector('#front-flash-container');
             const currentFlash = document.querySelector('#front-flash-container');
@@ -385,8 +384,8 @@
                     }
                 });
 
-                // Check for auth redirect
-                if (response.redirected && (response.url.includes('/login') || response.url.includes('/admin/login'))) {
+                // Check for admin redirect
+                if (response.redirected && response.url.includes('/admin/login')) {
                     window.location.href = response.url;
                     return;
                 }
@@ -480,8 +479,8 @@
                     }
                 });
 
-                // Check for auth redirect
-                if (response.redirected && (response.url.includes('/login') || response.url.includes('/admin/login'))) {
+                // Check for admin redirect
+                if (response.redirected && response.url.includes('/admin/login')) {
                     window.location.href = response.url;
                     return;
                 }

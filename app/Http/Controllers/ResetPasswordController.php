@@ -118,21 +118,9 @@ class ResetPasswordController extends Controller
             'password_reset_otp_sent_at',
         ]);
 
-        if ($user->status !== 'active') {
-            return redirect()->route('login')
-                ->with('error', 'Kata sandi berhasil diubah, namun akun Anda sedang tidak aktif. Silakan hubungi administrator.');
-        }
-
-        // Auto-login the user immediately upon password reset completion
-        Auth::login($user, true);
-        $request->session()->regenerate();
-
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard')
-                ->with('success', 'Kata sandi berhasil diatur ulang! Anda telah otomatis masuk ke Panel Administrator.');
-        }
-
-        return redirect()->route('home')
-            ->with('success', 'Kata sandi berhasil diatur ulang! Selamat datang kembali, '.$user->name.'. Anda telah otomatis masuk ke akun Anda.');
+        // User is redirected to login page to re-authenticate manually (tidak langsung masuk)
+        return redirect()->route('login')
+            ->with('success', 'Kata sandi berhasil diperbarui! Silakan masuk kembali menggunakan kata sandi baru Anda.')
+            ->with('reset_email_prefill', $email);
     }
 }
