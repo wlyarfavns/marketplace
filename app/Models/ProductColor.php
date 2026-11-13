@@ -57,11 +57,21 @@ class ProductColor extends Model
             return $this->color_image_path;
         }
 
-        if (str_starts_with($this->color_image_path, 'images/')) {
-            return asset($this->color_image_path);
+        $cleanPath = ltrim($this->color_image_path, '/');
+
+        if (str_starts_with($cleanPath, 'images/')) {
+            return asset($cleanPath);
         }
 
-        return asset('storage/'.$this->color_image_path);
+        if (str_starts_with($cleanPath, 'storage/')) {
+            return asset($cleanPath);
+        }
+
+        if (file_exists(public_path($cleanPath))) {
+            return asset($cleanPath);
+        }
+
+        return asset('storage/'.$cleanPath);
     }
 
     // ── Relationships ────────────────────────────────────────────────

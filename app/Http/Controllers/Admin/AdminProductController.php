@@ -13,6 +13,7 @@ use App\Models\ProductModel;
 use App\Models\ProductPriceRule;
 use App\Models\ProductSize;
 use App\Models\ProductVariantPrice;
+use App\Services\ImageStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -70,7 +71,10 @@ class AdminProductController extends Controller
             'colors.*.name' => 'required_with:colors|string',
             'colors.*.hex' => 'required_with:colors|string',
             'colors.*.color_image_path' => 'nullable|string',
-            'colors.*.image_file' => 'nullable|image|max:5120',
+            'colors.*.image_file' => 'nullable|file|image|mimes:jpeg,png,jpg,webp,gif|max:20480',
+            // Gambar Produk
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|file|image|mimes:jpeg,png,jpg,webp,gif|max:20480',
             // Varian Model
             'models' => 'nullable|array',
             'models.*.name' => 'required_with:models|string',
@@ -111,13 +115,17 @@ class AdminProductController extends Controller
             // Upload Foto Umum
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $imageFile) {
-                    $path = $imageFile->store('products', 'public');
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => $path,
-                        'is_primary' => $index === 0,
-                        'sort_order' => $index,
-                    ]);
+                    if ($imageFile && $imageFile->isValid()) {
+                        $path = ImageStorageService::storeImage($imageFile, 'products');
+                        if ($path) {
+                            ProductImage::create([
+                                'product_id' => $product->id,
+                                'image_path' => $path,
+                                'is_primary' => $index === 0,
+                                'sort_order' => $index,
+                            ]);
+                        }
+                    }
                 }
             }
 
@@ -127,7 +135,13 @@ class AdminProductController extends Controller
                     if (! empty($c['name'])) {
                         $colorImagePath = $c['color_image_path'] ?? null;
                         if ($request->hasFile("colors.{$idx}.image_file")) {
-                            $colorImagePath = $request->file("colors.{$idx}.image_file")->store('shoes', 'public');
+                            $colorFile = $request->file("colors.{$idx}.image_file");
+                            if ($colorFile && $colorFile->isValid()) {
+                                $storedColor = ImageStorageService::storeImage($colorFile, 'shoes');
+                                if ($storedColor) {
+                                    $colorImagePath = $storedColor;
+                                }
+                            }
                         }
                         ProductColor::create([
                             'product_id' => $product->id,
@@ -268,6 +282,10 @@ class AdminProductController extends Controller
             'colors.*.name' => 'nullable|string',
             'colors.*.hex' => 'nullable|string',
             'colors.*.color_image_path' => 'nullable|string',
+            'colors.*.image_file' => 'nullable|file|image|mimes:jpeg,png,jpg,webp,gif|max:20480',
+            // Gambar Produk
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|file|image|mimes:jpeg,png,jpg,webp,gif|max:20480',
             // Models
             'models' => 'nullable|array',
             'models.*.name' => 'nullable|string',
@@ -313,6 +331,7 @@ class AdminProductController extends Controller
                     ->get();
 
                 foreach ($imagesToDelete as $delImg) {
+                    ImageStorageService::deleteImage($delImg->image_path);
                     $delImg->delete();
                 }
             }
@@ -321,13 +340,17 @@ class AdminProductController extends Controller
             if ($request->hasFile('images')) {
                 $currentMaxSort = ProductImage::where('product_id', $product->id)->max('sort_order') ?? 0;
                 foreach ($request->file('images') as $index => $imageFile) {
-                    $path = $imageFile->store('products', 'public');
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => $path,
-                        'is_primary' => false,
-                        'sort_order' => $currentMaxSort + $index + 1,
-                    ]);
+                    if ($imageFile && $imageFile->isValid()) {
+                        $path = ImageStorageService::storeImage($imageFile, 'products');
+                        if ($path) {
+                            ProductImage::create([
+                                'product_id' => $product->id,
+                                'image_path' => $path,
+                                'is_primary' => false,
+                                'sort_order' => $currentMaxSort + $index + 1,
+                            ]);
+                        }
+                    }
                 }
             }
 
@@ -354,7 +377,13 @@ class AdminProductController extends Controller
                     if (! empty($c['name'])) {
                         $colorImagePath = $c['color_image_path'] ?? null;
                         if ($request->hasFile("colors.{$idx}.image_file")) {
-                            $colorImagePath = $request->file("colors.{$idx}.image_file")->store('shoes', 'public');
+                            $colorFile = $request->file("colors.{$idx}.image_file");
+                            if ($colorFile && $colorFile->isValid()) {
+                                $storedColor = ImageStorageService::storeImage($colorFile, 'shoes');
+                                if ($storedColor) {
+                                    $colorImagePath = $storedColor;
+                                }
+                            }
                         }
 
                         ProductColor::create([

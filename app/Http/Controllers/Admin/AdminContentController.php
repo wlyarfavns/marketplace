@@ -9,6 +9,7 @@ use App\Models\Banner;
 use App\Models\CustomerService;
 use App\Models\Feature;
 use App\Models\SocialMedia;
+use App\Services\ImageStorageService;
 use Illuminate\Http\Request;
 
 class AdminContentController extends Controller
@@ -31,14 +32,14 @@ class AdminContentController extends Controller
             'image' => 'required|image|max:3072',
         ]);
 
-        $imagePath = $request->file('image')->store('banners', 'public');
+        $imagePath = ImageStorageService::storeImage($request->file('image'), 'banners');
 
         Banner::create([
             'title' => $validated['title'],
             'description' => $validated['description'] ?? null,
             'url' => $validated['url'] ?? null,
             'sort_order' => $validated['sort_order'] ?? 0,
-            'image_path' => $imagePath,
+            'image_path' => $imagePath ?: '',
             'is_active' => true,
         ]);
 
@@ -47,7 +48,9 @@ class AdminContentController extends Controller
 
     public function destroyBanner($id)
     {
-        Banner::findOrFail($id)->delete();
+        $banner = Banner::findOrFail($id);
+        ImageStorageService::deleteImage($banner->image_path);
+        $banner->delete();
 
         return redirect()->back()->with('success', 'Banner berhasil dihapus.');
     }

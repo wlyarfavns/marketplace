@@ -41,6 +41,35 @@ class Brand extends Model
         ];
     }
 
+    // ── Accessors ────────────────────────────────────────────────────
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (empty($this->logo_path)) {
+            return null;
+        }
+
+        if (str_starts_with($this->logo_path, 'http://') || str_starts_with($this->logo_path, 'https://')) {
+            return $this->logo_path;
+        }
+
+        $cleanPath = ltrim($this->logo_path, '/');
+
+        if (str_starts_with($cleanPath, 'images/')) {
+            return asset($cleanPath);
+        }
+
+        if (str_starts_with($cleanPath, 'storage/')) {
+            return asset($cleanPath);
+        }
+
+        if (file_exists(public_path($cleanPath))) {
+            return asset($cleanPath);
+        }
+
+        return asset('storage/' . $cleanPath);
+    }
+
     // ── Relationships ────────────────────────────────────────────────
 
     public function products(): HasMany

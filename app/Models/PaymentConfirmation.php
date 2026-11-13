@@ -56,6 +56,29 @@ class PaymentConfirmation extends Model
         return $this->proof_file_path;
     }
 
+    public function getProofFileUrlAttribute(): ?string
+    {
+        if (empty($this->proof_file_path)) {
+            return null;
+        }
+
+        if (str_starts_with($this->proof_file_path, 'http://') || str_starts_with($this->proof_file_path, 'https://')) {
+            return $this->proof_file_path;
+        }
+
+        $cleanPath = ltrim($this->proof_file_path, '/');
+
+        if (str_starts_with($cleanPath, 'storage/')) {
+            return asset($cleanPath);
+        }
+
+        if (file_exists(public_path($cleanPath))) {
+            return asset($cleanPath);
+        }
+
+        return asset('storage/' . $cleanPath);
+    }
+
     public function getStatusAttribute(): ?string
     {
         return $this->verification_status;

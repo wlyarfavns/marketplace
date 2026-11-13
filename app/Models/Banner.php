@@ -44,15 +44,29 @@ class Banner extends Model
      */
     public function getImageUrlAttribute(): string
     {
+        if (empty($this->image_path)) {
+            return asset('images/banners/banner-official-drop.jpg');
+        }
+
         if (str_starts_with($this->image_path, 'http://') || str_starts_with($this->image_path, 'https://')) {
             return $this->image_path;
         }
 
-        if (str_starts_with($this->image_path, 'images/')) {
-            return asset($this->image_path);
+        $cleanPath = ltrim($this->image_path, '/');
+
+        if (str_starts_with($cleanPath, 'images/')) {
+            return asset($cleanPath);
         }
 
-        return asset('storage/'.$this->image_path);
+        if (str_starts_with($cleanPath, 'storage/')) {
+            return asset($cleanPath);
+        }
+
+        if (file_exists(public_path($cleanPath))) {
+            return asset($cleanPath);
+        }
+
+        return asset('storage/'.$cleanPath);
     }
 
     // ── Scopes ───────────────────────────────────────────────────────

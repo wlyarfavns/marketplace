@@ -167,3 +167,35 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::delete('/banks/{id}', [AdminContentController::class, 'destroyBank'])->name('banks.destroy');
     });
 });
+
+// --- PUBLIC STORAGE FALLBACK ROUTE ---
+// Ensures uploaded images & files are always served even when storage symlink is missing on shared hosting / cPanel
+Route::get('/storage/{path}', function (string $path) {
+    $cleanPath = ltrim($path, '/');
+
+    // 1. Check in public/storage
+    $pubStorage = public_path('storage/' . $cleanPath);
+    if (file_exists($pubStorage) && is_file($pubStorage)) {
+        return response()->file($pubStorage, [
+            'Cache-Control' => 'public, max-age=86400',
+        ]);
+    }
+
+    // 2. Check in storage/app/public
+    $appStorage = storage_path('app/public/' . $cleanPath);
+    if (file_exists($appStorage) && is_file($appStorage)) {
+        return response()->file($appStorage, [
+            'Cache-Control' => 'public, max-age=86400',
+        ]);
+    }
+
+    // 3. Check in public/images
+    $pubImages = public_path('images/' . $cleanPath);
+    if (file_exists($pubImages) && is_file($pubImages)) {
+        return response()->file($pubImages, [
+            'Cache-Control' => 'public, max-age=86400',
+        ]);
+    }
+
+    abort(404);
+})->where('path', '.*')->name('storage.fallback');

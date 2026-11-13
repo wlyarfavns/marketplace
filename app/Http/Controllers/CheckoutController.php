@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use App\Models\PaymentConfirmation;
 use App\Models\Seller;
 use App\Services\CouponService;
+use App\Services\ImageStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -233,7 +234,7 @@ class CheckoutController extends Controller
             'notes' => 'nullable|string|max:500',
         ]);
 
-        $filePath = $request->file('proof_file')->store('payment_proofs', 'public');
+        $filePath = ImageStorageService::storeImage($request->file('proof_file'), 'payment_proofs');
 
         PaymentConfirmation::create([
             'order_id' => $order->id,

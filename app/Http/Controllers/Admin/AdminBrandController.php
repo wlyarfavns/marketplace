@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Services\ImageStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -29,7 +30,7 @@ class AdminBrandController extends Controller
 
         $logoPath = null;
         if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('brands', 'public');
+            $logoPath = ImageStorageService::storeImage($request->file('logo'), 'brands');
         }
 
         Brand::create([
@@ -71,7 +72,11 @@ class AdminBrandController extends Controller
         ];
 
         if ($request->hasFile('logo')) {
-            $data['logo_path'] = $request->file('logo')->store('brands', 'public');
+            $newLogo = ImageStorageService::storeImage($request->file('logo'), 'brands');
+            if ($newLogo) {
+                ImageStorageService::deleteImage($brand->logo_path);
+                $data['logo_path'] = $newLogo;
+            }
         }
 
         $brand->update($data);

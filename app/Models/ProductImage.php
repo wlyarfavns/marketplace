@@ -47,15 +47,21 @@ class ProductImage extends Model
             return $this->image_path;
         }
 
-        if (str_starts_with($this->image_path, 'images/')) {
-            return asset($this->image_path);
+        $cleanPath = ltrim($this->image_path, '/');
+
+        if (str_starts_with($cleanPath, 'images/')) {
+            return asset($cleanPath);
         }
 
-        if (file_exists(public_path($this->image_path))) {
-            return asset($this->image_path);
+        if (str_starts_with($cleanPath, 'storage/')) {
+            return asset($cleanPath);
         }
 
-        return asset('storage/'.$this->image_path);
+        if (file_exists(public_path($cleanPath))) {
+            return asset($cleanPath);
+        }
+
+        return asset('storage/'.$cleanPath);
     }
 
     // ── Relationships ────────────────────────────────────────────────
